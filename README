@@ -51,14 +51,14 @@ Install Process
  		-Start the Perm server
  		-Start the psql client
  		-Create a new database for the tests or connect to an existing one.
- 		-use "\i SCRIPT" to executes from the testdbscript  
+ 		-use "\i SCRIPT" to execute the testdbscript  
 
 Run Tests
 -----------------------------------------------------
 There are three possible ways of running the tests:
 
 1) run "ant startServerAndRunTests"
-	This starts the Perm server, runs the tests, and kill the Perm Server 
+	This starts the Perm server, runs the tests, and afterwards kills the Perm Server 
 
 2) start the perm server manually and use "ant runTests" to run the tests. 
 
@@ -66,7 +66,7 @@ There are three possible ways of running the tests:
 	also have to start the Perm server manually.
 
 This aforementioned commands run the complete suite of tests. To run a 
-specific sub suite or single jUnit test class set the "TestName" in the ant call.
+specific sub-suite or single jUnit test class set the "TestName" in the ant call.
 E.g.:
 
 	ant -DTestName=AllTests_1 startServerAndRunTests
@@ -163,9 +163,44 @@ before you create a new relation place a command that checks if this
 relation already exists and if so drops it. Check out the existing
 testdb.sql script to see how this works.
 
+-----------------------------------------------------
+TEST CASE OVERVIEW
+-----------------------------------------------------
 
+The test cases that are deployed with PermTester are 
+described in the following.
 
-
-
+agg.xml  				Test provenance computation for queries 
+						involving aggregation
+attrOrder.xml 	 		Test that provenance query result schema have a 
+						correct order of attributes
+copy.* - 				Copy contribution semantics tests
+db2.rewrite.* 	 		Test the parse back to DB2 SQL dialect 
+						functionality
+provAsSubquery.xml 		Test queries that have provenance computations as
+						subqueries
+restrictprovenance.xml	Queries that reference provenance attributes in
+						their WHERE-clause
+set.xml					Queries involving set operations
+settings.xml			No Query file! This file defines for which 
+						rewrite method combinations the tests are generated
+sp.xml					Simple select-project queries
+specialFeatures.xml		PostgreSQL specific stuff like Arrays
+sublink.*				Queries involving nested subqueries (called sublinks).
+						The last part of the sublink query file names is used to
+						indicate in which clause the sublinks are used in.
+sublink.both.*			Correlated and uncorrelated sublinks in combination
+sublink.corr.*			Correlated sublinks
+sublink.uncorr.*		Uncorrelated sublinks
+sublink.*.nest.*		Nested sublinks. I.e., sublinks that contain sublinks
+sublink.*.unnest.*		Sublinks without nesting
+supportFuncs.xml		Test several auxiliary functions used by Perm
+tcph.xml				Provenance computation for queries from the TPC-H
+						decision support benchmark
+trans.*					Tests transformation provenance computation
+views.xml				Tests provenance computation for queries involving
+						views
+xml.xslt.xml			Tests the new XSLT function feature introduced by Perm
+ 	
 
 

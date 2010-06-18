@@ -10,7 +10,7 @@
 	<property name="builddir" value="${basedir}/build"/>
 	<property name="permserver.options" value="--debug_print_rewritten=off --log_error_verbosity=terse --log_min_messages=error --client_min_messages=error --log_directory=${basedir}"/>
 	<property name="testdbscript" value="${resourcedir}/testdb/testDB.sql" />
-	<property name="TestClassName" value="AllTestsOptions" />
+	<property name="TestName" value="AllTestsOptions" />
 	
 	<path id="libraries">
 		<fileset dir="${librarydir}"> 
