@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i AND s.i IN (SELECT * FROM t));
+</entry>
+<entry key="q1.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t WHERE t.i = r.i));
+</entry>
+<entry key="q2.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+
+<entry key="q3.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t WHERE t.i = s.i));
+</entry>
+<entry key="q3.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+
+<entry key="q4.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i AND s.i IN (SELECT * FROM t WHERE t.i = s.i AND t.i = r.i));
+</entry>
+<entry key="q4.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i AND s.i IN (SELECT * FROM t WHERE t.i = s.i OR t.i = r.i));
+</entry>
+<entry key="q5.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE * FROM r WHERE 1 &lt; (SELECT sum(s.i) FROM s WHERE r.i IN (SELECT * FROM t));
+</entry>
+<entry key="q6.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               1 |               2
+ 2 |               2 |               2 |               2
+ 2 |               2 |               4 |               2
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE * FROM r WHERE NOT EXISTS (SELECT * FROM s WHERE NOT EXISTS (SELECT * FROM t WHERE t.i = s.i AND r.i = t.i));
+</entry>
+<entry key="q7.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+</properties>

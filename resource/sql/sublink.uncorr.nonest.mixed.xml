@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+ERROR SELECT PROVENANCE sum(i + (SELECT sum(i) FROM s WHERE s.i = 1)) * (SELECT * FROM t WHERE t.i = 2) AS sumi, r.i IN (SELECT * FROM bagdiff3)
+	FROM r
+	WHERE r.i IN (SELECT * FROM bagdiff2)
+	GROUP BY r.i IN (SELECT * FROM bagdiff3)
+	HAVING (r.i IN (SELECT * FROM bagdiff3)) = true;
+</entry>
+<entry key="q1.result">
+ sumi | ?column? | prov_public_t_i | prov_public_bagdiff3_id | prov_public_s_i | prov_public_bagdiff2_id | prov_public_r_i 
+------+----------+-----------------+-------------------------+-----------------+-------------------------+-----------------
+    4 | t        |               2 |                       1 |               1 |                       1 |               1
+    4 | t        |               2 |                       1 |               1 |                       1 |               1
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE i + (SELECT * FROM s WHERE s.i = 2) FROM r WHERE r.i IN (SELECT * FROM bagdiff2);
+</entry>
+<entry key="q2.result">
+ ?column? | prov_public_s_i | prov_public_bagdiff2_id | prov_public_r_i 
+----------+-----------------+-------------------------+-----------------
+        3 |               2 |                       1 |               1
+</entry>
+
+</properties>

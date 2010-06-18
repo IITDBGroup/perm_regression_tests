@@ -1,0 +1,188 @@
+<project name="PermTester" default="compileTests" basedir=".">
+
+	<property name="sourcedir" value="${basedir}/src" />
+	<property name="binarydir" value="${basedir}/bin" />
+	<property name="dbUnitDir" value="${basedir}/../DBUnit/bin/" />
+	<property name="testsourcedir" value="${sourcedir}/org/perm/autotests" />
+	<property name="testbinarydir" value="${binarydir}/org/perm/autotests" />	
+	<property name="librarydir" value="${basedir}/lib" />
+	<property name="resourcedir" value="${basedir}/resource"/>
+	<property name="builddir" value="${basedir}/build"/>
+	<property name="permserver.options" value="--debug_print_rewritten=off --log_error_verbosity=terse --log_min_messages=error --client_min_messages=error --log_directory=${basedir}"/>
+	<property name="testdbscript" value="${resourcedir}/testdb/testDB.sql" />
+	<property name="TestClassName" value="AllTestsOptions" />
+	
+	<path id="libraries">
+		<fileset dir="${librarydir}"> 
+			<exclude name="**/.svn"/>
+		</fileset>
+		<fileset dir="${ant.library.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="runTestsClasspath">
+		<path refid="libraries" />
+		<pathelement path="${binarydir}"/>
+	</path>
+	
+	<target name="loadProperties">
+		<property file="${resourcedir}/options.txt" prefix="Options."/>
+		<fail message="Not all necessary options set in file ${resourcedir}/options.txt: DBName, User, Password, Schema, Path, PermPrefix">
+		    <condition>
+		        <not>
+		            <and>
+		            	<isset property="Options.DBName" />
+		            	<isset property="Options.AdminDBName" />
+		            	<isset property="Options.User" />
+		            	<isset property="Options.Password" />
+		            	<isset property="Options.Schema" />
+		            	<isset property="Options.Path" />
+		            	<isset property="Options.PermPrefix" />
+		            	<isset property="Options.PermCluster" />
+		            	<isset property="Options.PermSource" />
+		            </and>
+		        </not>
+		    </condition>
+		</fail>
+		<available file="${Options.PermPrefix}/bin/postgres" property="found.perm.bin"/>
+		<available file="${Options.PermCluster}/postgresql.conf" property="found.perm.cluster"/>
+		<fail message="Did not find postgres executable at ${Options.PermPrefix}/bin/">
+			<condition>
+				<not>
+					<isset property="found.perm.bin" />
+				</not>
+			</condition>
+		</fail>
+		<fail message="Did not find postgres cluster at ${Options.PermCluster}">
+			<condition>
+				<not>
+					<isset property="found.perm.cluster" />
+				</not>
+			</condition>
+		</fail>
+		<property name="perm.URL" value="jdbc:postgresql://127.0.0.1:5432/${Options.DBName}" />
+		<property name="perm.AdminURL" value="jdbc:postgresql://127.0.0.1:5432/${Options.AdminDBName}" />
+	</target>
+	
+	<target name="adaptTestDDLScript">
+		<copy file="${testdbscript}.in" tofile="${testdbscript}" overwrite="true">
+			<filterchain>
+				<replacetokens>
+					<token key="PERMTESTERDIR" value="${basedir}"/>
+				</replacetokens>
+			</filterchain>
+		</copy>
+	</target>
+	
+	<target name="clean" depends="adaptTestDDLScript">
+		<delete includeemptydirs="true">
+			<fileset dir="${binarydir}" includes="**/*"/>
+		 </delete>
+		<mkdir dir="${binarydir}" />
+	</target>
+
+	<target name="cleanTests" depends="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${testbinarydir}" erroronmissingdir="false" includes="**/*" />
+		 </delete>
+		<mkdir dir="${testbinarydir}" />
+		<delete includeemptydirs="true" failonerror="false" >
+			<fileset dir="${testsourcedir}" erroronmissingdir="false" includes="**/*"/>
+		 </delete>
+		<mkdir dir="${testsourcedir}" />
+		<mkdir dir="${testsourcedir}/tpch" />
+	</target>
+	
+	<target name="compile" depends="cleanTests">
+		<javac srcdir="${sourcedir}" destdir="${binarydir}" classpathref="libraries" debug="on">
+			<compilerarg value="-Xlint:unchecked" />
+		</javac>
+	</target>
+	
+	<target name="jarGenerator" depends="compile">
+		<jar destfile="${librarydir}/permgenerator.jar" basedir="${binarydir}">
+			<manifest>
+				<attribute name="Created-By" value="University of Zurich, Department for Computer Science, Boris Glavic" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="genTests" depends="jarGenerator">
+		<java classname="org.perm.testgenerator.TestGenerator" classpathref="libraries" />
+	</target>
+	
+	<target name="compileTests" depends="genTests">
+		<javac srcdir="${testsourcedir}" destdir="${binarydir}" classpathref="libraries" debug="on">
+			<compilerarg value="-Xlint:unchecked" />
+		</javac>
+	</target>
+	
+	<target name="startPermServer" depends="loadProperties">
+		<fail message="Cannot start perm server. Seems there is a running server listening at 127.0.0.1 port 5432">
+			<condition>
+				<socket server="127.0.0.1" port="5432" />
+			</condition>
+		</fail>
+		<exec executable="${Options.PermPrefix}/bin/postmaster" spawn="true">
+			<arg line="-D ${Options.PermCluster} ${permserver.options}"/>
+		</exec>
+		<waitfor maxwait="15" maxwaitunit="second">
+		        <socket server="127.0.0.1" port="5432" />
+		</waitfor>		
+	</target>
+	
+	<target name="killPermServer" depends="loadProperties">
+		<fail message="No Perm Server running at 127.0.0.1 port 5432">
+			<condition>
+				<not>
+					<socket server="127.0.0.1" port="5432" />
+				</not>
+			</condition>
+		</fail>
+		<exec executable="${resourcedir}/killServer.sh">
+			<arg line="${Options.PermCluster}" />
+		</exec>
+	</target>
+	
+	<target name="startServerAndRunTests" depends="loadProperties">
+		<!-- start Perm server -->
+		<antcall target="startPermServer" />
+		<!-- run Tests -->
+		<antcall target="runTests" />
+		<!-- kill Perm server-->
+		<antcall target="killPermServer"/>
+	</target>
+	
+	<target name="loadDBScript" depends="loadProperties,adaptTestDDLScript">
+		<property name="perm.psql.adminargs" value="-U ${Options.User} -d ${Options.AdminDBName} -h 127.0.0.1 -p 5432" />
+		<property name="perm.psql.testargs" value="-U ${Options.User} -d ${Options.DBName} -h 127.0.0.1 -p 5432" />
+		<property name="xmlfuncscript" value="${Options.PermSource}/contrib/xml2/pgxml.sql" />
+		
+		<antcall target="startPermServer" />
+		<exec executable="${Options.PermPrefix}/bin/psql">
+			<arg line="${perm.psql.adminargs} -c &quot;DROP DATABASE IF EXISTS ${Options.DBName};&quot;"/>
+		</exec>
+		<exec executable="${Options.PermPrefix}/bin/psql">
+			<arg line="${perm.psql.adminargs} -c &quot;CREATE DATABASE ${Options.DBName};&quot;"/>
+		</exec>
+		<exec executable="${Options.PermPrefix}/bin/psql">
+			<arg line="${perm.psql.testargs} -c &quot;CREATE LANGUAGE PLPGSQL;&quot;"/>
+		</exec>
+		<exec executable="${Options.PermPrefix}/bin/psql">
+			<arg line="${perm.psql.testargs} -f ${xmlfuncscript}"/>
+		</exec>
+		<exec executable="${Options.PermPrefix}/bin/psql">
+			<arg line="${perm.psql.testargs} -f ${testdbscript}"/>
+		</exec>
+		<antcall target="killPermServer"/>
+	</target>
+	
+	<target name="runTests">
+		<junit printsummary="on" haltonfailure="false">
+			<classpath refid="runTestsClasspath"/>
+			<test name="org.perm.autotests.${TestName}" haltonfailure="false" />
+		</junit>
+	</target>
+		
+</project>

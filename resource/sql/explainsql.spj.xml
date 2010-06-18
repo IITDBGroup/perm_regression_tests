@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS dot command generation</comment>
+
+<entry key="q.query">
+EXPLAIN SQLTEXT SELECT * FROM r; 
+</entry>
+<entry key="q.result">
+                   QUERY PLAN                    
+-------------------------------------------------
+ 
+ 
+ Query:
+ ---------------
+  SELECT r.i
+    FROM r
+ ---------------
+
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

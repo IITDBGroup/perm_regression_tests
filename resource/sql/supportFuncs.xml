@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT bitor_with_null(a, NULL) FROM testbitset;
+</entry>
+<entry key="q1.result">
+ bitor_with_null 
+-----------------
+ 100
+ 010
+ 001
+ 
+</entry>
+
+<entry key="q2.query">
+SELECT bitor_with_null(NULL, a) FROM testbitset;
+</entry>
+<entry key="q2.result">
+ bitor_with_null 
+-----------------
+ 100
+ 010
+ 001
+ 
+</entry>
+
+<entry key="q3.query">
+ SELECT bitor_with_null(B'100', a) FROM testbitset;
+</entry>
+<entry key="q3.result">
+ bitor_with_null 
+-----------------
+ 100
+ 110
+ 101
+ 100
+</entry>
+
+<entry key="q4.query">
+SELECT bitoragg (a) FROM testbitset;
+</entry>
+<entry key="q4.result">
+ bitoragg 
+----------
+ 111
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+
+</properties>

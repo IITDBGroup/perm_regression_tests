@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE * FROM r JOIN s ON (r.i = s.i AND r.i IN (SELECT * FROM t));
+</entry>
+<entry key="q1.result">
+ i | i | prov_public_t_i | prov_public_r_i | prov_public_s_i 
+---+---+-----------------+-----------------+-----------------
+ 2 | 2 |               2 |               2 |               2
+</entry>
+
+
+<entry key="q2.query">
+SELECT PROVENANCE * FROM r LEFT JOIN s ON (r.i IN (SELECT * FROM t) AND r.i = s.i);
+</entry>
+<entry key="q2.result">
+ i | i | prov_public_t_i | prov_public_r_i | prov_public_s_i 
+---+---+-----------------+-----------------+-----------------
+ 1 |   |               2 |               1 |                
+ 1 |   |               4 |               1 |                
+ 1 |   |               6 |               1 |                
+ 2 | 2 |               2 |               2 |               2
+ 3 |   |               2 |               3 |                
+ 3 |   |               4 |               3 |                
+ 3 |   |               6 |               3 |                
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

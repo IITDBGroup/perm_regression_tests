@@ -1,0 +1,15 @@
+SELECT PROVENANCE a.name, count(*) AS numPubls 
+	FROM 
+		source.author a
+		LEFT JOIN
+		source.inprocpublished AS allpub
+		ON (a.auth_id = allpub.auth_id)
+	GROUP BY a.auth_id, a.name
+	
+SELECT TRANSPROV a.name, count(*) AS numPubls 
+	FROM 
+		source.author a
+		LEFT JOIN
+		source.inprocpublished AS allpub
+		ON (a.auth_id = allpub.auth_id)
+	GROUP BY a.auth_id, a.name

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT TRANSSQL sum(r.i) FROM r;
+</entry>
+<entry key="q1.result">
+ sum |           trans_prov           
+-----+--------------------------------
+   6 |  SELECT sum(r.i) AS sum FROM r
+</entry>
+
+<entry key="q2.query">
+SELECT TRANSSQL sum(r.i) FROM r GROUP BY r.i;
+</entry>
+<entry key="q2.result">
+ sum |                 trans_prov                  
+-----+---------------------------------------------
+   2 |  SELECT sum(r.i) AS sum FROM r GROUP BY r.i
+   3 |  SELECT sum(r.i) AS sum FROM r GROUP BY r.i
+   1 |  SELECT sum(r.i) AS sum FROM r GROUP BY r.i
+</entry>
+
+
+<entry key="q3.query">
+SELECT TRANSSQL sum(r.i) * 2 AS res FROM r;
+</entry>
+<entry key="q3.result">
+ res |             trans_prov             
+-----+------------------------------------
+  12 |  SELECT sum(r.i) * 2 AS res FROM r
+</entry>
+
+<entry key="q4.query">
+SELECT TRANSSQL sum(r.i * 2) AS res FROM r;
+</entry>
+<entry key="q4.result">
+ res |             trans_prov             
+-----+------------------------------------
+  12 |  SELECT sum(r.i * 2) AS res FROM r
+</entry>
+
+<entry key="q5.query">
+SELECT TRANSSQL sum(r.i) FROM r LEFT JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q5.result">
+ sum |                             trans_prov                             
+-----+--------------------------------------------------------------------
+   6 |  SELECT sum(r.i) AS sum FROM r LEFT JOIN s ON r.i = s.i
+   6 |  SELECT sum(r.i) AS sum FROM r LEFT JOIN s ON r.i = s.i
+   6 |  SELECT sum(r.i) AS sum FROM r LEFT JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i
+</entry>
+
+<entry key="q6.query">
+SELECT TRANSSQL sum(sub.ss) FROM (SELECT sum(r.i) AS ss FROM r) AS sub;
+</entry>
+<entry key="q6.result">
+ sum |                             trans_prov                              
+-----+---------------------------------------------------------------------
+   6 |  SELECT sum(sub.ss) AS sum FROM ( SELECT sum(r.i) AS ss FROM r) sub
+</entry>
+
+<entry key="q7.query">
+SELECT TRANSSQL sum(r.i) FROM r LEFT JOIN s ON (r.i = s.i) GROUP BY s.i;
+</entry>
+<entry key="q7.result">
+ sum |                                   trans_prov                                    
+-----+---------------------------------------------------------------------------------
+   3 |  SELECT sum(r.i) AS sum FROM r LEFT JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i GROUP BY s.i
+   2 |  SELECT sum(r.i) AS sum FROM r LEFT JOIN s ON r.i = s.i GROUP BY s.i
+   1 |  SELECT sum(r.i) AS sum FROM r LEFT JOIN s ON r.i = s.i GROUP BY s.i
+</entry>
+
+<entry key="q8.query">
+SELECT TRANSSQL sum(r.i) FROM r JOIN s ON (r.i = s.i) GROUP BY s.i;
+</entry>
+<entry key="q8.result">
+ sum |                           trans_prov                            
+-----+-----------------------------------------------------------------
+   1 |  SELECT sum(r.i) AS sum FROM r JOIN s ON r.i = s.i GROUP BY s.i
+   2 |  SELECT sum(r.i) AS sum FROM r JOIN s ON r.i = s.i GROUP BY s.i
+</entry>
+
+<entry key="q9.query">
+SELECT TRANSSQL sum(sub.ss) FROM (SELECT sum(r.i) AS ss FROM r LEFT JOIN s ON (r.i = s.i)) AS sub;
+</entry>
+<entry key="q9.result">
+ sum |                                               trans_prov                                                
+-----+---------------------------------------------------------------------------------------------------------
+   6 |  SELECT sum(sub.ss) AS sum FROM ( SELECT sum(r.i) AS ss FROM r LEFT JOIN s ON r.i = s.i) sub
+   6 |  SELECT sum(sub.ss) AS sum FROM ( SELECT sum(r.i) AS ss FROM r LEFT JOIN s ON r.i = s.i) sub
+   6 |  SELECT sum(sub.ss) AS sum FROM ( SELECT sum(r.i) AS ss FROM r LEFT JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i) sub
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+
+
+</properties>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT ANNOT('M1','M2') TRANSSQL * FROM r;
+</entry>
+<entry key="q1.result">
+ i |              trans_prov              
+---+--------------------------------------
+ 1 | &lt;M1&gt;&lt;M2&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/M2&gt;
+ 2 | &lt;M1&gt;&lt;M2&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/M2&gt;
+ 3 | &lt;M1&gt;&lt;M2&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/M2&gt;
+</entry>
+
+
+<entry key="q2.query">
+SELECT TRANSSQL * FROM (SELECT ANNOT('M1') * FROM r) r LEFT JOIN (SELECT ANNOT('M2') * FROM s) s ON (r.i = s.i);
+</entry>
+<entry key="q2.result">
+ i | i |                                                       trans_prov                                                        
+---+---+-------------------------------------------------------------------------------------------------------------------------
+ 1 | 1 |  SELECT r.i, s.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;) r LEFT JOIN (&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) s ON r.i = s.i
+ 2 | 2 |  SELECT r.i, s.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;) r LEFT JOIN (&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) s ON r.i = s.i
+ 3 |   |  SELECT r.i, s.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;) r LEFT JOIN (&lt;NOT&gt;&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;&lt;/NOT&gt;) s ON r.i = s.i
+</entry>
+
+
+<entry key="q3.query">
+SELECT TRANSSQL * FROM (SELECT ANNOT('M1') * FROM r UNION SELECT ANNOT('M2') * FROM s) sub;
+</entry>
+<entry key="q3.result">
+ i |                                            trans_prov                                             
+---+---------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; UNION &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+ 2 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; UNION &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+ 3 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; UNION &lt;NOT&gt;&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (&lt;NOT&gt;&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/NOT&gt; UNION &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+</entry>
+<entry key="q3.result1">
+ i |                                            trans_prov                                             
+---+---------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (&lt;NOT&gt;&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/NOT&gt; UNION &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+ 1 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; UNION &lt;NOT&gt;&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM (&lt;NOT&gt;&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/NOT&gt; UNION &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+ 2 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; UNION &lt;NOT&gt;&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;&lt;/NOT&gt;) sub
+ 3 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; UNION &lt;NOT&gt;&lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (&lt;NOT&gt;&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt;&lt;/NOT&gt; UNION &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+</entry>
+
+
+<entry key="q4.query">
+SELECT TRANSSQL * FROM (SELECT ANNOT('M1') * FROM r INTERSECT SELECT ANNOT('M2') * FROM s) sub;
+</entry>
+<entry key="q4.result">
+ i |                                         trans_prov                                         
+---+--------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; INTERSECT &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+ 2 |  SELECT sub.i FROM (&lt;M1&gt; SELECT r.i FROM r&lt;/M1&gt; INTERSECT &lt;M2&gt; SELECT s.i FROM s&lt;/M2&gt;) sub
+</entry>
+
+<entry key="q5.query">
+SELECT ANNOT ('M1') TRANSSQL sum(r.i) FROM r;
+</entry>
+<entry key="q5.result">
+ sum |               trans_prov                
+-----+-----------------------------------------
+   6 | &lt;M1&gt; SELECT sum(r.i) AS sum FROM r&lt;/M1&gt;
+</entry>
+
+<entry key="q6.query">
+SELECT ANNOT ('M1') TRANSSQL sum(r.i) FROM r GROUP BY r.i;
+</entry>
+<entry key="q6.result">
+ sum |                      trans_prov                      
+-----+------------------------------------------------------
+   1 | &lt;M1&gt; SELECT sum(r.i) AS sum FROM r GROUP BY r.i&lt;/M1&gt;
+   2 | &lt;M1&gt; SELECT sum(r.i) AS sum FROM r GROUP BY r.i&lt;/M1&gt;
+   3 | &lt;M1&gt; SELECT sum(r.i) AS sum FROM r GROUP BY r.i&lt;/M1&gt;
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+
+</properties>

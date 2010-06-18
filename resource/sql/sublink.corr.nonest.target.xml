@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE *, (SELECT * FROM s WHERE s.i = r.i) FROM r;	
+</entry>
+<entry key="q1.result">
+ i | ?column? | prov_public_s_i | prov_public_r_i 
+---+----------+-----------------+-----------------
+ 1 |        1 |               1 |               1
+ 2 |        2 |               2 |               2
+ 3 |          |                 |               3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE *, r.i IN (SELECT * FROM s WHERE s.i &gt;= r.i)::boolean FROM r;
+</entry>
+<entry key="q2.result">
+ i | bool	  | prov_public_s_i | prov_public_r_i 
+---+----------+-----------------+-----------------
+ 1 | t        |               1 |               1
+ 2 | t        |               2 |               2
+ 3 | f        |               4 |               3
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE *, r.i IN (SELECT * FROM s WHERE s.i = r.i) AS sub1, (SELECT * FROM t WHERE r.i = t.i) FROM r;
+</entry>
+<entry key="q3.result">
+ i | sub1     | ?column? | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+----------+----------+-----------------+-----------------+-----------------
+ 1 | t        |          |               1 |                 |               1
+ 2 | t        |        2 |               2 |               2 |               2
+ 3 | f        |          |                 |                 |               3
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE *, r.i IN (SELECT * FROM s WHERE s.i &gt;= r.i) AS sub1 , (SELECT * FROM r a WHERE a.i = r.i) FROM r;
+</entry>
+<entry key="q4.result">
+ i | sub1     | ?column? | prov_public_s_i | prov_public_r_i | prov_public_r_1_i 
+---+----------+----------+-----------------+-----------------+-------------------
+ 1 | t        |        1 |               1 |               1 |                 1
+ 2 | t        |        2 |               2 |               2 |                 2
+ 3 | f        |        3 |               4 |               3 |                 3
+</entry>
+
+</properties>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE sum(i) FROM r HAVING sum(i) > ANY (SELECT * FROM s WHERE s.i IN (SELECT * FROM t));
+</entry>
+<entry key="q1.result">
+ sum | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+   6 |               2 |               2 |               1
+   6 |               2 |               2 |               2
+   6 |               2 |               2 |               3
+   6 |               4 |               4 |               1
+   6 |               4 |               4 |               2
+   6 |               4 |               4 |               3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE sum(i) FROM r GROUP BY r.i HAVING r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t));
+</entry>
+<entry key="q2.result">
+ sum | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+   2 |               2 |               2 |               2
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE sum(i) FROM r GROUP BY r.i HAVING sum(i) IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t WHERE t.i NOT IN (SELECT * FROM bagdiff2)));
+</entry>
+<entry key="q3.result">
+ sum | prov_public_bagdiff2_id | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+-----+-------------------------+-----------------+-----------------+-----------------
+   2 |                       1 |               2 |               2 |               2
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+</properties>

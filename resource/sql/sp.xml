@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE * FROM bagdiff1;
+</entry>
+<entry key="q1.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE one, four FROM muchcols WHERE one &gt; 1;
+</entry>
+<entry key="q2.result">
+ one |   four    | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+-----------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+   2 |   9898989 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+   2 | 212123545 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+   3 |        12 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE (one * 100) AS res, two || four, (one * four) AS times FROM muchcols WHERE NOT (one &gt; 1 AND five LIKE '%hhhh%');
+</entry>
+<entry key="q3.result">
+ res |      ?column?      |     times     | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------------------+---------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+ 100 | first4321212123545 | 4321212123545 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+ 200 | second9898989      |      19797978 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+ 200 | third212123545     |     424247090 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+</entry>
+
+<entry key="q.query">
+SELECT PROVENANCE i = 3 FROM r;
+</entry>
+<entry key="q.result">
+ ?column? | prov_public_r_i 
+----------+-----------------
+ f        |               1
+ f        |               2
+ t        |               3
+</entry>
+
+</properties>

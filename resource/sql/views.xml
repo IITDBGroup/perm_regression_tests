@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE * FROM bagdiffview;
+</entry>
+<entry key="q1.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE id FROM bagdiffview WHERE id &gt; 1;
+</entry>
+<entry key="q2.result">
+ id | prov_public_bagdiff1_id 
+----+------------------------
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE * FROM complexview;
+</entry>
+<entry key="q3.result">
+ one | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_bagdiff3_id 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+-------------------------
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                       1
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       1
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       1
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       1
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                       1
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       1
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       1
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       1
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       2
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       2
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       2
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       3
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE (one * 100) FROM complexview WHERE one != 0;
+</entry>
+<entry key="q4.result">
+ ?column? | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_bagdiff3_id 
+----------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+-------------------------
+      100 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                       1
+      200 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       1
+      200 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       1
+      300 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       1
+      100 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                       1
+      200 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       1
+      200 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       1
+      300 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       1
+      200 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       2
+      200 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       2
+      300 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       2
+      300 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       3
+</entry>
+
+<entry key="q5.query">
+SELECT * FROM provview1;
+</entry>
+<entry key="q5.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+<entry key="q6.query">
+SELECT * FROM provview2;
+</entry>
+<entry key="q6.result">
+              name        | last_name | prov_public_employee_id | prov_public_employee_first__name | prov_public_employee_last__name | prov_public_employee_salary | prov_public_shop_id | prov_public_shop_name | prov_public_shop_location__id | prov_public_shop_manager__id | prov_public_employee_works_at_shop_employee__id | prov_public_employee_works_at_shop_shop__id 
+-------------------+-----------+-------------------------+---------------------------------+--------------------------------+-----------------------------+---------------------+-----------------------+------------------------------+-----------------------------+------------------------------------------------+--------------------------------------------
+ Zurich Altstetten | Gertsen   |                       6 | Gert                            | Gertsen                        |                       12000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                                              6 |                                          2
+</entry>
+
+<entry key="q7.query">
+SELECT id FROM provview1 WHERE prov_public_bagdiff1_id = 1;
+</entry>
+<entry key="q7.result">
+ id 
+----
+  1
+  1
+</entry>
+
+<entry key="q8.query">
+SELECT * FROM subprovview;
+</entry>
+<entry key="q8.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+</entry>
+
+</properties>
+
+
+
+
+
+
+
+
+

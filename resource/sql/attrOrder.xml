@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE i.id, j.id * 10 AS newone, k.id * 100 FROM bagdiff3 i, bagdiff3 j, bagdiff3 k WHERE i.id = 1 AND j.id = 2 AND k.id = 3;
+</entry>
+<entry key="q1.result">
+ id | newone | ?column? | prov_public_bagdiff3_id | prov_public_bagdiff3_1_id | prov_public_bagdiff3_2_id 
+----+--------+----------+-------------------------+---------------------------+---------------------------
+  1 |     20 |      300 |                       1 |                         2 |                         3
+  1 |     20 |      300 |                       1 |                         2 |                         3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE * FROM (SELECT id FROM bagdiff1 UNION SELECT (id * 10) FROM bagdiff1 UNION SELECT (id * 100) FROM bagdiff1) AS sub;
+</entry>
+<entry key="q2.result">
+ id  | prov_public_bagdiff1_id | prov_public_bagdiff1_1_id | prov_public_bagdiff1_2_id 
+-----+-------------------------+---------------------------+---------------------------
+   1 |                       1 |                           |                          
+   1 |                       1 |                           |                          
+  10 |                         |                         1 |                          
+  10 |                         |                         1 |                          
+ 100 |                         |                           |                         1
+ 100 |                         |                           |                         1
+</entry>
+
+
+<entry key="q3.query">
+SELECT PROVENANCE * FROM (SELECT id * 100 FROM bagdiff3 WHERE id = 2) AS i, bagdiff1 AS j;
+</entry>
+<entry key="q3.result">
+ ?column? | id | prov_public_bagdiff3_id | prov_public_bagdiff1_id 
+----------+----+-------------------------+-------------------------
+      200 |  1 |                       2 |                       1
+      200 |  1 |                       2 |                       1
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE * FROM bagdiff1 AS j, (SELECT id * 100 FROM bagdiff3 WHERE id = 2) AS i;
+</entry>
+<entry key="q4.result">
+ id | ?column? | prov_public_bagdiff1_id | prov_public_bagdiff3_id 
+----+----------+-------------------------+-------------------------
+  1 |      200 |                       1 |                       2
+  1 |      200 |                       1 |                       2
+</entry>
+
+</properties>

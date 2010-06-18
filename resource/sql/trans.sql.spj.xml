@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT TRANSSQL * FROM r;
+</entry>
+<entry key="q1.result">
+ i |     trans_prov     
+---+--------------------
+ 1 |  SELECT r.i FROM r
+ 2 |  SELECT r.i FROM r
+ 3 |  SELECT r.i FROM r
+</entry>
+
+<entry key="q2.query">
+SELECT TRANSSQL * FROM r,s WHERE r.i = s.i;
+</entry>
+<entry key="q2.result">
+ i | i |                 trans_prov                 
+---+---+--------------------------------------------
+ 1 | 1 |  SELECT r.i, s.i FROM r, s WHERE r.i = s.i
+ 2 | 2 |  SELECT r.i, s.i FROM r, s WHERE r.i = s.i
+</entry>
+
+<entry key="q3.query">
+SELECT TRANSSQL * FROM r JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q3.result">
+ i | i |                 trans_prov                  
+---+---+---------------------------------------------
+ 1 | 1 |  SELECT r.i, s.i FROM r JOIN s ON r.i = s.i
+ 2 | 2 |  SELECT r.i, s.i FROM r JOIN s ON r.i = s.i
+</entry>
+
+<entry key="q4.query">
+SELECT TRANSSQL * FROM r LEFT JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q4.result">
+ i | i |                         trans_prov                          
+---+---+-------------------------------------------------------------
+ 1 | 1 |  SELECT r.i, s.i FROM r LEFT JOIN s ON r.i = s.i
+ 2 | 2 |  SELECT r.i, s.i FROM r LEFT JOIN s ON r.i = s.i
+ 3 |   |  SELECT r.i, s.i FROM r LEFT JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i
+</entry>
+
+<entry key="q5.query">
+SELECT TRANSSQL * FROM r RIGHT JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q5.result">
+ i | i |                    trans_prov                     
+---+---+---------------------------------------------------
+ 1 | 1 |  SELECT r.i, s.i FROM r RIGHT JOIN s ON r.i = s.i
+ 2 | 2 |  SELECT r.i, s.i FROM r RIGHT JOIN s ON r.i = s.i
+   | 4 |  SELECT r.i, s.i FROM &lt;NOT&gt;r&lt;/NOT&gt; RIGHT JOIN s ON r.i = s.i
+</entry>
+
+<entry key="q6.query">
+SELECT TRANSSQL * FROM r FULL JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q6.result">
+ i | i |                         trans_prov                          
+---+---+-------------------------------------------------------------
+ 1 | 1 |  SELECT r.i, s.i FROM r FULL JOIN s ON r.i = s.i
+ 2 | 2 |  SELECT r.i, s.i FROM r FULL JOIN s ON r.i = s.i
+ 3 |   |  SELECT r.i, s.i FROM r FULL JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i
+   | 4 |  SELECT r.i, s.i FROM &lt;NOT&gt;r&lt;/NOT&gt; ON r.i = s.i
+</entry>
+
+<entry key="q6.query">
+SELECT TRANSSQL * FROM r LEFT JOIN (s LEFT JOIN t ON (s.i = t.i)) ON (r.i = s.i);
+</entry>
+<entry key="q6.result">
+ i | i | i |                                         trans_prov                                          
+---+---+---+---------------------------------------------------------------------------------------------
+ 1 | 1 |   |  SELECT r.i, s.i, t.i FROM r LEFT JOIN (s LEFT JOIN &lt;NOT&gt;t&lt;/NOT&gt; ON s.i = t.i) ON r.i = s.i
+ 2 | 2 | 2 |  SELECT r.i, s.i, t.i FROM r LEFT JOIN (s LEFT JOIN t ON s.i = t.i) ON r.i = s.i
+ 3 |   |   |  SELECT r.i, s.i, t.i FROM r LEFT JOIN (&lt;NOT&gt;s LEFT JOIN t ON s.i = t.i&lt;/NOT&gt;) ON r.i = s.i
+</entry>
+
+<entry key="q7.query">
+SELECT TRANSSQL * FROM (r LEFT JOIN s ON (r.i = s.i)) LEFT JOIN t ON (r.i = t.i);
+</entry>
+<entry key="q7.result">
+ i | i | i |                                        trans_prov                                         
+---+---+---+-------------------------------------------------------------------------------------------
+ 1 | 1 |   |  SELECT r.i, s.i, t.i FROM r LEFT JOIN s ON r.i = s.i LEFT JOIN &lt;NOT&gt;t&lt;/NOT&gt; ON r.i = t.i
+ 2 | 2 | 2 |  SELECT r.i, s.i, t.i FROM r LEFT JOIN s ON r.i = s.i LEFT JOIN t ON r.i = t.i
+ 3 |   |   |  SELECT r.i, s.i, t.i FROM r LEFT JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i LEFT JOIN &lt;NOT&gt;t&lt;/NOT&gt; ON r.i = t.i
+</entry>
+
+<entry key="q8.query">
+SELECT TRANSSQL sub.o * 2 FROM (SELECT r.i AS i, r.i * 2 AS o FROM r) AS sub; 
+</entry>
+<entry key="q8.result">
+ newcolumn1 |                                 trans_prov                                  
+------------+-----------------------------------------------------------------------------
+          4 |  SELECT sub.o * 2 AS newcolumn1 FROM ( SELECT r.i, r.i * 2 AS o FROM r) sub
+          8 |  SELECT sub.o * 2 AS newcolumn1 FROM ( SELECT r.i, r.i * 2 AS o FROM r) sub
+         12 |  SELECT sub.o * 2 AS newcolumn1 FROM ( SELECT r.i, r.i * 2 AS o FROM r) sub
+</entry>
+
+<entry key="q9.query">
+SELECT TRANSSQL * FROM r LEFT JOIN (SELECT s.i AS si, t.i AS ti FROM s JOIN t ON (s.i = t.i)) AS sub ON (r.i = sub.si); 
+</entry>
+<entry key="q9.result">
+ i | si | ti |                                                              trans_prov                                                               
+---+----+----+---------------------------------------------------------------------------------------------------------------------------------------
+ 1 |    |    |  SELECT r.i, sub.si, sub.ti FROM r LEFT JOIN (&lt;NOT&gt; SELECT s.i AS si, t.i AS ti FROM s JOIN t ON s.i = t.i&lt;/NOT&gt;) sub ON r.i = sub.si
+ 2 |  2 |  2 |  SELECT r.i, sub.si, sub.ti FROM r LEFT JOIN ( SELECT s.i AS si, t.i AS ti FROM s JOIN t ON s.i = t.i) sub ON r.i = sub.si
+ 3 |    |    |  SELECT r.i, sub.si, sub.ti FROM r LEFT JOIN (&lt;NOT&gt; SELECT s.i AS si, t.i AS ti FROM s JOIN t ON s.i = t.i&lt;/NOT&gt;) sub ON r.i = sub.si
+</entry>
+
+<entry key="q10.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r) AS r;
+</entry>
+<entry key="q10.result">
+ i |               trans_prov                
+---+-----------------------------------------
+ 1 |  SELECT r.i FROM ( SELECT r.i FROM r) r
+ 2 |  SELECT r.i FROM ( SELECT r.i FROM r) r
+ 3 |  SELECT r.i FROM ( SELECT r.i FROM r) r
+</entry>
+
+<entry key="q11.query">
+SELECT TRANSSQL * FROM r LEFT JOIN (SELECT s.i AS si FROM s) AS sub ON (r.i = sub.si);
+</entry>
+<entry key="q11.result">
+  i | si |                                           trans_prov                                           
+---+----+------------------------------------------------------------------------------------------------
+ 1 |  1 |  SELECT r.i, sub.si FROM r LEFT JOIN ( SELECT s.i AS si FROM s) sub ON r.i = sub.si
+ 2 |  2 |  SELECT r.i, sub.si FROM r LEFT JOIN ( SELECT s.i AS si FROM s) sub ON r.i = sub.si
+ 3 |    |  SELECT r.i, sub.si FROM r LEFT JOIN (&lt;NOT&gt; SELECT s.i AS si FROM s&lt;/NOT&gt;) sub ON r.i = sub.si
+</entry>
+
+<entry key="q12.query">
+SELECT TRANSSQL * FROM target.author;
+</entry>
+<entry key="q12.result">
+           auth_id            | first_name |   last_name    | affiliation |                                                                                                                                                                                                                                                                                                   trans_prov                                                                                                                                                                                                                                                                                                   
+------------------------------+------------+----------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ SK1Boris GlavicUni Zuerich   |            | Boris Glavic   | Uni Zuerich |  SELECT author.auth_id, author.first_name, author.last_name, author.affiliation FROM ( SELECT ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, get_first_name(a.name) AS first_name, get_last_name(a.name) AS last_name, CASEWHEN i.name IS NULL THEN 'SK2'::text $MID$$MID$ a.nameELSE i.nameEND AS affiliation FROM (&lt;M1&gt;&lt;M2&gt; SELECT author.auth_id, author.name, author.inst FROM source.author&lt;/M1&gt;&lt;/M2&gt;) a LEFT JOIN (&lt;M2&gt; SELECT institute.inst_id, institute.name, institute.location FROM source.institute&lt;/M2&gt;) i ON a.inst = i.inst_id) author(auth_id, first_name, last_name, affiliation)
+ SK1Gustavo AlonsoETH Zuerich |            | Gustavo Alonso | ETH Zuerich |  SELECT author.auth_id, author.first_name, author.last_name, author.affiliation FROM ( SELECT ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, get_first_name(a.name) AS first_name, get_last_name(a.name) AS last_name, CASEWHEN i.name IS NULL THEN 'SK2'::text $MID$$MID$ a.nameELSE i.nameEND AS affiliation FROM (&lt;M1&gt;&lt;M2&gt; SELECT author.auth_id, author.name, author.inst FROM source.author&lt;/M1&gt;&lt;/M2&gt;) a LEFT JOIN (&lt;M2&gt; SELECT institute.inst_id, institute.name, institute.location FROM source.institute&lt;/M2&gt;) i ON a.inst = i.inst_id) author(auth_id, first_name, last_name, affiliation)
+</entry>
+
+<entry key="q13.query">
+SELECT TRANSSQL * FROM target.publication;
+</entry>
+<entry key="q13.result">
+                                title                                 |           auth_id            |    date_id     | pages  |        class_id         | issue_id  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          trans_prov                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+----------------------------------------------------------------------+------------------------------+----------------+--------+-------------------------+-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Perm and Perm again and again                                        | SK1Boris GlavicUni Zuerich   | SK32011January | -1-100 | SK4Provenance what ever | SK5       |  SELECT publication.title, publication.auth_id, publication.date_id, publication.pages, publication.class_id, publication.issue_id FROM (&lt;M4&gt; SELECT pub.title, ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, ('SK3'::text $MID$$MID$ COALESCE(pub.year::text, ''::text)) $MID$$MID$ COALESCE(pub.month, ''::text) AS date_id, pub.pages, 'SK4'::text $MID$$MID$ COALESCE(pub.class, ''::text) AS class_id, 'SK5'::text AS issue_id FROM source.author a LEFT JOIN source.institute i ON a.inst = i.inst_id, source.inproceedings pub, source.inprocpublished rel WHERE a.auth_id = rel.auth_id AND pub.inproc_id = rel.inproc_id&lt;/M4&gt; UNION &lt;NOT&gt;&lt;M5&gt; SELECT pub.title, ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, ('SK3'::text $MID$$MID$ COALESCE(pub.year::text, ''::text)) $MID$$MID$ COALESCE(pub.month, ''::text) AS date_id, pub.pages, 'SK4'::text $MID$$MID$ COALESCE(pub.class, ''::text) AS class_id, (('SK6'::text $MID$$MID$ COALESCE(pub.journal, ''::text)) $MID$$MID$ COALESCE(pub.vol::text, ''::text)) $MID$$MID$ COALESCE(pub.num::text, ''::text) AS issue_id FROM source.author a LEFT JOIN source.institute i ON a.inst = i.inst_id, source.article pub, source.articlepublished rel WHERE a.auth_id = rel.auth_id AND pub.article_id = rel.article_id&lt;/M5&gt;&lt;/NOT&gt;) publication(title, auth_id, date_id, pages, class_id, issue_id)
+ Perm and Perm again and again                                        | SK1Gustavo AlonsoETH Zuerich | SK32011January | -1-100 | SK4Provenance what ever | SK5       |  SELECT publication.title, publication.auth_id, publication.date_id, publication.pages, publication.class_id, publication.issue_id FROM (&lt;M4&gt; SELECT pub.title, ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, ('SK3'::text $MID$$MID$ COALESCE(pub.year::text, ''::text)) $MID$$MID$ COALESCE(pub.month, ''::text) AS date_id, pub.pages, 'SK4'::text $MID$$MID$ COALESCE(pub.class, ''::text) AS class_id, 'SK5'::text AS issue_id FROM source.author a LEFT JOIN source.institute i ON a.inst = i.inst_id, source.inproceedings pub, source.inprocpublished rel WHERE a.auth_id = rel.auth_id AND pub.inproc_id = rel.inproc_id&lt;/M4&gt; UNION &lt;NOT&gt;&lt;M5&gt; SELECT pub.title, ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, ('SK3'::text $MID$$MID$ COALESCE(pub.year::text, ''::text)) $MID$$MID$ COALESCE(pub.month, ''::text) AS date_id, pub.pages, 'SK4'::text $MID$$MID$ COALESCE(pub.class, ''::text) AS class_id, (('SK6'::text $MID$$MID$ COALESCE(pub.journal, ''::text)) $MID$$MID$ COALESCE(pub.vol::text, ''::text)) $MID$$MID$ COALESCE(pub.num::text, ''::text) AS issue_id FROM source.author a LEFT JOIN source.institute i ON a.inst = i.inst_id, source.article pub, source.articlepublished rel WHERE a.auth_id = rel.auth_id AND pub.article_id = rel.article_id&lt;/M5&gt;&lt;/NOT&gt;) publication(title, auth_id, date_id, pages, class_id, issue_id)
+ Perm and Perm again and again striking back as a journal publication | SK1Boris GlavicUni Zuerich   | SK32012January | 44-170 | SK4Provenance what ever | SK6TOPs13 |  SELECT publication.title, publication.auth_id, publication.date_id, publication.pages, publication.class_id, publication.issue_id FROM (&lt;NOT&gt;&lt;M4&gt; SELECT pub.title, ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, ('SK3'::text $MID$$MID$ COALESCE(pub.year::text, ''::text)) $MID$$MID$ COALESCE(pub.month, ''::text) AS date_id, pub.pages, 'SK4'::text $MID$$MID$ COALESCE(pub.class, ''::text) AS class_id, 'SK5'::text AS issue_id FROM source.author a LEFT JOIN source.institute i ON a.inst = i.inst_id, source.inproceedings pub, source.inprocpublished rel WHERE a.auth_id = rel.auth_id AND pub.inproc_id = rel.inproc_id&lt;/M4&gt;&lt;/NOT&gt; UNION &lt;M5&gt; SELECT pub.title, ('SK1'::text $MID$$MID$ a.name) $MID$$MID$ COALESCE(i.name, ''::text) AS auth_id, ('SK3'::text $MID$$MID$ COALESCE(pub.year::text, ''::text)) $MID$$MID$ COALESCE(pub.month, ''::text) AS date_id, pub.pages, 'SK4'::text $MID$$MID$ COALESCE(pub.class, ''::text) AS class_id, (('SK6'::text $MID$$MID$ COALESCE(pub.journal, ''::text)) $MID$$MID$ COALESCE(pub.vol::text, ''::text)) $MID$$MID$ COALESCE(pub.num::text, ''::text) AS issue_id FROM source.author a LEFT JOIN source.institute i ON a.inst = i.inst_id, source.article pub, source.articlepublished rel WHERE a.auth_id = rel.auth_id AND pub.article_id = rel.article_id&lt;/M5&gt;) publication(title, auth_id, date_id, pages, class_id, issue_id)
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS dot command generation</comment>
+
+<entry key="q1.query">
+EXPLAIN GRAPH SELECT * FROM r;
+</entry>
+<entry key="q1.result">
+                      QUERY PLAN                       
+-------------------------------------------------------
+ digraph G {
+ subgraph cluster0 {
+ label = "TopQueryNode"
+ node [style=filled];
+ style=filled;
+ color=lightgrey;
+ top0 [label="X",color=green];
+ }
+ 
+ 
+ 
+ {
+ rank=same;
+ rel0 [label="r",shape=box,color=yellow,style=filled];
+ }
+ 
+ top0 -> rel0;
+ 
+ }
+</entry>
+
+<entry key="q2.query">
+EXPLAIN GRAPH SELECT * FROM r,s;
+</entry>
+<entry key="q2.result">
+                         QUERY PLAN                          
+-------------------------------------------------------------
+ digraph G {
+ subgraph cluster0 {
+ label = "TopQueryNode"
+ node [style=filled];
+ style=filled;
+ color=lightgrey;
+ top0 [label="X",color=green];
+ }
+ 
+ 
+ 
+ {
+ rank=same;
+ rel0 [label="r",shape=box,color=yellow,style=filled];
+ rel1 [label="s",shape=box,color=yellow,style=filled];
+ }
+ 
+ top0 -> rel0;
+ top0 -> rel1;
+ 
+ }
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

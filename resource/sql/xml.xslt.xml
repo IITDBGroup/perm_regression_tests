@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT regexp_replace(XSLT.hello_world('&lt;?xml version="1.0" ?&gt;&lt;a/&gt;')::text, E'\n', ' ') AS a;
+</entry>
+<entry key="q1.result">
+         a           
+-----------------------------------
+ &lt;?xml version="1.0"?&gt; hello world
+</entry>
+
+<entry key="q2.query">
+SELECT regexp_replace(XSLT.identity('&lt;?xml version="1.0" ?&gt;&lt;a/&gt;')::text, E'\n', ' ') AS a;
+</entry>
+<entry key="q2.result">
+             a              
+----------------------------
+ &lt;?xml version="1.0"?&gt; &lt;a/&gt;
+
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

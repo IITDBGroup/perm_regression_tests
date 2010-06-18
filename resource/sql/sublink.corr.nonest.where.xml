@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE * FROM bagdiff3 a WHERE a.id &gt; ALL (SELECT id FROM bagdiff3 WHERE id != a.id);
+</entry>
+<entry key="q1.result">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff3_1_id 
+----+-------------------------+---------------------------
+  3 |                       1 |                         3
+  3 |                       1 |                         3
+  3 |                       2 |                         3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT s.i FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q2.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT r.i FROM s);
+</entry>
+<entry key="q3.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 1 |               2 |               1
+ 1 |               4 |               1
+ 2 |               1 |               2
+ 2 |               2 |               2
+ 2 |               4 |               2
+ 3 |               1 |               3
+ 3 |               2 |               3
+ 3 |               4 |               3
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE * FROM r WHERE r.i &lt; ALL (SELECT * FROM s WHERE s.i &gt; r.i);
+</entry>
+<entry key="q4.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               2 |               1
+ 1 |               4 |               1
+ 2 |               4 |               2
+ 3 |               4 |               3
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE * FROM r WHERE r.i &lt;= ALL (SELECT * FROM s WHERE s.i &gt;= r.i) AND r.i IN (SELECT * FROM t);
+</entry>
+<entry key="q5.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+ 2 |               4 |               2 |               2
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE * FROM r WHERE r.i &lt; (SELECT sum(i) FROM s WHERE s.i &gt; r.i);
+</entry>
+<entry key="q6.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               2 |               1
+ 1 |               4 |               1
+ 2 |               4 |               2
+ 3 |               4 |               3
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION SELECT * FROM t);
+</entry>
+<entry key="q7.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 1 |               1 |                 |               1
+ 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q8.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION SELECT * FROM t WHERE t.i = r.i UNION SELECT * FROM bagdiff3 WHERE id = r.i);
+</entry>
+<entry key="q8.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff3_id | prov_public_r_i 
+---+-----------------+-----------------+-------------------------+-----------------
+ 1 |               1 |                 |                       1 |               1
+ 1 |               1 |                 |                       1 |               1
+ 2 |               2 |               2 |                       2 |               2
+ 3 |                 |                 |                       3 |               3
+</entry>
+
+<entry key="q9.query">
+SELECT PROVENANCE * FROM r WHERE r.i = (SELECT sum(ssub.i) FROM (SELECT * FROM s WHERE s.i = r.i) ssub, (SELECT * FROM t WHERE r.i = t.i) tsub WHERE ssub.i = tsub.i);
+</entry>
+<entry key="q9.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q10.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION (SELECT * FROM t WHERE t.i = r.i INTERSECT SELECT * FROM bagdiff3 WHERE id = r.i));
+</entry>
+<entry key="q10.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff3_id | prov_public_r_i 
+---+-----------------+-----------------+-------------------------+-----------------
+ 1 |               1 |                 |                         |               1
+ 2 |               2 |               2 |                       2 |               2
+</entry>
+
+<entry key="q11.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN ((SELECT * FROM s WHERE s.i = r.i UNION SELECT * FROM t WHERE t.i = r.i) INTERSECT SELECT * FROM bagdiff3 WHERE id = r.i);
+</entry>
+<entry key="q11.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff3_id | prov_public_r_i 
+---+-----------------+-----------------+-------------------------+-----------------
+ 1 |               1 |                 |                       1 |               1
+ 1 |               1 |                 |                       1 |               1
+ 2 |               2 |               2 |                       2 |               2
+</entry>
+
+<entry key="q12.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT sum(s.i) FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q12.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+</entry>
+
+<entry key="q13.query">
+SELECT PROVENANCE * FROM r, t WHERE r.i IN (SELECT sum(s.i) FROM s WHERE s.i = t.i) AND t.i &gt; 1;
+</entry>
+<entry key="q13.result">
+ i | i | prov_public_s_i | prov_public_r_i | prov_public_t_i 
+---+---+-----------------+-----------------+-----------------
+ 2 | 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q14.query">
+SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT sum(s.i) FROM s WHERE s.i != r.i);
+</entry>
+<entry key="q14.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+</entry>
+
+<entry key="q15.query">
+SELECT PROVENANCE * FROM r, t WHERE r.i IN (SELECT sum(s.i) FROM s WHERE s.i = t.i) OR t.i &gt; 1 AND r.i = t.i;
+</entry>
+<entry key="q15.result">
+ i | i | prov_public_s_i | prov_public_r_i | prov_public_t_i 
+---+---+-----------------+-----------------+-----------------
+ 2 | 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q16.query">
+SELECT PROVENANCE * FROM r WHERE EXISTS (SELECT sum(s.i) FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q16.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+ 3 |                 |               3
+</entry>
+
+<entry key="q17.query">
+SELECT PROVENANCE * FROM r WHERE EXISTS (SELECT s.i FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q17.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+</entry>
+
+<entry key="q18.query">
+ERROR postgres SELECT PROVENANCE * FROM r WHERE EXISTS (SELECT sum(r.i) FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q18.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+</entry>
+
+<entry key="q19.query">
+SELECT PROVENANCE * FROM r WHERE EXISTS (SELECT * FROM s WHERE s.i = r.i) AND r.i IN (SELECT sum(t.i) FROM t WHERE t.i = r.i);
+</entry>
+<entry key="q19.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q20.query">
+SELECT PROVENANCE * FROM r WHERE NOT EXISTS (SELECT * FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q20.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 3 |                 |               3
+</entry>
+
+<entry key="q21.query">
+SELECT PROVENANCE sum(r.i) FROM r WHERE EXISTS(SELECT * FROM s WHERE s.i &lt;&gt; r.i);
+</entry>
+<entry key="q21.result">
+ sum | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------
+   6 |               2 |               1
+   6 |               4 |               1
+   6 |               1 |               2
+   6 |               4 |               2
+   6 |               1 |               3
+   6 |               2 |               3
+   6 |               4 |               3
+</entry>
+
+<entry key="q22.query">
+SELECT PROVENANCE sum(r.i) FROM r WHERE NOT EXISTS (SELECT * FROM s WHERE s.i &lt;&gt; r.i AND s.i = 2) AND EXISTS (SELECT * FROM t WHERE t.i &gt; r.i);
+</entry>
+<entry key="q22.result">
+ sum | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+   2 |                 |               6 |               2
+   2 |                 |               4 |               2
+</entry>
+
+<entry key="q23.query">
+SELECT PROVENANCE sum(x.d) FROM v x WHERE EXISTS (SELECT * FROM v WHERE x.d = v.d AND x.c &lt;&gt; v.c);
+</entry>
+<entry key="q23.result">
+ sum | prov_public_v_c | prov_public_v_d | prov_public_v_1_c | prov_public_v_1_d 
+-----+-----------------+-----------------+-------------------+-------------------
+   3 |               4 |               1 |                 2 |                 1
+   3 |               4 |               1 |                 2 |                 1
+   3 |               4 |               1 |                 2 |                 1
+   3 |               5 |               1 |                 2 |                 1
+   3 |               5 |               1 |                 2 |                 1
+   3 |               5 |               1 |                 2 |                 1
+   3 |               2 |               1 |                 4 |                 1
+   3 |               2 |               1 |                 4 |                 1
+   3 |               2 |               1 |                 4 |                 1
+   3 |               5 |               1 |                 4 |                 1
+   3 |               5 |               1 |                 4 |                 1
+   3 |               5 |               1 |                 4 |                 1
+   3 |               2 |               1 |                 5 |                 1
+   3 |               2 |               1 |                 5 |                 1
+   3 |               2 |               1 |                 5 |                 1
+   3 |               4 |               1 |                 5 |                 1
+   3 |               4 |               1 |                 5 |                 1
+   3 |               4 |               1 |                 5 |                 1
+</entry>
+<entry key="q23.result1">
+ sum | prov_public_v_c | prov_public_v_d | prov_public_v_1_c | prov_public_v_1_d 
+-----+-----------------+-----------------+-------------------+-------------------
+   3 |               4 |               1 |                 2 |                 1
+   3 |               5 |               1 |                 2 |                 1
+   3 |               2 |               1 |                 4 |                 1
+   3 |               5 |               1 |                 4 |                 1
+   3 |               2 |               1 |                 5 |                 1
+   3 |               4 |               1 |                 5 |                 1
+</entry>
+
+<entry key="q24.query">
+SELECT PROVENANCE * FROM v x WHERE EXISTS (SELECT * FROM v WHERE x.d = v.d AND x.c &lt;&gt; v.c);
+</entry>
+<entry key="q24.result">
+ c | d | prov_public_v_c | prov_public_v_d | prov_public_v_1_c | prov_public_v_1_d 
+---+---+-----------------+-----------------+-------------------+-------------------
+ 2 | 1 |               4 |               1 |                 2 |                 1
+ 2 | 1 |               5 |               1 |                 2 |                 1
+ 4 | 1 |               2 |               1 |                 4 |                 1
+ 4 | 1 |               5 |               1 |                 4 |                 1
+ 5 | 1 |               2 |               1 |                 5 |                 1
+ 5 | 1 |               4 |               1 |                 5 |                 1
+</entry>
+<entry key="q24.result1">
+ c | d | prov_public_v_c | prov_public_v_d | prov_public_v_1_c | prov_public_v_1_d 
+---+---+-----------------+-----------------+-------------------+-------------------
+ 2 | 1 |               4 |               1 |                 2 |                 1
+ 2 | 1 |               4 |               1 |                 2 |                 1
+ 2 | 1 |               4 |               1 |                 2 |                 1
+ 2 | 1 |               5 |               1 |                 2 |                 1
+ 2 | 1 |               5 |               1 |                 2 |                 1
+ 2 | 1 |               5 |               1 |                 2 |                 1
+ 4 | 1 |               2 |               1 |                 4 |                 1
+ 4 | 1 |               2 |               1 |                 4 |                 1
+ 4 | 1 |               2 |               1 |                 4 |                 1
+ 4 | 1 |               5 |               1 |                 4 |                 1
+ 4 | 1 |               5 |               1 |                 4 |                 1
+ 4 | 1 |               5 |               1 |                 4 |                 1
+ 5 | 1 |               2 |               1 |                 5 |                 1
+ 5 | 1 |               2 |               1 |                 5 |                 1
+ 5 | 1 |               2 |               1 |                 5 |                 1
+ 5 | 1 |               4 |               1 |                 5 |                 1
+ 5 | 1 |               4 |               1 |                 5 |                 1
+ 5 | 1 |               4 |               1 |                 5 |                 1
+</entry>
+
+<entry key="q25.query">
+SELECT PROVENANCE * FROM r WHERE NOT EXISTS (SELECT * FROM s WHERE s.i &lt;&gt; r.i AND s.i = 2) AND EXISTS (SELECT * FROM t WHERE t.i &gt; r.i);
+</entry>
+<entry key="q25.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |                 |               4 |               2
+ 2 |                 |               6 |               2
+</entry>
+
+<entry key="q26.query">
+SELECT PROVENANCE * FROM r, v WHERE r.i = v.c AND NOT EXISTS (SELECT * FROM s WHERE s.i &lt;&gt; r.i AND s.i = 2) AND EXISTS (SELECT * FROM t WHERE t.i &gt; r.i);
+</entry>
+<entry key="q26.result">
+ i | c | d | prov_public_s_i | prov_public_t_i | prov_public_r_i | prov_public_v_c | prov_public_v_d 
+---+---+---+-----------------+-----------------+-----------------+-----------------+-----------------
+ 2 | 2 | 1 |                 |               4 |               2 |               2 |               1
+ 2 | 2 | 1 |                 |               6 |               2 |               2 |               1
+</entry>
+
+<entry key="q27.query">
+SELECT PROVENANCE * FROM r, s WHERE r.i = s.i AND EXISTS (SELECT * FROM t WHERE t.i = r.i);
+</entry>
+<entry key="q27.result">
+ i | i | prov_public_t_i | prov_public_r_i | prov_public_s_i 
+---+---+-----------------+-----------------+-----------------
+ 2 | 2 |               2 |               2 |               2
+</entry>
+
+<entry key="q28.query">
+SELECT PROVENANCE * FROM r WHERE r.i = (SELECT sum(ssub.i) FROM (SELECT * FROM s WHERE s.i = r.i) ssub);
+</entry>
+<entry key="q28.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+</entry>
+
+<entry key="q29.query">
+SELECT PROVENANCE * FROM tr WHERE a = ANY (SELECT count(*) FROM ts WHERE c = a);
+</entry>
+<entry key="q29.result">
+ a | b | prov_public_ts_c | prov_public_tr_a | prov_public_tr_b 
+---+---+------------------+------------------+------------------
+ 0 | 1 |                  |                0 |                1
+ 1 | 1 |                1 |                1 |                1
+</entry>
+
+<entry key="q30.query">
+SELECT PROVENANCE * FROM tr WHERE a = ANY (SELECT count(*) FROM ts WHERE c = a AND c = 1000);
+</entry>
+<entry key="q30.result">
+ a | b | prov_public_ts_c | prov_public_tr_a | prov_public_tr_b 
+---+---+------------------+------------------+------------------
+ 0 | 1 |                  |                0 |                1
+</entry>
+
+<entry key="q31.query">
+SELECT PROVENANCE * FROM tr WHERE true =  ANY (SELECT sum(c) IS NULL  FROM ts WHERE c = a AND c = 1000);
+</entry>
+<entry key="q31.result">
+ a | b | prov_public_ts_c | prov_public_tr_a | prov_public_tr_b 
+---+---+------------------+------------------+------------------
+ 1 | 1 |                  |                1 |                1
+ 2 | 1 |                  |                2 |                1
+ 3 | 2 |                  |                3 |                2
+ 2 | 2 |                  |                2 |                2
+ 0 | 1 |                  |                0 |                1
+</entry>
+
+<entry key="q32.query">
+SELECT PROVENANCE * FROM ts WHERE EXISTS (SELECT * FROM (SELECT sum(a) FROM tr WHERE c = a) AS subi);
+</entry>
+<entry key="q32.result">
+ c | prov_public_tr_a | prov_public_tr_b | prov_public_ts_c 
+---+------------------+------------------+------------------
+ 1 |                1 |                1 |                1
+ 2 |                2 |                1 |                2
+ 2 |                2 |                2 |                2
+ 4 |                  |                  |                4
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+</properties>

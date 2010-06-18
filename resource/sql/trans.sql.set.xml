@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r INTERSECT SELECT * FROM s) AS sub;
+</entry>
+<entry key="q1.result">
+ i |                                trans_prov                                
+---+--------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r INTERSECT  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r INTERSECT  SELECT s.i FROM s) sub
+</entry>
+
+<entry key="q2.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r UNION SELECT * FROM s) AS sub;
+</entry>
+<entry key="q2.result">
+ i |                                   trans_prov                                    
+---+---------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION  SELECT s.i FROM s) sub
+ 3 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) sub
+</entry>
+<entry key="q2.result1">
+ i |                                   trans_prov                                    
+---+---------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) sub
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 3 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) sub
+</entry>
+
+<entry key="q3.query">
+ERROR SELECT TRANSSQL * FROM (SELECT * FROM r EXCEPT SELECT * FROM s) AS sub;
+</entry>
+<entry key="q3.result">
+i |                                  trans_prov                                  
+---+------------------------------------------------------------------------------
+</entry>
+
+<entry key="q4.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r INTERSECT ALL SELECT * FROM s) AS sub;
+</entry>
+<entry key="q4.result">
+ i |                                  trans_prov                                  
+---+------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r INTERSECT ALL  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r INTERSECT ALL  SELECT s.i FROM s) sub
+</entry>
+
+<entry key="q5.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r UNION ALL SELECT * FROM s) AS sub;
+</entry>
+<entry key="q5.result">
+ i |                                     trans_prov                                      
+---+-------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL  SELECT s.i FROM s) sub
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL  SELECT s.i FROM s) sub
+ 3 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION ALL  SELECT s.i FROM s) sub
+</entry>
+<entry key="q5.result1">
+ i |                                     trans_prov                                      
+---+-------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 3 |  SELECT sub.i FROM ( SELECT r.i FROM r UNION ALL &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
+ 1 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION ALL  SELECT s.i FROM s) sub
+ 2 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION ALL  SELECT s.i FROM s) sub
+ 4 |  SELECT sub.i FROM (&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION ALL  SELECT s.i FROM s) sub
+</entry>
+
+<entry key="q6.query">
+ERROR SELECT TRANSSQL * FROM (SELECT * FROM r EXCEPT ALL SELECT * FROM s) AS sub;
+</entry>
+<entry key="q6.result">
+ i |                                  trans_prov                                   
+---+------------------------------------------------------------------------------
+</entry>
+
+<entry key="q7.query">
+SELECT TRANSSQL * FROM (SELECT * FROM bagdiff3 INTERSECT SELECT * FROM bagdiff1) AS sub;
+</entry>
+<entry key="q7.result">
+ id |                                               trans_prov                                                
+----+---------------------------------------------------------------------------------------------------------
+  1 |  SELECT sub.id FROM ( SELECT bagdiff3.id FROM bagdiff3 INTERSECT  SELECT bagdiff1.id FROM bagdiff1) sub
+</entry>
+
+<entry key="q8.query">
+SELECT TRANSSQL * FROM (SELECT * FROM bagdiff3 INTERSECT ALL SELECT * FROM bagdiff1) AS sub;
+</entry>
+<entry key="q8.result">
+ id |                                                 trans_prov                                                  
+----+-------------------------------------------------------------------------------------------------------------
+  1 |  SELECT sub.id FROM ( SELECT bagdiff3.id FROM bagdiff3 INTERSECT ALL  SELECT bagdiff1.id FROM bagdiff1) sub
+  1 |  SELECT sub.id FROM ( SELECT bagdiff3.id FROM bagdiff3 INTERSECT ALL  SELECT bagdiff1.id FROM bagdiff1) sub
+</entry>
+
+<entry key="q9.query">
+SELECT TRANSSQL * FROM (SELECT * FROM bagdiff1 INTERSECT SELECT * FROM bagdiff2 INTERSECT SELECT * FROM bagdiff3) AS sub;
+</entry>
+<entry key="q9.result">
+ id |                                                                      trans_prov                                                                       
+----+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  1 |  SELECT sub.id FROM (( SELECT bagdiff1.id FROM bagdiff1 INTERSECT  SELECT bagdiff2.id FROM bagdiff2) INTERSECT  SELECT bagdiff3.id FROM bagdiff3) sub
+</entry>
+
+<entry key="q10.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r UNION SELECT * FROM s UNION SELECT * FROM t) AS sub;
+</entry>
+<entry key="q10.result">
+ i |                                                      trans_prov                                                       
+---+-----------------------------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t) sub
+ 3 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t) sub
+ 6 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+</entry>
+<entry key="q10.result1">
+ i |                                                      trans_prov                                                       
+---+-----------------------------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 1 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+ 2 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 3 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 6 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+</entry>
+
+<entry key="q11.query">
+SELECT TRANSSQL * FROM ((SELECT * FROM r INTERSECT SELECT * FROM s) UNION SELECT * FROM t) AS sub; 
+</entry>
+<entry key="q11.result">
+ i |                                                   trans_prov                                                   
+---+----------------------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (( SELECT r.i FROM r INTERSECT  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM (( SELECT r.i FROM r INTERSECT  SELECT s.i FROM s) UNION  SELECT t.i FROM t) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r INTERSECT  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+ 6 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r INTERSECT  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+</entry>
+<entry key="q11.result1">
+ i |                                                   trans_prov                                                   
+---+----------------------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (( SELECT r.i FROM r INTERSECT  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r INTERSECT  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+ 2 |  SELECT sub.i FROM (( SELECT r.i FROM r INTERSECT  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r INTERSECT  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+ 6 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r INTERSECT  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) sub
+</entry>
+
+
+<entry key="q12.query">
+SELECT TRANSSQL * FROM ((SELECT * FROM r UNION SELECT * FROM s) INTERSECT SELECT * FROM t) AS sub;
+</entry>
+<entry key="q12.result">
+ i |                                                   trans_prov                                                   
+---+----------------------------------------------------------------------------------------------------------------
+ 2 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION  SELECT s.i FROM s) INTERSECT  SELECT t.i FROM t) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) INTERSECT  SELECT t.i FROM t) sub
+</entry>
+<entry key="q12.result1">
+ i |                                                   trans_prov                                                   
+---+----------------------------------------------------------------------------------------------------------------
+ 2 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) INTERSECT  SELECT t.i FROM t) sub
+ 2 |  SELECT sub.i FROM (( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) INTERSECT  SELECT t.i FROM t) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) INTERSECT  SELECT t.i FROM t) sub
+</entry>
+
+<entry key="q13.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r WHERE r.i != 2 INTERSECT SELECT * FROM t) AS sub;
+</entry>
+<entry key="q13.result">
+ i | trans_prov 
+---+------------
+</entry>
+
+<entry key="q14.query">
+SELECT TRANSSQL * FROM (SELECT * FROM r UNION SELECT * FROM s UNION SELECT * FROM t UNION SELECT c FROM v) AS sub;
+</entry>
+<entry key="q14.result">
+ i |                                                                         trans_prov                                                                          
+---+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM ((( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM ((( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t) UNION  SELECT v.c FROM v) sub
+ 3 |  SELECT sub.i FROM ((( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t) UNION  SELECT v.c FROM v) sub
+ 5 |  SELECT sub.i FROM ((&lt;NOT&gt;( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t&lt;/NOT&gt;) UNION  SELECT v.c FROM v) sub
+ 6 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+</entry>
+<entry key="q14.result1">
+ i |                                                                         trans_prov                                                                          
+---+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 1 |  SELECT sub.i FROM ((( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM ((&lt;NOT&gt;( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t&lt;/NOT&gt;) UNION  SELECT v.c FROM v) sub
+ 2 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 2 |  SELECT sub.i FROM ((( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 3 |  SELECT sub.i FROM ((( SELECT r.i FROM r UNION &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM ((&lt;NOT&gt;( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t&lt;/NOT&gt;) UNION  SELECT v.c FROM v) sub
+ 4 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 4 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r&lt;/NOT&gt; UNION  SELECT s.i FROM s) UNION &lt;NOT&gt; SELECT t.i FROM t&lt;/NOT&gt;) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+ 5 |  SELECT sub.i FROM ((&lt;NOT&gt;( SELECT r.i FROM r UNION  SELECT s.i FROM s) UNION  SELECT t.i FROM t&lt;/NOT&gt;) UNION  SELECT v.c FROM v) sub
+ 6 |  SELECT sub.i FROM (((&lt;NOT&gt; SELECT r.i FROM r UNION  SELECT s.i FROM s&lt;/NOT&gt;) UNION  SELECT t.i FROM t) UNION &lt;NOT&gt; SELECT v.c FROM v&lt;/NOT&gt;) sub
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+</properties>

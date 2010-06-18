@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS dot command generation</comment>
+
+<entry key="q1.query">
+EXPLAIN GRAPH SELECT * FROM r;
+</entry>
+<entry key="q1.result">
+                      QUERY PLAN                       
+-------------------------------------------------------
+ digraph G {
+ node [fontsize=24];
+ EMPTYSTRING
+ subgraph cluster0 {
+ label = "TopQueryNode"
+ node [style=filled];
+ style=filled;
+ color=lightgrey;
+ top0 [label="X",color=green];
+ }
+ EMPTYSTRING
+ EMPTYSTRING
+ EMPTYSTRING
+ {
+ rank=same;
+ oderdir=LR;
+ rel0 [label="r",shape=box,color=yellow,style=filled];
+ EMPTYSTRING
+ EMPTYSTRING
+ edge [style=invis,constraint=true];
+ rel0;
+ }
+ EMPTYSTRING
+ top0 -> rel0;
+ EMPTYSTRING
+ }
+ EMPTYSTRING
+ Seq Scan on r  (cost=0.00..34.00 rows=2400 width=4)
+</entry>
+
+<entry key="q2.query">
+EXPLAIN GRAPH SELECT * FROM r,s;
+</entry>
+<entry key="q2.result">
+                           QUERY PLAN                            
+-----------------------------------------------------------------
+ digraph G {
+ node [fontsize=24];
+ EMPTYSTRING
+ subgraph cluster0 {
+ label = "TopQueryNode"
+ node [style=filled];
+ style=filled;
+ color=lightgrey;
+ top0 [label="X",color=green];
+ }
+ EMPTYSTRING
+ EMPTYSTRING
+ EMPTYSTRING
+ {
+ rank=same;
+ oderdir=LR;
+ rel0 [label="r",shape=box,color=yellow,style=filled];
+ rel1 [label="s",shape=box,color=yellow,style=filled];
+ EMPTYSTRING
+ EMPTYSTRING
+ edge [style=invis,constraint=true];
+ rel0->rel1;
+ }
+ EMPTYSTRING
+ top0 -> rel0;
+ top0 -> rel1;
+ EMPTYSTRING
+ }
+ EMPTYSTRING
+ Nested Loop  (cost=36.40..115270.40 rows=5760000 width=8)
+   ->  Seq Scan on r  (cost=0.00..34.00 rows=2400 width=4)
+   ->  Materialize  (cost=36.40..60.40 rows=2400 width=4)
+         ->  Seq Scan on s  (cost=0.00..34.00 rows=2400 width=4)
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+EXPLAIN GRAPH 
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

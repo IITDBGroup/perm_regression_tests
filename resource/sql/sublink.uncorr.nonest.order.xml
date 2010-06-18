@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+ERROR SELECT PROVENANCE * FROM r ORDER BY r.i IN (SELECT * FROM s.i);
+</entry>
+<entry key="q1.result">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+</properties>

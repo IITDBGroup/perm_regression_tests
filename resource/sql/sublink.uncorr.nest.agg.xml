@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE sum(i + (SELECT sum(s.i) FROM s WHERE s.i IN (SELECT * FROM t))) FROM r;
+</entry>
+<entry key="q1.result">
+ sum | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+  24 |               2 |               2 |               1
+  24 |               2 |               2 |               2
+  24 |               2 |               2 |               3
+  24 |               4 |               4 |               1
+  24 |               4 |               4 |               2
+  24 |               4 |               4 |               3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE sum(i) * (SELECT * FROM s WHERE s.i = 2 AND s.i IN (SELECT * FROM t)) FROM r;
+</entry>
+<entry key="q2.result">
+ ?column? | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+----------+-----------------+-----------------+-----------------
+       12 |               2 |               2 |               1
+       12 |               2 |               2 |               2
+       12 |               2 |               2 |               3
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE sum(i) FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t));
+</entry>
+<entry key="q3.result">
+ sum | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+   2 |               2 |               2 |               2
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE sum(id + (SELECT * FROM s WHERE s.i IN (SELECT * FROM bagdiff2))) * (SELECT * FROM t WHERE t.i IN (SELECT id + 1 FROM bagdiff2)) FROM bagdiff2;
+</entry>
+<entry key="q4.result">
+ ?column? | prov_public_bagdiff2_id | prov_public_t_i | prov_public_bagdiff2_1_id | prov_public_s_i | prov_public_bagdiff2_2_id 
+----------+-------------------------+-----------------+---------------------------+-----------------+---------------------------
+        4 |                       1 |               2 |                         1 |               1 |                         1
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

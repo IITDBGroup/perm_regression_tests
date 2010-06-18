@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE sum(i) AS si FROM r GROUP BY r.i HAVING r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t WHERE t.i = r.i));
+</entry>
+<entry key="q1.result">
+ si | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+----+-----------------+-----------------+-----------------
+  2 |               2 |               2 |               2
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE sum(i) AS si FROM r HAVING EXISTS (SELECT * FROM t WHERE t.i = sum(r.i) AND t.i NOT IN (SELECT * FROM s));
+</entry>
+<entry key="q2.result">
+ si | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+----+-----------------+-----------------+-----------------
+  6 |               1 |               6 |               1
+  6 |               2 |               6 |               1
+  6 |               4 |               6 |               1
+  6 |               1 |               6 |               2
+  6 |               2 |               6 |               2
+  6 |               4 |               6 |               2
+  6 |               1 |               6 |               3
+  6 |               2 |               6 |               3
+  6 |               4 |               6 |               3
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE sum(r.i) FROM r HAVING sum(r.i) IN (SELECT * FROM t WHERE t.i = sum(r.i) AND EXISTS (SELECT * FROM s));
+</entry>
+<entry key="q3.result">
+ sum | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+   6 |               1 |               6 |               1
+   6 |               2 |               6 |               1
+   6 |               4 |               6 |               1
+   6 |               1 |               6 |               2
+   6 |               2 |               6 |               2
+   6 |               4 |               6 |               2
+   6 |               1 |               6 |               3
+   6 |               2 |               6 |               3
+   6 |               4 |               6 |               3
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE sum(r.i) FROM r GROUP BY r.i HAVING EXISTS (SELECT * FROM s WHERE s.i IN (SELECT * FROM t WHERE t.i = r.i));
+</entry>
+<entry key="q4.result">
+ sum | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------+-----------------
+   2 |               2 |               2 |               2
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

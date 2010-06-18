@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT * FROM (SELECT TRANSSQL * FROM r) AS sub;
+</entry>
+<entry key="q1.result">
+ i |     trans_prov     
+---+--------------------
+ 1 |  SELECT r.i FROM r
+ 2 |  SELECT r.i FROM r
+ 3 |  SELECT r.i FROM r
+</entry>
+
+<entry key="q2.query">
+SELECT trans_prov FROM (SELECT TRANSSQL * FROM r LEFT JOIN s ON (r.i = s.i)) AS sub WHERE sub.trans_prov LIKE '%&lt;NOT%';
+</entry>
+<entry key="q2.result">
+                         trans_prov                          
+-------------------------------------------------------------
+  SELECT r.i, s.i FROM r LEFT JOIN &lt;NOT&gt;s&lt;/NOT&gt; ON r.i = s.i
+</entry>
+
+<entry key="q3.query">
+SELECT trans_prov FROM (SELECT TRANSSQL r.i AS ri, s.i AS si FROM r LEFT JOIN s ON (r.i = s.i)) AS sub WHERE sub.si IS NOT NULL;
+</entry>
+<entry key="q3.result">
+                          trans_prov                          
+--------------------------------------------------------------
+  SELECT r.i AS ri, s.i AS si FROM r LEFT JOIN s ON r.i = s.i
+  SELECT r.i AS ri, s.i AS si FROM r LEFT JOIN s ON r.i = s.i
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+</properties>

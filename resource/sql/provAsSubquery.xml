@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT foo.id, foo.prov_public_bagdiff1_id FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo;
+</entry>
+<entry key="q1.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+<entry key="q2.query">
+SELECT id, prov_public_bagdiff1_id FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo;
+</entry>
+<entry key="q2.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+<entry key="q3.query">
+SELECT id, one, prov_public_bagdiff1_id, prov_public_muchcols_one, prov_public_muchcols_two 
+	FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo, (SELECT PROVENANCE * FROM muchcols) AS boo;
+</entry>
+<entry key="q3.result">
+ id | one | prov_public_bagdiff1_id | prov_public_muchcols_one | prov_public_muchcols_two 
+----+-----+-------------------------+--------------------------+--------------------------
+  1 |   1 |                       1 |                        1 | first
+  1 |   2 |                       1 |                        2 | second
+  1 |   2 |                       1 |                        2 | third
+  1 |   3 |                       1 |                        3 | fourth
+  1 |   1 |                       1 |                        1 | first
+  1 |   2 |                       1 |                        2 | second
+  1 |   2 |                       1 |                        2 | third
+  1 |   3 |                       1 |                        3 | fourth
+</entry>
+
+<entry key="q4.query">
+SELECT * FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo;
+</entry>
+<entry key="q4.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+
+<entry key="q5.query">
+SELECT foo.* FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo;
+</entry>
+<entry key="q5.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+<entry key="q6.query">
+SELECT foo.prov_public_bagdiff1_id FROM (SELECT boo.id, boo.prov_public_bagdiff1_id FROM (SELECT PROVENANCE * FROM bagdiff1) AS boo) AS foo;
+</entry>
+<entry key="q6.result">
+ prov_public_bagdiff1_id 
+-------------------------
+                       1
+                       1
+</entry>
+
+
+<entry key="q7.query">
+SELECT sum(prov_public_bagdiff1_id) FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo;	
+</entry>
+<entry key="q7.result">
+ sum 
+-----
+   2
+</entry>
+
+<entry key="q8.query">
+SELECT foo.prov_public_bagdiff1_id * 10 FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo;
+</entry>
+<entry key="q8.result">
+ ?column? 
+----------
+       10
+       10
+</entry>
+
+
+<entry key="q9.query">
+SELECT id, prov_public_bagdiff1_id FROM (SELECT PROVENANCE * FROM bagdiff1) AS foo WHERE foo.prov_public_bagdiff1_id = 3; 
+</entry>
+<entry key="q9.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+</entry>
+
+
+<entry key="q10.query">
+SELECT PROVENANCE * FROM bagdiff1 UNION SELECT PROVENANCE * FROM bagdiff2;
+</entry>
+<entry key="q10.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+</entry>
+
+
+<entry key="q11.query">
+SELECT * FROM (SELECT PROVENANCE * FROM complexview) AS foo;
+</entry>
+<entry key="q11.result">
+ one | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_bagdiff3_id 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+-------------------------
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                       1
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       1
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       1
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       1
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                       1
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       1
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       1
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       1
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                       2
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                       2
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       2
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                       3
+</entry>
+
+
+<entry key="q12.query">
+SELECT PROVENANCE * FROM complexview BASERELATION;
+</entry>
+<entry key="q12.result">
+ one | prov_complexview_one 
+-----+----------------------
+   1 |                    1
+   2 |                    2
+   2 |                    2
+   3 |                    3
+   1 |                    1
+   2 |                    2
+   2 |                    2
+   3 |                    3
+   2 |                    2
+   2 |                    2
+   3 |                    3
+   3 |                    3
+</entry>
+
+
+<entry key="q13.query">
+SELECT PROVENANCE * FROM (SELECT (id * 100) AS idcen FROM bagdiff1) BASERELATION AS test;
+</entry>
+<entry key="q13.result">
+ idcen | prov_test_idcen 
+-------+-----------------
+   100 |             100
+   100 |             100
+</entry>
+
+
+<entry key="q14.query">
+SELECT PROVENANCE sum(id) FROM provview1 PROVENANCE (prov_public_bagdiff1_id); 
+</entry>
+<entry key="q14.result">
+ sum | prov_public_bagdiff1_id 
+-----+-------------------------
+   2 |                       1
+   2 |                       1
+</entry>
+
+
+<entry key="q15.query">
+SELECT PROVENANCE * FROM (SELECT PROVENANCE * FROM bagdiff1) PROVENANCE (prov_public_bagdiff1_id) AS bagprov;
+</entry>
+<entry key="q15.result">
+ id | prov_public_bagdiff1_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+</entry>
+
+
+<entry key="q16.query">
+SELECT PROVENANCE * FROM (SELECT PROVENANCE sum(id) FROM bagdiff1) PROVENANCE (prov_public_bagdiff1_id) AS bagprov;
+</entry>
+<entry key="q16.result">
+ sum | prov_public_bagdiff1_id 
+-----+-------------------------
+   2 |                       1
+   2 |                       1
+</entry>
+
+
+<entry key="q17.query">
+SELECT PROVENANCE name || last_name AS newname
+	FROM provview2 PROVENANCE (prov_public_employee_id , prov_public_employee_first__name , prov_public_employee_last__name , prov_public_employee_salary ,
+				prov_public_shop_id , prov_public_shop_name, prov_public_shop_location__id , prov_public_shop_manager__id ,
+				prov_public_employee_works_at_shop_employee__id , prov_public_employee_works_at_shop_shop__id); 
+</entry>
+<entry key="q17.result">
+   newname          | prov_public_employee_id | prov_public_employee_first__name | prov_public_employee_last__name | prov_public_employee_salary | prov_public_shop_id | prov_public_shop_name | prov_public_shop_location__id | prov_public_shop_manager__id | prov_public_employee_works_at_shop_employee__id | prov_public_employee_works_at_shop_shop__id 
+--------------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+---------------------+-----------------------+-------------------------------+------------------------------+-------------------------------------------------+---------------------------------------------
+ Zurich AltstettenGertsen |                       6 | Gert                             | Gertsen                         |                       12000 |                   2 | Zurich Altstetten     |                             2 |                            2 |                                               6 |                                           2
+</entry>
+
+<entry key="q18.query">
+SELECT prov_public_r_i FROM (SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s)) AS sub;
+</entry>
+<entry key="q18.result">
+ prov_public_r_i 
+-----------------
+               1
+               2
+</entry>
+
+<entry key="q19.query">
+SELECT prov_public_s_i FROM (SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s)) AS sub; 
+</entry>
+<entry key="q19.result">
+ prov_public_s_i 
+-----------------
+               1
+               2
+</entry>
+
+<entry key="q20.query">
+SELECT i, prov_public_s_i, prov_public_s_1_i FROM (SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s) AND r.i &lt; ANY (SELECT * FROM s)) AS sub;
+</entry>
+<entry key="q20.result">
+ i | prov_public_s_i | prov_public_s_1_i  
+---+-----------------+-------------------
+ 1 |               1 |                 2                
+ 1 |               1 |                 4                
+ 2 |               2 |                 4                
+</entry>
+
+<entry key="q21.query">
+SELECT * FROM (SELECT PROVENANCE * FROM r,r AS d WHERE r.i = d.i) AS ffo;
+</entry>
+<entry key="q21.result">
+ i | i | prov_public_r_i | prov_public_r_1_i 
+---+---+-----------------+-------------------
+ 1 | 1 |               1 |                 1
+ 2 | 2 |               2 |                 2
+ 3 | 3 |               3 |                 3
+</entry>
+
+<entry key="q22.query">
+SELECT PROVENANCE * FROM (SELECT (id * 100) AS idcen FROM bagdiff1) BASERELATION AS test, (SELECT * FROM (SELECT * FROM s WHERE s.i = 2) BASERELATION AS test) AS sub;
+</entry>
+<entry key="q22.result">
+ idcen | i | prov_test_idcen | prov_test_1_i 
+-------+---+-----------------+-------------
+   100 | 2 |             100 |           2
+   100 | 2 |             100 |           2
+</entry>
+
+<entry key="q23.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT (id * 100) AS idcen FROM bagdiff1) BASERELATION AS test) AS sub;
+</entry>
+<entry key="q23.result">
+ idcen | prov_test_idcen 
+-------+-----------------
+   100 |             100
+   100 |             100
+</entry>
+
+<entry key="q24.query">
+SELECT sum(prov_public_r_i) FROM (SELECT PROVENANCE * FROM r) AS sub;
+</entry>
+<entry key="q24.result">
+ sum 
+-----
+   6
+</entry>
+
+<entry key="q25.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT (id * 100) AS idcen FROM bagdiff1) BASERELATION AS test, (SELECT i * 2 AS woi FROM r) BASERELATION AS testo) AS sub;
+</entry>
+<entry key="q25.result">
+ idcen | woi | prov_test_idcen | prov_testo_woi 
+-------+-----+-----------------+----------------
+   100 |   2 |             100 |              2
+   100 |   4 |             100 |              4
+   100 |   6 |             100 |              6
+   100 |   2 |             100 |              2
+   100 |   4 |             100 |              4
+   100 |   6 |             100 |              6
+</entry>
+
+<entry key="q26.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT (id * 100) AS idcen FROM bagdiff1) BASERELATION AS test, (SELECT * FROM (SELECT * FROM s WHERE s.i = 2) BASERELATION AS test) AS sub) AS sub;
+</entry>
+<entry key="q26.result">
+ idcen | i | prov_test_idcen | prov_test_1_i 
+-------+---+-----------------+---------------
+   100 | 2 |             100 |             2
+   100 | 2 |             100 |             2
+</entry>
+
+<entry key="q27.query">
+SELECT * FROM (SELECT PROVENANCE sum(r.i) FROM r) AS p WHERE prov_public_r_i = 3;
+</entry>
+<entry key="q27.result">
+ sum | prov_public_r_i 
+-----+-----------------
+   6 |               3
+</entry>
+
+<entry key="q28.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) AS un) AS p WHERE prov_public_r_i = 3;
+</entry>
+<entry key="q28.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 3 |               3 |                
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

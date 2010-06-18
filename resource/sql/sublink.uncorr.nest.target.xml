@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE i, (SELECT sum(i) FROM s WHERE s.i IN (SELECT * FROM t)) FROM r;
+</entry>
+<entry key="q1.result">
+ i | ?column? | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+----------+-----------------+-----------------+-----------------
+ 1 |        6 |               2 |               2 |               1
+ 2 |        6 |               2 |               2 |               2
+ 3 |        6 |               2 |               2 |               3
+ 1 |        6 |               4 |               4 |               1
+ 2 |        6 |               4 |               4 |               2
+ 3 |        6 |               4 |               4 |               3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE (SELECT sum(i) FROM s WHERE s.i IN (SELECT * FROM t)) FROM r;
+</entry>
+<entry key="q2.result">
+ ?column? | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+----------+-----------------+-----------------+-----------------
+        6 |               2 |               2 |               1
+        6 |               2 |               2 |               2
+        6 |               2 |               2 |               3
+        6 |               4 |               4 |               1
+        6 |               4 |               4 |               2
+        6 |               4 |               4 |               3
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE (SELECT * FROM s WHERE s.i = 2) AS newone, (SELECT * FROM s WHERE s.i != ALL (SELECT * FROM t)), id FROM bagdiff2;
+</entry>
+<entry key="q3.result">
+ newone | ?column? | id | prov_public_s_i | prov_public_t_i | prov_public_s_1_i | prov_public_bagdiff2_id 
+--------+----------+----+-----------------+-----------------+-------------------+-------------------------
+      2 |        1 |  1 |               2 |               2 |                 1 |                       1
+      2 |        1 |  1 |               2 |               4 |                 1 |                       1
+      2 |        1 |  1 |               2 |               6 |                 1 |                       1
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE (SELECT * FROM s WHERE s.i &gt; 10), id FROM bagdiff2;
+</entry>
+<entry key="q4.result">
+ ?column? | id | prov_public_s_i | prov_public_bagdiff2_id 
+----------+----+-----------------+-------------------------
+          |  1 |                 |                       1
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE (SELECT * FROM s WHERE s.i IN (SELECT t.i * 100 FROM t)), id FROM bagdiff2;
+</entry>
+<entry key="q5.result">
+ ?column? | id | prov_public_t_i | prov_public_s_i | prov_public_bagdiff2_id 
+----------+----+-----------------+-----------------+-------------------------
+          |  1 |                 |                 |                       1
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE (SELECT sum(s.i) FROM s WHERE NOT EXISTS (SELECT * FROM empty)), id FROM bagdiff2;
+</entry>
+<entry key="q6.result">
+ ?column? | id | prov_public_empty_id | prov_public_s_i | prov_public_bagdiff2_id 
+----------+----+---------------------+-----------------+-------------------------
+        7 |  1 |                     |               1 |                       1
+        7 |  1 |                     |               2 |                       1
+        7 |  1 |                     |               4 |                       1
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t)) FROM r;
+</entry>
+<entry key="q7.result">
+ ?column? | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+----------+-----------------+-----------------+-----------------
+ f        |               2 |               2 |               1
+ t        |               2 |               2 |               2
+ f        |               2 |               2 |               3
+ f        |               4 |               4 |               1
+ f        |               4 |               4 |               3
+</entry>
+
+<entry key="q8.query">
+SELECT PROVENANCE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t)) OR r.i = 3 FROM r;
+</entry>
+<entry key="q8.result">
+ ?column? | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+----------+-----------------+-----------------+-----------------
+ f        |               2 |               2 |               1
+ t        |               2 |               2 |               2
+ t        |               2 |               2 |               3
+ f        |               4 |               4 |               1
+ t        |               4 |               4 |               3
+</entry>
+
+<entry key="q9.query">
+SELECT PROVENANCE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t)), (SELECT sum(i) FROM s WHERE s.i IN (SELECT * FROM t)) AS sumi FROM r;
+</entry>
+<entry key="q9.result">
+ ?column? | sumi | prov_public_t_i | prov_public_s_i | prov_public_t_1_i | prov_public_s_1_i | prov_public_r_i 
+----------+------+-----------------+-----------------+-------------------+-------------------+-----------------
+ f        |    6 |               2 |               2 |                 2 |                 2 |               1
+ t        |    6 |               2 |               2 |                 2 |                 2 |               2
+ f        |    6 |               2 |               2 |                 2 |                 2 |               3
+ f        |    6 |               4 |               4 |                 2 |                 2 |               1
+ f        |    6 |               4 |               4 |                 2 |                 2 |               3
+ f        |    6 |               2 |               2 |                 4 |                 4 |               1
+ t        |    6 |               2 |               2 |                 4 |                 4 |               2
+ f        |    6 |               2 |               2 |                 4 |                 4 |               3
+ f        |    6 |               4 |               4 |                 4 |                 4 |               1
+ f        |    6 |               4 |               4 |                 4 |                 4 |               3
+</entry>
+
+<entry key="q10.query">
+SELECT PROVENANCE (SELECT sum(r.i) FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i IN (SELECT * FROM t))), id FROM bagdiff2;
+</entry>
+<entry key="q10.result">
+ ?column? | id | prov_public_t_i | prov_public_s_i | prov_public_r_i | prov_public_bagdiff2_id 
+----------+----+-----------------+-----------------+-----------------+-------------------------
+        2 |  1 |               2 |               2 |               2 |                       1
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

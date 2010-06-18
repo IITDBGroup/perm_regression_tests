@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE * FROM arraytest;
+</entry>
+<entry key="q1.result">
+ id |    arr    | prov_public_arraytest_id | prov_public_arraytest_arr 
+----+-----------+--------------------------+---------------------------
+  1 | {1,2,3}   |                        1 | {1,2,3}
+  2 | {2,4,5,6} |                        2 | {2,4,5,6}
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE id, arr[1] FROM arraytest WHERE arr[2] &lt; 5;
+</entry>
+<entry key="q2.result">
+ id | arr | prov_public_arraytest_id | prov_public_arraytest_arr 
+----+-----+--------------------------+---------------------------
+  1 |   1 |                        1 | {1,2,3}
+  2 |   2 |                        2 | {2,4,5,6}
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE sum(id) FROM arraytest GROUP BY arr[2];
+</entry>
+<entry key="q3.result">
+ sum | prov_public_arraytest_id | prov_public_arraytest_arr 
+-----+--------------------------+---------------------------
+   2 |                        2 | {2,4,5,6}
+   1 |                        1 | {1,2,3}
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE sum(arr[3]) FROM arraytest;
+</entry>
+<entry key="q4.result">
+ sum | prov_public_arraytest_id | prov_public_arraytest_arr 
+-----+--------------------------+---------------------------
+   8 |                        1 | {1,2,3}
+   8 |                        2 | {2,4,5,6}
+</entry>
+
+
+<entry key="q5.query">
+SELECT PROVENANCE a.id FROM arraytest a, arraytest b WHERE a.arr[1] = b.arr[2];
+</entry>
+<entry key="q5.result">
+ id | prov_public_arraytest_id | prov_public_arraytest_arr | prov_public_arraytest_1_id | prov_public_arraytest_1_arr 
+----+--------------------------+---------------------------+----------------------------+-----------------------------
+  2 |                        2 | {2,4,5,6}                 |                          1 | {1,2,3}
+</entry>
+
+
+<entry key="q6.query">
+SELECT PROVENANCE * FROM (SELECT arr[1] FROM arraytest UNION SELECT arr[2] FROM arraytest) AS sub;
+</entry>
+<entry key="q6.result">
+ arr | prov_public_arraytest_id | prov_public_arraytest_arr | prov_public_arraytest_1_id | prov_public_arraytest_1_arr 
+-----+--------------------------+---------------------------+----------------------------+-----------------------------
+   1 |                        1 | {1,2,3}                   |                            | 
+   2 |                        2 | {2,4,5,6}                 |                          1 | {1,2,3}
+   4 |                          |                           |                          2 | {2,4,5,6}
+</entry>
+
+
+<entry key="q7.query">
+SELECT PROVENANCE one, (two).one FROM structtest WHERE (two).one &gt; 0;
+</entry>
+<entry key="q7.result">
+ one | one | prov_public_structtest_one | prov_public_structtest_two 
+-----+-----+----------------------------+----------------------------
+   1 |   1 |                          1 | (1,hello,1)
+   2 |   2 |                          2 | (2,hello,1)
+   3 |   3 |                          3 | (3,hello,2)
+</entry>
+
+
+<entry key="q8.query">
+SELECT PROVENANCE sum((two).one) FROM structtest;
+</entry>
+<entry key="q8.result">
+ sum | prov_public_structtest_one | prov_public_structtest_two 
+-----+----------------------------+----------------------------
+   6 |                          1 | (1,hello,1)
+   6 |                          2 | (2,hello,1)
+   6 |                          3 | (3,hello,2)
+</entry>
+
+
+<entry key="q9.query">
+SELECT PROVENANCE sum((two).one) FROM structtest GROUP BY (two).three;
+</entry>
+<entry key="q9.result">
+ sum | prov_public_structtest_one | prov_public_structtest_two 
+-----+----------------------------+----------------------------
+   3 |                          3 | (3,hello,2)
+   3 |                          2 | (2,hello,1)
+   3 |                          1 | (1,hello,1)
+</entry>
+
+
+<entry key="q10.query">
+SELECT PROVENANCE a.one FROM structtest a, structtest b WHERE (a.two).one = (b.two).three;
+</entry>
+<entry key="q10.result">
+ one | prov_public_structtest_one | prov_public_structtest_two | prov_public_structtest_1_one | prov_public_structtest_1_two 
+-----+----------------------------+----------------------------+------------------------------+------------------------------
+   1 |                          1 | (1,hello,1)                |                            1 | (1,hello,1)
+   1 |                          1 | (1,hello,1)                |                            2 | (2,hello,1)
+   2 |                          2 | (2,hello,1)                |                            3 | (3,hello,2)
+</entry>
+
+
+<entry key="q11.query">
+SELECT PROVENANCE * FROM (SELECT (two).one FROM structtest UNION SELECT (two).three FROM structtest) AS sub;
+</entry>
+<entry key="q11.result">
+ one | prov_public_structtest_one | prov_public_structtest_two | prov_public_structtest_1_one | prov_public_structtest_1_two 
+-----+----------------------------+----------------------------+------------------------------+------------------------------
+   1 |                          1 | (1,hello,1)                |                            1 | (1,hello,1)
+   1 |                          1 | (1,hello,1)                |                            2 | (2,hello,1)
+   2 |                          2 | (2,hello,1)                |                            3 | (3,hello,2)
+   3 |                          3 | (3,hello,2)                |                              | 
+</entry>
+
+
+<entry key="q12.query">
+SELECT PROVENANCE * FROM muchcols ORDER BY one;
+</entry>
+<entry key="q12.result">
+ one |  two   |   three    |     four      |    five     | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------+------------+---------------+-------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+   1 | first  | 2007-01-01 | 4321212123545 | hello world |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+   2 | second | 2007-01-01 |       9898989 | hello       |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+   2 | third  | 2007-01-01 |     212123545 | world       |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+   3 | fourth | 2007-01-01 |            12 | hhhhhhhh    |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+
+<entry key="q13.query">
+SELECT PROVENANCE * FROM (SELECT sum(four) AS sumf FROM  muchcols GROUP BY one) AS t ORDER BY sumf;
+</entry>
+<entry key="q13.result">
+     sumf      | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+---------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+            12 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+     222022534 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+     222022534 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+ 4321212123545 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+</entry>
+
+
+<entry key="q14.query">
+SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff3) AS sub ORDER BY id;
+</entry>
+<entry key="q14.result">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                       1
+  1 |                       1 |                       1
+  1 |                       1 |                       1
+  1 |                       1 |                       1
+  2 |                         |                       2
+  3 |                         |                       3
+</entry>
+
+
+<entry key="q15.query">
+SELECT PROVENANCE sum(four) AS sumf FROM muchcols GROUP BY one ORDER BY sumf;
+</entry>
+<entry key="q15.result">
+     sumf      | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+---------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+            12 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+     222022534 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+     222022534 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+ 4321212123545 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+</entry>
+
+
+<entry key="q16.query">
+SELECT PROVENANCE char_length(two) FROM muchcols;
+</entry>
+<entry key="q16.result">
+ char_length | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+           5 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+           6 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+           5 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+           6 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+
+<entry key="q17.query">
+SELECT PROVENANCE one FROM muchcols WHERE char_length(two) &gt; 5;
+</entry>
+<entry key="q17.result">
+ one | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+
+<entry key="q18.query">
+SELECT PROVENANCE sum(char_length(two)) FROM muchcols;	
+</entry>
+<entry key="q18.result">
+ sum | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+  22 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+  22 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+  22 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+  22 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+
+<entry key="q19.query">
+SELECT PROVENANCE sum(one) FROM muchcols GROUP BY char_length(two);
+</entry>
+<entry key="q19.result">
+ sum | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+   3 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+   3 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+   5 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+   5 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+</entry>
+
+
+<entry key="q20.query">
+SELECT PROVENANCE a.one FROM muchcols a, muchcols b WHERE char_length(a.two) = char_length(b.two);
+</entry>
+<entry key="q20.result">
+ one | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+</entry>
+
+
+<entry key="q21.query">
+SELECT PROVENANCE * FROM (SELECT char_length(two) FROM muchcols UNION SELECT char_length(two) FROM muchcols) AS sub;
+</entry>
+<entry key="q21.result">
+ char_length | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+           5 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+           5 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+           5 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+           5 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+           6 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+           6 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+           6 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+           6 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+</entry>
+
+
+<entry key="q22.query">
+SELECT PROVENANCE 1;
+</entry>
+<entry key="q22.result">
+ ?column? 
+----------
+        1
+</entry>
+
+
+<entry key="q23.query">
+SELECT PROVENANCE 1, id FROM bagdiff1;
+</entry>
+<entry key="q23.result">
+ ?column? | id | prov_public_bagdiff1_id 
+----------+----+-------------------------
+        1 |  1 |                       1
+        1 |  1 |                       1
+</entry>
+
+
+<entry key="q24.query">
+SELECT PROVENANCE 100 * (case when id > 2 then 5 else 1 end) FROM bagdiff3;
+</entry>
+<entry key="q24.result">
+ ?column? | prov_public_bagdiff3_id 
+----------+-------------------------
+      100 |                       1
+      100 |                       1
+      100 |                       2
+      500 |                       3
+</entry>
+
+
+<entry key="q25.query">
+SELECT PROVENANCE id FROM bagdiff3 WHERE id &gt; (case when id &gt; 2 then 5 else 1 end);
+</entry>
+<entry key="q25.result">
+ id | prov_public_bagdiff3_id 
+----+-------------------------
+  2 |                       2
+</entry>
+
+
+<entry key="q26.query">
+SELECT PROVENANCE id FROM bagdiff3 WHERE id IN (1,2,10,15);
+</entry>
+<entry key="q26.result">
+ id | prov_public_bagdiff3_id 
+----+-------------------------
+  1 |                       1
+  1 |                       1
+  2 |                       2
+</entry>
+
+
+<entry key="q27.query">
+SELECT PROVENANCE (CASE WHEN (id = 1) THEN 10 ELSE 0 END) FROM bagdiff3;
+</entry>
+<entry key="q27.result">
+ case | prov_public_bagdiff3_id 
+------+-------------------------
+   10 |                       1
+   10 |                       1
+    0 |                       2
+    0 |                       3
+</entry>
+
+
+<entry key="q28.query">
+SELECT PROVENANCE sum(CASE WHEN (id = 1) THEN 10 ELSE 0 END) FROM bagdiff3;
+</entry>
+<entry key="q28.result">
+ sum | prov_public_bagdiff3_id 
+-----+-------------------------
+  20 |                       1
+  20 |                       1
+  20 |                       2
+  20 |                       3
+</entry>
+
+
+<entry key="q29.query">
+SELECT PROVENANCE sum(id) FROM bagdiff3 WHERE (CASE WHEN (id = 1) THEN true ELSE false END);
+</entry>
+<entry key="q29.result">
+ sum | prov_public_bagdiff3_id 
+-----+-------------------------
+   2 |                       1
+   2 |                       1
+</entry>
+
+<entry key="q30.query">
+SELECT PROVENANCE DISTINCT 1;
+</entry>
+<entry key="q30.result">
+ ?column? 
+----------
+        1
+</entry>
+
+<entry key="q31.query">
+SELECT PROVENANCE * FROM specialnames sp, r PROVENANCE (i), (SELECT * FROM s) BASERELATION AS p WHERE sp.with_underscore = r.i AND r.i = p.i;
+</entry>
+<entry key="q31.result">
+ with_underscore | with_more_underscore_ | i | i | prov_public_specialnames_with__underscore | prov_public_specialnames_with__more__underscore__ | prov_i | prov_p_i 
+-----------------+-----------------------+---+---+------------------------------------------+------------------------------------------------+---+----------
+               2 |                     1 | 2 | 2 |                                        2 |                                              1 | 2 |        2
+</entry>
+
+</properties>

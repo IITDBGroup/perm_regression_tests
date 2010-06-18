@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT TRANSXML * FROM r;
+</entry>
+<entry key="q1.result">
+</entry>
+
+<entry key="q2.query">
+SELECT TRANSXML * FROM r,s WHERE r.i = s.i;
+</entry>
+<entry key="q2.result">
+</entry>
+
+<entry key="q3.query">
+SELECT TRANSXML * FROM r JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q3.result">
+</entry>
+
+<entry key="q4.query">
+SELECT TRANSXML * FROM r LEFT JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q4.result">
+</entry>
+
+<entry key="q5.query">
+SELECT TRANSXML * FROM r RIGHT JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q5.result">
+</entry>
+
+<entry key="q6.query">
+SELECT TRANSXML * FROM r FULL JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q6.result">
+</entry>
+
+<entry key="q6.query">
+SELECT TRANSXML * FROM r LEFT JOIN (s LEFT JOIN t ON (s.i = t.i)) ON (r.i = s.i);
+</entry>
+<entry key="q6.result">
+</entry>
+
+<entry key="q7.query">
+SELECT TRANSXML * FROM (r LEFT JOIN s ON (r.i = s.i)) LEFT JOIN t ON (r.i = t.i);
+</entry>
+<entry key="q7.result">
+</entry>
+
+<entry key="q8.query">
+SELECT TRANSXML sub.o * 2 FROM (SELECT r.i AS i, r.i * 2 AS o FROM r) AS sub; 
+</entry>
+<entry key="q8.result">
+</entry>
+
+<entry key="q9.query">
+SELECT TRANSXML * FROM r LEFT JOIN (SELECT s.i AS si, t.i AS ti FROM s JOIN t ON (s.i = t.i)) AS sub ON (r.i = sub.si); 
+</entry>
+<entry key="q9.result">
+</entry>
+
+<entry key="q10.query">
+SELECT TRANSXML * FROM (SELECT * FROM r) AS r;
+</entry>
+<entry key="q10.result">
+</entry>
+
+<entry key="q11.query">
+SELECT TRANSXML * FROM r LEFT JOIN (SELECT s.i AS si FROM s) AS sub ON (r.i = sub.si);
+</entry>
+<entry key="q11.result">
+</entry>
+
+<entry key="q12.query">
+SELECT TRANSXML r.i AS ri, s.i AS si FROM r LEFT JOIN s ON (r.i = s.i), t;
+</entry>
+<entry key="q12.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

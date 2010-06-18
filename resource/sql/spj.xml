@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE a.one, b.two FROM muchcols a, muchcols b;
+</entry>
+<entry key="q1.result">
+ one |  two   | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-----+--------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+   1 | first  |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   1 | second |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   1 | third  |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   1 | fourth |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   2 | first  |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 | second |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   2 | third  |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 | fourth |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   2 | first  |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 | second |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   2 | third  |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 | fourth |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   3 | first  |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   3 | second |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   3 | third  |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   3 | fourth |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE a.one, b.two FROM muchcols a, muchcols b WHERE a.one = b.one;
+</entry>
+<entry key="q2.result">
+ one |  two   | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-----+--------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+   1 | first  |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 | third  |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 | second |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   2 | third  |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 | second |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   3 | fourth |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+</entry>
+
+
+<entry key="q3.query">
+SELECT PROVENANCE a.one, b.two FROM muchcols a, muchcols b WHERE a.one = b.one AND b.four &lt; a.four AND a.five LIKE '%w%';
+</entry>
+<entry key="q3.result">
+ one |  two   | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-----+--------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+   2 | second |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE zushop.name, topshots.last_name 
+	FROM (SELECT * FROM employee WHERE salary &gt; 10000) AS topshots,
+		(SELECT * FROM shop WHERE shop.name LIKE '%Z%rich%') AS zushop, 
+		employee_works_at_shop wo
+	WHERE topshots.id = wo.employee_id
+		AND zushop.id = wo.shop_id;
+</entry>
+<entry key="q4.result">
+        name        | last_name | prov_public_employee_id | prov_public_employee_first__name | prov_public_employee_last__name | prov_public_employee_salary | prov_public_shop_id | prov_public_shop_name | prov_public_shop_location__id | prov_public_shop_manager__id | prov_public_employee_works_at_shop_employee__id | prov_public_employee_works_at_shop_shop__id 
+-------------------+-----------+-------------------------+---------------------------------+--------------------------------+-----------------------------+---------------------+-----------------------+------------------------------+-----------------------------+------------------------------------------------+--------------------------------------------
+ Zurich Altstetten| Gertsen   |                       6 | Gert                            | Gertsen                        |                       12000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                                              6 |                                          2
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE * FROM bagdiff3 a LEFT OUTER JOIN bagdiff1 b ON a.id = b.id;
+</entry>
+<entry key="q5.result">
+ id | id | prov_public_bagdiff3_id | prov_public_bagdiff1_id 
+----+----+-------------------------+-------------------------
+  1 |  1 |                       1 |                       1
+  1 |  1 |                       1 |                       1
+  1 |  1 |                       1 |                       1
+  1 |  1 |                       1 |                       1
+  2 |    |                       2 |                        
+  3 |    |                       3 |                        
+</entry>
+
+
+<entry key="q6.query">
+SELECT PROVENANCE * FROM bagdiff3 a RIGHT OUTER JOIN bagdiff1 b ON a.id = b.id;
+</entry>
+<entry key="q6.result">
+ id | id | prov_public_bagdiff3_id | prov_public_bagdiff1_id 
+----+----+-------------------------+-------------------------
+  1 |  1 |                       1 |                       1
+  1 |  1 |                       1 |                       1
+  1 |  1 |                       1 |                       1
+  1 |  1 |                       1 |                       1
+</entry>
+
+
+<entry key="q7.query">
+SELECT PROVENANCE * FROM bagdiff2 a FULL OUTER JOIN bagdiff2 b ON a.id = b.id;
+</entry>
+<entry key="q7.result">
+ id | id | prov_public_bagdiff2_id | prov_public_bagdiff2_1_id 
+----+----+-------------------------+---------------------------
+  1 |  1 |                       1 |                         1
+</entry>
+
+
+<entry key="q8.query">
+SELECT PROVENANCE a.one FROM muchcols a JOIN muchcols b ON a.one &lt; b.four;
+</entry>
+<entry key="q8.result">
+ one | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   2 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   2 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+   3 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+</entry>
+
+<entry key="q9.query">
+SELECT PROVENANCE a.id FROM bagdiff1 a NATURAL JOIN bagdiff2;
+</entry>
+<entry key="q9.result">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                       1
+  1 |                       1 |                       1
+</entry>
+
+<entry key="q10.query">
+SELECT PROVENANCE * FROM bagdiff1 a JOIN bagdiff2 b USING(id);
+</entry>
+<entry key="q10.result">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                       1
+  1 |                       1 |                       1
+</entry>
+
+<entry key="q11.query">
+SELECT PROVENANCE * FROM bagdiff1 NATURAL JOIN bagdiff2 NATURAL JOIN bagdiff3;
+</entry>
+<entry key="q11.result">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                       1 |                       1
+  1 |                       1 |                       1 |                       1
+  1 |                       1 |                       1 |                       1
+  1 |                       1 |                       1 |                       1
+</entry>
+
+<entry key="q12.query">
+SELECT PROVENANCE * FROM bagdiff1 JOIN bagdiff2 USING (id) JOIN bagdiff3 USING (id);
+</entry>
+<entry key="q12.result">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                       1 |                       1
+  1 |                       1 |                       1 |                       1
+  1 |                       1 |                       1 |                       1
+  1 |                       1 |                       1 |                       1
+</entry>
+
+<entry key="q13.query">
+SELECT PROVENANCE * FROM bagdiff1 a, bagdiff1 NATURAL JOIN (bagdiff2 NATURAL JOIN bagdiff3);
+</entry>
+<entry key="q13.result">
+ id | id | prov_public_bagdiff1_id | prov_public_bagdiff1_1_id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+----+-------------------------+---------------------------+-------------------------+-------------------------
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+  1 |  1 |                       1 |                         1 |                       1 |                       1
+</entry>
+
+<entry key="q14.query">
+SELECT PROVENANCE * FROM bagdiff1 a LEFT JOIN (SELECT * FROM bagdiff3) b ON (a.id &lt; b.id);
+</entry>
+<entry key="q14.result">
+ id | id | prov_public_bagdiff1_id | prov_public_bagdiff3_id 
+----+----+-------------------------+-------------------------
+  1 |  2 |                       1 |                       2
+  1 |  3 |                       1 |                       3
+  1 |  2 |                       1 |                       2
+  1 |  3 |                       1 |                       3
+</entry>
+
+<entry key="q15.query">
+SELECT PROVENANCE * FROM (SELECT sum(one) AS sum FROM muchcols GROUP BY four) AS suba JOIN (SELECT * FROM muchcols) AS subb ON (sum &gt; subb.one);
+</entry>
+<entry key="q15.result">
+ sum | one |  two   |   three    |     four      |    five     | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-----+-----+--------+------------+---------------+-------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+   3 |   1 | first  | 2007-01-01 | 4321212123545 | hello world |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   3 |   2 | second | 2007-01-01 |       9898989 | hello       |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+   3 |   2 | third  | 2007-01-01 |     212123545 | world       |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+   2 |   1 | first  | 2007-01-01 | 4321212123545 | hello world |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+   2 |   1 | first  | 2007-01-01 | 4321212123545 | hello world |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+</entry>
+
+<entry key="q16.query">
+SELECT PROVENANCE * FROM r NATURAL JOIN s , t;
+</entry>
+<entry key="q16.result">
+ i | i | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+---+---+-----------------+-----------------+-----------------
+ 1 | 2 |               1 |               1 |               2
+ 1 | 4 |               1 |               1 |               4
+ 1 | 6 |               1 |               1 |               6
+ 2 | 2 |               2 |               2 |               2
+ 2 | 4 |               2 |               2 |               4
+ 2 | 6 |               2 |               2 |               6
+</entry>
+
+<entry key="q17.query">
+SELECT PROVENANCE * FROM r, s NATURAL JOIN t, bagdiff1, s s2 NATURAL JOIN t t2;
+</entry>
+<entry key="q17.result">
+ i | i | id | i | prov_public_r_i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff1_id | prov_public_s_1_i | prov_public_t_1_i 
+---+---+----+---+-----------------+-----------------+-----------------+-------------------------+-------------------+-------------------
+ 1 | 2 |  1 | 2 |               1 |               2 |               2 |                       1 |                 2 |                 2
+ 1 | 2 |  1 | 2 |               1 |               2 |               2 |                       1 |                 2 |                 2
+ 2 | 2 |  1 | 2 |               2 |               2 |               2 |                       1 |                 2 |                 2
+ 2 | 2 |  1 | 2 |               2 |               2 |               2 |                       1 |                 2 |                 2
+ 3 | 2 |  1 | 2 |               3 |               2 |               2 |                       1 |                 2 |                 2
+ 3 | 2 |  1 | 2 |               3 |               2 |               2 |                       1 |                 2 |                 2
+ 1 | 4 |  1 | 2 |               1 |               4 |               4 |                       1 |                 2 |                 2
+ 1 | 4 |  1 | 2 |               1 |               4 |               4 |                       1 |                 2 |                 2
+ 2 | 4 |  1 | 2 |               2 |               4 |               4 |                       1 |                 2 |                 2
+ 2 | 4 |  1 | 2 |               2 |               4 |               4 |                       1 |                 2 |                 2
+ 3 | 4 |  1 | 2 |               3 |               4 |               4 |                       1 |                 2 |                 2
+ 3 | 4 |  1 | 2 |               3 |               4 |               4 |                       1 |                 2 |                 2
+ 3 | 2 |  1 | 4 |               3 |               2 |               2 |                       1 |                 4 |                 4
+ 1 | 2 |  1 | 4 |               1 |               2 |               2 |                       1 |                 4 |                 4
+ 2 | 2 |  1 | 4 |               2 |               2 |               2 |                       1 |                 4 |                 4
+ 3 | 2 |  1 | 4 |               3 |               2 |               2 |                       1 |                 4 |                 4
+ 1 | 2 |  1 | 4 |               1 |               2 |               2 |                       1 |                 4 |                 4
+ 2 | 2 |  1 | 4 |               2 |               2 |               2 |                       1 |                 4 |                 4
+ 3 | 4 |  1 | 4 |               3 |               4 |               4 |                       1 |                 4 |                 4
+ 1 | 4 |  1 | 4 |               1 |               4 |               4 |                       1 |                 4 |                 4
+ 2 | 4 |  1 | 4 |               2 |               4 |               4 |                       1 |                 4 |                 4
+ 3 | 4 |  1 | 4 |               3 |               4 |               4 |                       1 |                 4 |                 4
+ 1 | 4 |  1 | 4 |               1 |               4 |               4 |                       1 |                 4 |                 4
+ 2 | 4 |  1 | 4 |               2 |               4 |               4 |                       1 |                 4 |                 4
+</entry>
+
+<entry key="q18.query">
+SELECT PROVENANCE * FROM r NATURAL JOIN (s NATURAL JOIN t);
+</entry>
+<entry key="q18.result">
+ i | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+---+-----------------+-----------------+-----------------
+ 2 |               2 |               2 |               2
+</entry>
+
+</properties>

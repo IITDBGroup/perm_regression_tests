@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT * FROM (SELECT PROVENANCE * FROM r) AS p WHERE p.i = 3;
+</entry>
+<entry key="q1.result">
+ i | prov_public_r_i 
+---+-----------------
+ 3 |               3
+</entry>
+
+<entry key="q2.query">
+SELECT * FROM (SELECT PROVENANCE * FROM r) AS p WHERE p.i = 3 OR p.i = 1;
+</entry>
+<entry key="q2.result">
+ i | prov_public_r_i 
+---+-----------------
+ 1 |               1
+ 3 |               3
+</entry>
+
+<entry key="q3.query">
+SELECT * FROM (SELECT PROVENANCE * FROM muchcols) AS p 
+	WHERE 
+		(one = 1 AND two = 'first' AND three = '2007-01-01' AND four = 4321212123545 AND five = 'hello world')
+	OR (one = 2 AND two = 'second' AND three = '2007-01-01' AND four = 9898989 AND five = 'hello');
+</entry>
+<entry key="q3.result">
+ one |  two   |   three    |     four      |    five     | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------+------------+---------------+-------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+   1 | first  | 2007-01-01 | 4321212123545 | hello world |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+   2 | second | 2007-01-01 |       9898989 | hello       |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+</entry>
+
+<entry key="q4.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) AS u) AS p WHERE p.i = 2;
+</entry>
+<entry key="q4.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 2 |               2 |               2
+</entry>
+
+<entry key="q5.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) AS u) AS p WHERE p.i = 3 OR p.i = 1;
+</entry>
+<entry key="q5.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 3 |               3 |                
+</entry>
+
+<entry key="q6.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r INTERSECT SELECT * FROM s) AS u) AS p WHERE p.i = 2;
+</entry>
+<entry key="q6.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 2 |               2 |               2
+</entry>
+
+<entry key="q7.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r INTERSECT SELECT * FROM s) AS u) AS p WHERE p.i = 3 OR p.i = 1;
+</entry>
+<entry key="q7.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |               1 |               1  
+</entry>
+
+<entry key="q8.query">
+SELECT * FROM (SELECT PROVENANCE sum(i) AS sumi FROM r) AS p WHERE p.sumi = 6; 
+</entry>
+<entry key="q8.result">
+ sumi | prov_public_r_i 
+------+-----------------
+    6 |               1
+    6 |               2
+    6 |               3
+</entry>
+
+<entry key="q9.query">
+SELECT * FROM (SELECT PROVENANCE sum(i) AS sumi FROM r) AS p WHERE p.sumi = 6 OR p.sumi = 3; 
+</entry>
+<entry key="q9.result">
+ sumi | prov_public_r_i 
+------+-----------------
+    6 |               1
+    6 |               2
+    6 |               3
+</entry>
+
+<entry key="q10.query">
+SELECT * FROM (SELECT PROVENANCE sum(r.i) AS sumi, s.i FROM r,s GROUP BY s.i) AS p WHERE p.sumi = 6 AND p.i = 2;
+</entry>
+<entry key="q10.result">
+ sumi | i | prov_public_r_i | prov_public_s_i 
+------+---+-----------------+-----------------
+    6 | 2 |               1 |               2
+    6 | 2 |               2 |               2
+    6 | 2 |               3 |               2
+</entry>
+
+<entry key="q11.query">
+SELECT * FROM (SELECT PROVENANCE sum(r.i) AS sumi, s.i FROM r,s GROUP BY s.i) AS p WHERE (p.sumi = 6 AND p.i = 2) OR (p.sumi = 6 AND p.i = 4);
+</entry>
+<entry key="q11.result">
+ sumi | i | prov_public_r_i | prov_public_s_i 
+------+---+-----------------+-----------------
+    6 | 2 |               1 |               2
+    6 | 2 |               2 |               2
+    6 | 2 |               3 |               2
+    6 | 4 |               1 |               4
+    6 | 4 |               2 |               4
+    6 | 4 |               3 |               4
+</entry>
+
+<entry key="q12.query">
+SELECT * FROM (SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s)) AS p WHERE p.i = 2;
+</entry>
+<entry key="q12.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 2 |               2 |               2
+</entry>
+
+<entry key="q13.query">
+SELECT * FROM (SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s)) AS p WHERE p.i = 2 OR p.i = 1;
+</entry>
+<entry key="q13.result">
+ i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+</entry>
+
+<entry key="q14.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r EXCEPT SELECT * FROM s) AS sub) AS p WHERE p.i = 3;
+</entry>
+<entry key="q14.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 3 |               3 |               1
+ 3 |               3 |               2
+ 3 |               3 |               4
+</entry>
+
+<entry key="q15.query">
+SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r EXCEPT ALL SELECT * FROM s) AS sub) AS p WHERE p.i = 3;
+</entry>
+<entry key="q15.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 3 |               3 |               1
+ 3 |               3 |               2
+ 3 |               3 |               4
+</entry>
+
+<entry key="q16.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r,s WHERE r.i = s.i) AS p WHERE ri = 2;
+</entry>
+<entry key="q16.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  2 |  2 |               2 |               2
+</entry>
+
+<entry key="q17.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r,s WHERE r.i &lt; s.i) AS p WHERE ri = 2;
+</entry>
+<entry key="q17.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  2 |  4 |               2 |               4
+</entry>
+
+<entry key="q18.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r JOIN s ON (r.i = s.i)) AS p WHERE ri = 2 OR si = 3;
+</entry>
+<entry key="q18.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  2 |  2 |               2 |               2
+</entry>
+
+<entry key="q19.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r JOIN s ON (r.i = s.i)) AS p WHERE ri = 2 AND si = 3;
+</entry>
+<entry key="q19.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+</entry>
+
+<entry key="q20.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r LEFT JOIN s ON (r.i = s.i)) AS p WHERE ri = 3;
+</entry>
+<entry key="q20.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  3 |    |               3 |                
+</entry>
+
+<entry key="q21.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r, s WHERE r.i = s.i) AS p WHERE ri &lt; si AND si &lt; 3; 
+</entry>
+<entry key="q21.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+</entry>
+
+<entry key="q22.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r, s WHERE r.i &lt; s.i) AS p WHERE si &lt; 3;
+</entry>
+<entry key="q22.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  1 |  2 |               1 |               2
+</entry>
+
+<entry key="q23.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r, s WHERE r.i = s.i) AS p WHERE si &lt; 3;
+</entry>
+<entry key="q23.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  1 |  1 |               1 |               1
+  2 |  2 |               2 |               2
+</entry>
+
+<entry key="q24.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si, t.i AS ti FROM r JOIN s ON (r.i = s.i) JOIN t ON (s.i = t.i)) AS p WHERE si &lt; 3;
+</entry>
+<entry key="q24.result">
+ ri | si | ti | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+----+----+----+-----------------+-----------------+-----------------
+  2 |  2 |  2 |               2 |               2 |               2
+</entry>
+
+<entry key="q25.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si, t.i AS ti FROM r,s,t WHERE r.i = s.i AND r.i = t.i) AS p WHERE si = (3 + 3);
+</entry>
+<entry key="q25.result">
+ ri | si | ti | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+----+----+----+-----------------+-----------------+-----------------
+</entry>
+
+<entry key="q26.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r LEFT JOIN s ON (r.i = s.i)) AS p WHERE si = 2;
+</entry>
+<entry key="q26.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+  2 |  2 |               2 |               2
+</entry>
+
+<entry key="q27.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r FULL OUTER JOIN s ON (r.i = s.i)) AS p WHERE si = 4;
+</entry>
+<entry key="q27.result">
+ ri | si | prov_public_r_i | prov_public_s_i 
+----+----+-----------------+-----------------
+    |  4 |                 |               4
+</entry>
+
+<entry key="q28.query">
+SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si, t.i AS ti FROM r JOIN s ON (r.i = s.i) JOIN t ON (s.i = t.i)) AS p WHERE p.ri = 2;
+</entry>
+<entry key="q28.result">
+ ri | si | ti | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+----+----+----+-----------------+-----------------+-----------------
+  2 |  2 |  2 |               2 |               2 |               2
+</entry>
+
+<entry key="q29.query">
+SELECT * FROM (SELECT PROVENANCE max(i) AS maxi FROM r) AS p WHERE p.maxi = 3; 
+</entry>
+<entry key="q29.result">
+ maxi | prov_public_r_i 
+------+-----------------
+    3 |               1
+    3 |               2
+    3 |               3
+</entry>
+
+<entry key="q30.query">
+SELECT * FROM (SELECT PROVENANCE max(i) AS maxi FROM r GROUP BY r.i) AS p WHERE p.maxi = 3;
+</entry>
+<entry key="q30.result">
+ maxi | prov_public_r_i 
+------+-----------------
+    3 |               3
+</entry>
+
+<entry key="q31.query">
+SELECT * FROM (SELECT PROVENANCE max(i) AS maxi FROM r GROUP BY r.i HAVING r.i &gt; 2) AS p WHERE p.maxi = 3;
+</entry>
+<entry key="q31.result">
+ maxi | prov_public_r_i 
+------+-----------------
+    3 |               3
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

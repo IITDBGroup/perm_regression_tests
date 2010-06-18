@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE sum(i) * null FROM r;
+</entry>
+<entry key="q1.result">
+ ?column? | prov_public_r_i 
+----------+-----------------
+          |               1
+          |               2
+          |               3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE sum(i) * null FROM r GROUP BY r.i;
+</entry>
+<entry key="q2.result">
+ ?column? | prov_public_r_i 
+----------+-----------------
+          |               2
+          |               3
+          |               1
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE sum(one) FROM muchcols;
+</entry>
+<entry key="q3.result">
+ sum | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-----+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+   8 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+   8 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+   8 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+   8 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE sum(i) FROM r;
+</entry>
+<entry key="q4.result">
+ sum | prov_public_r_i 
+-----+-----------------
+   6 |               1
+   6 |               2
+   6 |               3
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE sum(i) FROM r GROUP BY r.i;
+</entry>
+<entry key="q5.result">
+ sum | prov_public_r_i 
+-----+-----------------
+   2 |               2
+   3 |               3
+   1 |               1
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE sum(i), r.i FROM r GROUP BY r.i;
+</entry>
+<entry key="q6.result">
+ sum | i | prov_public_r_i 
+-----+---+-----------------
+   2 | 2 |               2
+   3 | 3 |               3
+   1 | 1 |               1
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE sum(four) FROM muchcols GROUP BY one;
+</entry>
+<entry key="q7.result">
+      sum      | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+---------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+     222022534 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+     222022534 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+            12 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+ 4321212123545 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+</entry>
+
+<entry key="q8.query">
+SELECT PROVENANCE sum(four) AS sum FROM muchcols GROUP BY one HAVING sum(four) > 1000;
+</entry>
+<entry key="q8.result">
+      sum      | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+---------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+     222022534 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+     222022534 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+ 4321212123545 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+</entry>
+
+<entry key="q9.query">
+SELECT PROVENANCE sum(sump) 
+	FROM (SELECT sum(i.price) AS sump
+		FROM item i,
+			sales s
+		WHERE i.id = s.item_id
+		GROUP BY s.shop_id) AS sub;
+</entry>
+<entry key="q9.result">
+ sum  | prov_public_item_id | prov_public_item_name | prov_public_item_price | prov_public_item_cost | prov_public_sales_item__id | prov_public_sales_shop__id | prov_public_sales_number__items | prov_public_sales_sales__date 
+------+---------------------+-----------------------+------------------------+-----------------------+---------------------------+---------------------------+--------------------------------+------------------------------
+ 2061 |                   2 | Rasenmaeher            |                    599 |                   125 |                         2 |                         4 |                              1 | 2007-01-01
+ 2061 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         4 |                              1 | 2009-01-25
+ 2061 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         4 |                            100 | 2009-01-01
+ 2061 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         4 |                             20 | 2007-01-01
+ 2061 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                              3 | 2003-01-15
+ 2061 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2010-01-01
+ 2061 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2007-01-01
+ 2061 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                              2 | 2008-10-01
+ 2061 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                             46 | 2008-01-01
+ 2061 |                   2 | Rasenmaeher            |                    599 |                   125 |                         2 |                         3 |                              1 | 2002-01-01
+ 2061 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         3 |                             33 | 2007-01-01
+ 2061 |                   2 | Rasenmaeher            |                    599 |                   125 |                         2 |                         1 |                             20 | 2003-01-01
+ 2061 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         1 |                              6 | 2009-01-01
+ 2061 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             11 | 2007-05-01
+ 2061 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             25 | 2007-01-01
+</entry>
+
+<entry key="q10.query">
+SELECT PROVENANCE count(*) FROM bagdiff3;
+</entry>
+<entry key="q10.result">
+ count | prov_public_bagdiff3_id 
+-------+-------------------------
+     4 |                       1
+     4 |                       1
+     4 |                       2
+     4 |                       3
+</entry>
+
+<entry key="q11.query">
+SELECT PROVENANCE count(DISTINCT id) FROM bagdiff4;
+</entry>
+<entry key="q11.result">
+ count | prov_public_bagdiff4_id | prov_public_bagdiff4_nonnu 
+-------+-------------------------+----------------------------
+     1 |                       1 |                        100
+     1 |                       1 |                        100
+     1 |                         |                        100
+     1 |                         |                        100
+</entry>
+
+<entry key="q12.query">
+SELECT PROVENANCE count(*) FROM muchcols GROUP BY one,two, three;
+</entry>
+<entry key="q12.result">
+ count | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five 
+-------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------
+     1 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world
+     1 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello
+     1 |                        2 | third                    | 2007-01-01                 |                 212123545 | world
+     1 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh
+</entry>
+
+<entry key="q13.query">
+SELECT PROVENANCE sum(id) FROM bagdiff3 GROUP BY (id &lt; 3);
+</entry>
+<entry key="q13.result">
+ sum | prov_public_bagdiff3_id 
+-----+-------------------------
+   3 |                       3
+   4 |                       2
+   4 |                       1
+   4 |                       1
+</entry>
+
+<entry key="q14.query">
+SELECT PROVENANCE sum(id) FROM bagdiff3 GROUP BY (id / 5);
+</entry>
+<entry key="q14.result">
+ sum | prov_public_bagdiff3_id 
+-----+-------------------------
+   7 |                       3
+   7 |                       2
+   7 |                       1
+   7 |                       1
+</entry>
+
+<entry key="q15.query">
+SELECT PROVENANCE sum(sub.sum) FROM (SELECT sum(id) AS sum FROM aggr GROUP BY (id / 2)) AS sub;
+</entry>
+<entry key="q15.result">
+ sum | prov_public_aggr_id 
+-----+---------------------
+ 528 |                  11
+ 528 |                  10
+ 528 |                   9
+ 528 |                   8
+ 528 |                  27
+ 528 |                  26
+ 528 |                  13
+ 528 |                  12
+ 528 |                  25
+ 528 |                  24
+ 528 |                  23
+ 528 |                  22
+ 528 |                  29
+ 528 |                  28
+ 528 |                   5
+ 528 |                   4
+ 528 |                  21
+ 528 |                  20
+ 528 |                  19
+ 528 |                  18
+ 528 |                  15
+ 528 |                  14
+ 528 |                  31
+ 528 |                  30
+ 528 |                   1
+ 528 |                  17
+ 528 |                  16
+ 528 |                   7
+ 528 |                   6
+ 528 |                  32
+ 528 |                   3
+ 528 |                   2
+</entry>
+
+<entry key="q16.query">
+SELECT PROVENANCE sum(sub.sum) FROM 									
+	(SELECT sum(sub.sum),(id / 2) AS id FROM 
+		(SELECT sum(id) AS sum,(id / 2) AS id FROM aggr GROUP BY (id / 2)) AS sub 
+	GROUP BY (id / 2)) AS sub;
+</entry>
+<entry key="q16.result">
+ sum | prov_public_aggr_id 
+-----+---------------------
+ 528 |                  21
+ 528 |                  20
+ 528 |                  23
+ 528 |                  22
+ 528 |                  17
+ 528 |                  16
+ 528 |                  19
+ 528 |                  18
+ 528 |                  25
+ 528 |                  24
+ 528 |                  27
+ 528 |                  26
+ 528 |                   9
+ 528 |                   8
+ 528 |                  11
+ 528 |                  10
+ 528 |                  31
+ 528 |                  30
+ 528 |                  29
+ 528 |                  28
+ 528 |                   3
+ 528 |                   2
+ 528 |                   1
+ 528 |                  32
+ 528 |                  15
+ 528 |                  14
+ 528 |                  13
+ 528 |                  12
+ 528 |                   7
+ 528 |                   6
+ 528 |                   5
+ 528 |                   4
+</entry>
+
+<entry key="q17.query">
+SELECT PROVENANCE sum(sub.sum),(id / 2) AS id FROM							 
+		(SELECT sum(id) AS sum,(id / 2) AS id FROM aggr GROUP BY (id / 2)) AS sub 
+	GROUP BY sum, (id / 2);
+</entry>
+<entry key="q17.result">
+ sum | id | prov_public_aggr_id 
+-----+----+---------------------
+  21 |  2 |                  11
+  21 |  2 |                  10
+  57 |  7 |                  29
+  57 |  7 |                  28
+  41 |  5 |                  21
+  41 |  5 |                  20
+   1 |  0 |                   1
+  37 |  4 |                  19
+  37 |  4 |                  18
+  32 |  8 |                  32
+  25 |  3 |                  13
+  25 |  3 |                  12
+   5 |  0 |                   3
+   5 |  0 |                   2
+  53 |  6 |                  27
+  53 |  6 |                  26
+  13 |  1 |                   7
+  13 |  1 |                   6
+  29 |  3 |                  15
+  29 |  3 |                  14
+  33 |  4 |                  17
+  33 |  4 |                  16
+  45 |  5 |                  23
+  45 |  5 |                  22
+  49 |  6 |                  25
+  49 |  6 |                  24
+   9 |  1 |                   5
+   9 |  1 |                   4
+  61 |  7 |                  31
+  61 |  7 |                  30
+  17 |  2 |                   9
+  17 |  2 |                   8
+</entry>
+
+<entry key="q18.query">
+SELECT PROVENANCE sum(sub.sum) FROM 									
+	(SELECT sum(sub.sum),(id / 2) AS id FROM 
+		(SELECT sum(sub.sum),(id / 2) AS id FROM 
+			(SELECT sum(id) AS sum,(id / 2) AS id FROM aggr GROUP BY (id / 2)) AS sub
+		GROUP BY (id / 2)) AS sub
+	GROUP BY (id / 2)) AS sub;
+</entry>
+<entry key="q18.result">
+ sum | prov_public_aggr_id 
+-----+---------------------
+ 528 |                  32
+ 528 |                  17
+ 528 |                  16
+ 528 |                  19
+ 528 |                  18
+ 528 |                  21
+ 528 |                  20
+ 528 |                  23
+ 528 |                  22
+ 528 |                   7
+ 528 |                   6
+ 528 |                   5
+ 528 |                   4
+ 528 |                   3
+ 528 |                   2
+ 528 |                   1
+ 528 |                  31
+ 528 |                  30
+ 528 |                  29
+ 528 |                  28
+ 528 |                  25
+ 528 |                  24
+ 528 |                  27
+ 528 |                  26
+ 528 |                  15
+ 528 |                  14
+ 528 |                  13
+ 528 |                  12
+ 528 |                   9
+ 528 |                   8
+ 528 |                  11
+ 528 |                  10
+</entry>
+
+<entry key="q19.query">
+SELECT PROVENANCE sum(sumid) FROM (SELECT sum(sumid) AS sumid FROM (SELECT sum(sumid) AS sumid FROM (SELECT sum(id) AS sumid FROM aggr) AS sub) AS sub) as sub;
+</entry>
+<entry key="q19.result">
+ sum | prov_public_aggr_id 
+-----+---------------------
+ 528 |                   1
+ 528 |                   2
+ 528 |                   3
+ 528 |                   4
+ 528 |                   5
+ 528 |                   6
+ 528 |                   7
+ 528 |                   8
+ 528 |                   9
+ 528 |                  10
+ 528 |                  11
+ 528 |                  12
+ 528 |                  13
+ 528 |                  14
+ 528 |                  15
+ 528 |                  16
+ 528 |                  17
+ 528 |                  18
+ 528 |                  19
+ 528 |                  20
+ 528 |                  21
+ 528 |                  22
+ 528 |                  23
+ 528 |                  24
+ 528 |                  25
+ 528 |                  26
+ 528 |                  27
+ 528 |                  28
+ 528 |                  29
+ 528 |                  30
+ 528 |                  31
+ 528 |                  32
+</entry>
+
+<entry key="q20.query">
+SELECT PROVENANCE sum(id * 10) FROM bagdiff1;
+</entry>
+<entry key="q20.result">
+ sum | prov_public_bagdiff1_id 
+-----+-------------------------
+  20 |                       1
+  20 |                       1
+</entry>
+
+<entry key="q21.query">
+SELECT PROVENANCE sum(id) / 30 FROM bagdiff1;
+</entry>
+<entry key="q21.result">
+ ?column? | prov_public_bagdiff1_id 
+----------+-------------------------
+        0 |                       1
+        0 |                       1
+</entry>
+
+<entry key="q22.query">
+SELECT PROVENANCE sum(id) / avg(id) FROM bagdiff1;	
+</entry>
+<entry key="q22.result">
+        ?column?        | prov_public_bagdiff1_id 
+------------------------+-------------------------
+ 2.00000000000000000000 |                       1
+ 2.00000000000000000000 |                       1
+</entry>
+
+<entry key="q23.query">
+SELECT PROVENANCE sum(sa.price) AS total_sales 
+	FROM shop sh,
+		(SELECT i.price * s.number_items AS price, shop_id FROM item i, sales s WHERE i.id = s.item_id) AS sa
+	WHERE sh.id = sa.shop_id 
+	GROUP BY sh.id;
+</entry>
+<entry key="q23.result">
+ total_sales | prov_public_shop_id | prov_public_shop_name | prov_public_shop_location__id | prov_public_shop_manager__id | prov_public_item_id | prov_public_item_name | prov_public_item_price | prov_public_item_cost | prov_public_sales_item__id | prov_public_sales_shop__id | prov_public_sales_number__items | prov_public_sales_sales__date 
+-------------+---------------------+-----------------------+------------------------------+-----------------------------+---------------------+-----------------------+------------------------+-----------------------+---------------------------+---------------------------+--------------------------------+------------------------------
+        3018 |                   4 | Bern                  |                            4 |                           4 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         4 |                              1 | 2007-01-01
+        3018 |                   4 | Bern                  |                            4 |                           4 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         4 |                              1 | 2009-01-25
+        3018 |                   4 | Bern                  |                            4 |                           4 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         4 |                            100 | 2009-01-01
+        3018 |                   4 | Bern                  |                            4 |                           4 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         4 |                             20 | 2007-01-01
+       12994 |                   1 | Zurich city           |                            1 |                           1 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         1 |                             20 | 2003-01-01
+       12994 |                   1 | Zurich city           |                            1 |                           1 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         1 |                              6 | 2009-01-01
+       12994 |                   1 | Zurich city           |                            1 |                           1 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             11 | 2007-05-01
+       12994 |                   1 | Zurich city           |                            1 |                           1 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             25 | 2007-01-01
+        1424 |                   3 | Basel                 |                            3 |                           3 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         3 |                              1 | 2002-01-01
+        1424 |                   3 | Basel                 |                            3 |                           3 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         3 |                             33 | 2007-01-01
+        1751 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                              3 | 2003-01-15
+        1751 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2010-01-01
+        1751 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2007-01-01
+        1751 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                              2 | 2008-10-01
+        1751 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                             46 | 2008-01-01
+</entry>
+
+<entry key="q24.query">
+SELECT PROVENANCE avg(profit) AS avg_prof 
+	FROM 
+	(SELECT (sales - costs) AS profit 
+		FROM
+		(SELECT sum(sa.price) AS sales, sh.id AS shop_id
+			FROM shop sh,
+				(SELECT i.price * s.number_items AS price, 
+					shop_id FROM item i, sales s 
+					WHERE i.id = s.item_id) AS sa
+			WHERE sh.id = sa.shop_id 
+			GROUP BY sh.id) AS sales_per_shop,
+		(SELECT sum(em.salary) AS costs, sh.id AS shop_id
+			FROM shop sh,
+				employee em,
+				employee_works_at_shop wo
+			WHERE wo.employee_id = em.id AND wo.shop_id = sh.id 
+			GROUP BY sh.id) AS costs_per_shop
+		WHERE sales_per_shop.shop_id = costs_per_shop.shop_id) as prof;
+</entry>
+<entry key="q24.result">
+        avg_prof         | prov_public_shop_id | prov_public_shop_name | prov_public_shop_location__id | prov_public_shop_manager__id | prov_public_item_id | prov_public_item_name | prov_public_item_price | prov_public_item_cost | prov_public_sales_item__id | prov_public_sales_shop__id | prov_public_sales_number__items | prov_public_sales_sales__date | prov_public_shop_1_id | prov_public_shop_1_name | prov_public_shop_1_location__id | prov_public_shop_1_manager__id | prov_public_employee_id | prov_public_employee_first__name | prov_public_employee_last__name | prov_public_employee_salary | prov_public_employee_works_at_shop_employee__id | prov_public_employee_works_at_shop_shop__id 
+        -------------------------+---------------------+-----------------------+------------------------------+-----------------------------+---------------------+-----------------------+------------------------+-----------------------+---------------------------+---------------------------+--------------------------------+------------------------------+-----------------------+-------------------------+--------------------------------+-------------------------------+-------------------------+---------------------------------+--------------------------------+-----------------------------+------------------------------------------------+--------------------------------------------
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         1 |                             20 | 2003-01-01                   |                     1 | Zurich city             |                              1 |                             1 |                       1 | Peter                           | Meter                          |                       10000 |                                              1 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         1 |                             20 | 2003-01-01                   |                     1 | Zurich city             |                              1 |                             1 |                       5 | Boris                           | Heinzer                        |                        5000 |                                              5 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             25 | 2007-01-01                   |                     1 | Zurich city             |                              1 |                             1 |                       1 | Peter                           | Meter                          |                       10000 |                                              1 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             25 | 2007-01-01                   |                     1 | Zurich city             |                              1 |                             1 |                       5 | Boris                           | Heinzer                        |                        5000 |                                              5 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             11 | 2007-05-01                   |                     1 | Zurich city             |                              1 |                             1 |                       1 | Peter                           | Meter                          |                       10000 |                                              1 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         1 |                             11 | 2007-05-01                   |                     1 | Zurich city             |                              1 |                             1 |                       5 | Boris                           | Heinzer                        |                        5000 |                                              5 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         1 |                              6 | 2009-01-01                   |                     1 | Zurich city             |                              1 |                             1 |                       1 | Peter                           | Meter                          |                       10000 |                                              1 |                                          1
+ -11203.2500000000000000 |                   1 | Zurich city           |                            1 |                           1 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         1 |                              6 | 2009-01-01                   |                     1 | Zurich city             |                              1 |                             1 |                       5 | Boris                           | Heinzer                        |                        5000 |                                              5 |                                          1
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                             46 | 2008-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       7 | Doris                           | Dorissen                       |                        3000 |                                              7 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                             46 | 2008-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       6 | Gert                            | Gertsen                        |                       12000 |                                              6 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                             46 | 2008-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       2 | Getrud                          | Muller                         |                        8000 |                                              2 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                              3 | 2003-01-15                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       7 | Doris                           | Dorissen                       |                        3000 |                                              7 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                              3 | 2003-01-15                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       6 | Gert                            | Gertsen                        |                       12000 |                                              6 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                              3 | 2003-01-15                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       2 | Getrud                          | Muller                         |                        8000 |                                              2 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2010-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       7 | Doris                           | Dorissen                       |                        3000 |                                              7 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2010-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       6 | Gert                            | Gertsen                        |                       12000 |                                              6 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2010-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       2 | Getrud                          | Muller                         |                        8000 |                                              2 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2007-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       7 | Doris                           | Dorissen                       |                        3000 |                                              7 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2007-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       6 | Gert                            | Gertsen                        |                       12000 |                                              6 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         2 |                             13 | 2007-01-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       2 | Getrud                          | Muller                         |                        8000 |                                              2 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                              2 | 2008-10-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       7 | Doris                           | Dorissen                       |                        3000 |                                              7 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                              2 | 2008-10-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       6 | Gert                            | Gertsen                        |                       12000 |                                              6 |                                          2
+ -11203.2500000000000000 |                   2 | Zurich Altstetten     |                            2 |                           2 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         2 |                              2 | 2008-10-01                   |                     2 | Zurich Altstetten       |                              2 |                             2 |                       2 | Getrud                          | Muller                         |                        8000 |                                              2 |                                          2
+ -11203.2500000000000000 |                   3 | Basel                 |                            3 |                           3 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         3 |                             33 | 2007-01-01                   |                     3 | Basel                   |                              3 |                             3 |                       3 | Heinz                           | Heller                         |                       15000 |                                              3 |                                          3
+ -11203.2500000000000000 |                   3 | Basel                 |                            3 |                           3 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         3 |                             33 | 2007-01-01                   |                     3 | Basel                   |                              3 |                             3 |                       8 | Walter                          | Ott                            |                        2000 |                                              8 |                                          3
+ -11203.2500000000000000 |                   3 | Basel                 |                            3 |                           3 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         3 |                              1 | 2002-01-01                   |                     3 | Basel                   |                              3 |                             3 |                       3 | Heinz                           | Heller                         |                       15000 |                                              3 |                                          3
+ -11203.2500000000000000 |                   3 | Basel                 |                            3 |                           3 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         3 |                              1 | 2002-01-01                   |                     3 | Basel                   |                              3 |                             3 |                       8 | Walter                          | Ott                            |                        2000 |                                              8 |                                          3
+ -11203.2500000000000000 |                   4 | Bern                  |                            4 |                           4 |                   2 | Rasenmaeher           |                    599 |                   125 |                         2 |                         4 |                              1 | 2007-01-01                   |                     4 | Bern                    |                              4 |                             4 |                       4 | Fritz                           | Knoten                         |                        9000 |                                              4 |                                          4
+ -11203.2500000000000000 |                   4 | Bern                  |                            4 |                           4 |                   1 | heckenschere          |                     25 |                    13 |                         1 |                         4 |                             20 | 2007-01-01                   |                     4 | Bern                    |                              4 |                             4 |                       4 | Fritz                           | Knoten                         |                        9000 |                                              4 |                                          4
+ -11203.2500000000000000 |                   4 | Bern                  |                            4 |                           4 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         4 |                            100 | 2009-01-01                   |                     4 | Bern                    |                              4 |                             4 |                       4 | Fritz                           | Knoten                         |                        9000 |                                              4 |                                          4
+ -11203.2500000000000000 |                   4 | Bern                  |                            4 |                           4 |                   3 | Gartenschlauch        |                     19 |                     5 |                         3 |                         4 |                              1 | 2009-01-25                   |                     4 | Bern                    |                              4 |                             4 |                       4 | Fritz                           | Knoten                         |                        9000 |                                              4 |                                          4
+</entry>
+
+<entry key="q25.query">
+SELECT DISTINCT (avg_prof = orig_avg_prof) FROM 
+(SELECT PROVENANCE avg(profit) AS avg_prof 
+	FROM 
+	(SELECT (sales - costs) AS profit 
+		FROM
+		(SELECT sum(sa.price) AS sales, sh.id AS shop_id
+			FROM shop sh,
+				(SELECT i.price * s.number_items AS price, 
+					shop_id FROM item i, sales s 
+					WHERE i.id = s.item_id) AS sa
+			WHERE sh.id = sa.shop_id 
+			GROUP BY sh.id) AS sales_per_shop,
+		(SELECT sum(em.salary) AS costs, sh.id AS shop_id
+			FROM shop sh,
+				employee em,
+				employee_works_at_shop wo
+			WHERE wo.employee_id = em.id AND wo.shop_id = sh.id 
+			GROUP BY sh.id) AS costs_per_shop
+		WHERE sales_per_shop.shop_id = costs_per_shop.shop_id) as prof
+	) AS prov,
+(SELECT avg(profit) AS orig_avg_prof 
+	FROM 
+	(SELECT (sales - costs) AS profit 
+		FROM
+		(SELECT sum(sa.price) AS sales, sh.id AS shop_id
+			FROM shop sh,
+				(SELECT i.price * s.number_items AS price,
+					shop_id FROM item i, sales s 
+					WHERE i.id = s.item_id) AS sa
+			WHERE sh.id = sa.shop_id 
+			GROUP BY sh.id) AS sales_per_shop,
+		(SELECT sum(em.salary) AS costs, sh.id AS shop_id
+			FROM shop sh,
+				employee em,
+				employee_works_at_shop wo
+			WHERE wo.employee_id = em.id AND wo.shop_id = sh.id 
+			GROUP BY sh.id) AS costs_per_shop
+		WHERE sales_per_shop.shop_id = costs_per_shop.shop_id) as prof
+	) AS orig;
+</entry>
+<entry key="q25.result">
+ ?column? 
+----------
+ t
+</entry>
+
+<entry key="q26.query">
+SELECT PROVENANCE DISTINCT sum(id) FROM employee;
+</entry>
+<entry key="q26.result">
+ sum | prov_public_employee_id | prov_public_employee_first__name | prov_public_employee_last__name | prov_public_employee_salary 
+-----+-------------------------+---------------------------------+--------------------------------+-----------------------------
+  36 |                       1 | Peter                           | Meter                          |                       10000
+  36 |                       3 | Heinz                           | Heller                         |                       15000
+  36 |                       4 | Fritz                           | Knoten                         |                        9000
+  36 |                       5 | Boris                           | Heinzer                        |                        5000
+  36 |                       6 | Gert                            | Gertsen                        |                       12000
+  36 |                       7 | Doris                           | Dorissen                       |                        3000
+  36 |                       8 | Walter                          | Ott                            |                        2000
+  36 |                       2 | Getrud                          | Muller                         |                        8000
+</entry>
+
+<entry key="q27.query">
+SELECT PROVENANCE DISTINCT * FROM (SELECT sum(id) FROM employee) AS sub;
+</entry>
+<entry key="q27.result">
+ sum | prov_public_employee_id | prov_public_employee_first__name | prov_public_employee_last__name | prov_public_employee_salary 
+-----+-------------------------+---------------------------------+--------------------------------+-----------------------------
+  36 |                       1 | Peter                           | Meter                          |                       10000
+  36 |                       3 | Heinz                           | Heller                         |                       15000
+  36 |                       4 | Fritz                           | Knoten                         |                        9000
+  36 |                       5 | Boris                           | Heinzer                        |                        5000
+  36 |                       6 | Gert                            | Gertsen                        |                       12000
+  36 |                       7 | Doris                           | Dorissen                       |                        3000
+  36 |                       8 | Walter                          | Ott                            |                        2000
+  36 |                       2 | Getrud                          | Muller                         |                        8000
+</entry>
+
+<entry key="q28.query">
+SELECT PROVENANCE sum(nonnu) FROM bagdiff4 GROUP BY id;
+</entry>
+<entry key="q28.result">
+ sum | prov_public_bagdiff4_id | prov_public_bagdiff4_nonnu 
+-----+-------------------------+----------------------------
+ 200 |                         |                        100
+ 200 |                         |                        100
+ 200 |                       1 |                        100
+ 200 |                       1 |                        100
+</entry>
+
+<entry key="q29.query">
+SELECT PROVENANCE sum(a) AS suma FROM x GROUP BY a ORDER BY a;
+</entry>
+<entry key="q29.result">
+ suma | prov_public_x_a | prov_public_x_b 
+------+-----------------+-----------------
+    1 |               1 |               1
+    2 |               2 |               2
+    3 |               3 |               3
+</entry>
+
+<entry key="q30.query">
+SELECT PROVENANCE sum(i) AS suma FROM r GROUP BY i ORDER BY i;
+</entry>
+<entry key="q30.result">
+ suma | prov_public_r_i
+------+-----------------
+    1 |               1
+    2 |               2
+    3 |               3
+</entry>
+
+<entry key="q31.query">
+select provenance
+	sum(a) AS rev,
+	c
+FROM x, v
+WHERE x.a = v.d
+GROUP BY
+	x.b,
+	v.c,
+	x.a;
+</entry>
+<entry key="q31.result">
+ rev | c | prov_public_x_a | prov_public_x_b | prov_public_v_c | prov_public_v_d 
+-----+---+-----------------+-----------------+-----------------+-----------------
+   1 | 2 |               1 |               1 |               2 |               1
+   1 | 4 |               1 |               1 |               4 |               1
+   1 | 5 |               1 |               1 |               5 |               1
+</entry>
+
+<entry key="q32.query">
+SELECT PROVENANCE
+		sum(a) AS rev,
+		c
+	FROM x, v
+	WHERE x.a = v.d
+	GROUP BY
+		x.b,
+		v.c,
+		x.a
+	ORDER BY
+		rev,
+		v.c;
+</entry>
+<entry key="q32.result">
+ rev | c | prov_public_x_a | prov_public_x_b | prov_public_v_c | prov_public_v_d 
+-----+---+-----------------+-----------------+-----------------+-----------------
+   1 | 2 |               1 |               1 |               2 |               1
+   1 | 4 |               1 |               1 |               4 |               1
+   1 | 5 |               1 |               1 |               5 |               1
+</entry>
+
+<entry key="q33.query">
+SELECT PROVENANCE sum(i) AS sumi FROM r GROUP BY i ORDER BY sumi; 
+</entry>
+<entry key="q33.result">
+ sumi | prov_public_r_i 
+------+-----------------
+    1 |               1
+    2 |               2
+    3 |               3
+</entry>
+
+</properties>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE sum(i) FROM r HAVING sum(i) &gt; ANY (SELECT * FROM s WHERE s.i = avg(r.i)::int);
+</entry>
+<entry key="q1.result">
+ sum | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------
+   6 |               2 |               1
+   6 |               2 |               2
+   6 |               2 |               3
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE sum(i) FROM r GROUP BY r.i HAVING sum(i) &gt; ALL (SELECT * FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q2.result">
+ sum | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------
+   3 |                 |               3
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE sum(i) FROM r GROUP BY r.i HAVING sum(i) = ANY (SELECT * FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q3.result">
+ sum | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------
+   2 |               2 |               2
+   1 |               1 |               1
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE sum(i) FROM (SELECT * FROM r) r GROUP BY r.i HAVING sum(i) = ANY (SELECT * FROM s WHERE s.i = r.i);
+</entry>
+<entry key="q4.result">
+ sum | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------
+   2 |               2 |               2
+   1 |               1 |               1
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE count(*) FROM (SELECT sum(i) AS sumi FROM r) sumr GROUP BY sumi HAVING sum(sumi) = ANY (SELECT s.i * 3 FROM s WHERE s.i * 3 = sumi);
+</entry>
+<entry key="q5.result">
+ count | prov_public_s_i | prov_public_r_i 
+-------+-----------------+-----------------
+     1 |               2 |               3
+     1 |               2 |               2
+     1 |               2 |               1
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE sum(i) FROM r HAVING sum(i) &gt; ANY (SELECT * FROM s WHERE s.i * 3 = sum(r.i));
+</entry>
+<entry key="q6.result">
+ sum | prov_public_s_i | prov_public_r_i 
+-----+-----------------+-----------------
+   6 |               2 |               1
+   6 |               2 |               2
+   6 |               2 |               3
+</entry>
+
+</properties>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r INTERSECT SELECT * FROM s) AS sub;
+</entry>
+<entry key="q1.result">
+ i | trans_prov
+---+-------------
+ 1 | 111
+ 2 | 111
+</entry>
+
+<entry key="q2.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r UNION SELECT * FROM s) AS sub;
+</entry>
+<entry key="q2.result">
+ i | trans_prov 
+---+------------
+ 1 | 111
+ 2 | 111
+ 3 | 110
+ 4 | 101
+</entry>
+<entry key="q2.result1">
+ i | trans_prov 
+---+------------
+ 1 | 101
+ 1 | 110
+ 2 | 101
+ 2 | 110
+ 3 | 110
+ 4 | 101
+</entry>
+
+<entry key="q3.query">
+ERROR SELECT TRANSPROV * FROM (SELECT * FROM r EXCEPT SELECT * FROM s) AS sub;
+</entry>
+<entry key="q3.result">
+ i | trans_prov 
+---+------------
+</entry>
+
+<entry key="q4.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r INTERSECT ALL SELECT * FROM s) AS sub;
+</entry>
+<entry key="q4.result">
+ i | trans_prov
+---+-------------
+ 1 | 111
+ 2 | 111
+</entry>
+
+<entry key="q5.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r UNION ALL SELECT * FROM s) AS sub;
+</entry>
+<entry key="q5.result">
+ i | trans_prov 
+---+------------
+ 1 | 111
+ 1 | 111
+ 2 | 111
+ 2 | 111
+ 3 | 110
+ 4 | 101
+</entry>
+<entry key="q5.result1">
+ i | trans_prov 
+---+------------
+ 1 | 110
+ 2 | 110
+ 3 | 110
+ 1 | 101
+ 2 | 101
+ 4 | 101
+</entry>
+
+<entry key="q6.query">
+ERROR SELECT TRANSPROV * FROM (SELECT * FROM r EXCEPT ALL SELECT * FROM s) AS sub;
+</entry>
+<entry key="q6.result">
+ i | trans_prov 
+---+------------
+</entry>
+
+<entry key="q7.query">
+SELECT TRANSPROV * FROM (SELECT * FROM bagdiff3 INTERSECT SELECT * FROM bagdiff1) AS sub;
+</entry>
+<entry key="q7.result">
+ id | trans_prov
+----+-------------
+  1 | 111
+</entry>
+
+<entry key="q8.query">
+SELECT TRANSPROV * FROM (SELECT * FROM bagdiff3 INTERSECT ALL SELECT * FROM bagdiff1) AS sub;
+</entry>
+<entry key="q8.result">
+ id | trans_prov
+----+-------------
+  1 | 111
+  1 | 111
+</entry>
+
+<entry key="q9.query">
+SELECT TRANSPROV * FROM (SELECT * FROM bagdiff1 INTERSECT SELECT * FROM bagdiff2 INTERSECT SELECT * FROM bagdiff3) AS sub;
+</entry>
+<entry key="q9.result">
+ id | trans_prov
+----+-------------
+  1 | 11111
+</entry>
+
+<entry key="q10.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r UNION SELECT * FROM s UNION SELECT * FROM t) AS sub;
+</entry>
+<entry key="q10.result">
+ i | trans_prov 
+---+------------
+ 1 | 11110
+ 2 | 11111
+ 3 | 11100
+ 4 | 11011
+ 6 | 10001
+</entry>
+<entry key="q10.result1">
+ i | trans_prov 
+---+------------
+ 1 | 11010
+ 1 | 11100
+ 2 | 10001
+ 2 | 11010
+ 2 | 11100
+ 3 | 11100
+ 4 | 10001
+ 4 | 11010
+ 6 | 10001
+</entry>
+
+<entry key="q11.query">
+SELECT TRANSPROV * FROM ((SELECT * FROM r INTERSECT SELECT * FROM s) UNION SELECT * FROM t) AS sub; 
+</entry>
+<entry key="q11.result">
+ i | trans_prov 
+---+------------
+ 1 | 11110
+ 2 | 11111
+ 4 | 10001
+ 6 | 10001
+</entry>
+<entry key="q11.result1">
+ i | trans_prov 
+---+------------
+ 1 | 11110
+ 2 | 10001
+ 2 | 11110
+ 4 | 10001
+ 6 | 10001
+</entry>
+
+<entry key="q12.query">
+SELECT TRANSPROV * FROM ((SELECT * FROM r UNION SELECT * FROM s) INTERSECT SELECT * FROM t) AS sub;
+</entry>
+<entry key="q12.result">
+ i | trans_prov 
+---+------------
+ 2 | 11111
+ 4 | 11011
+</entry>
+<entry key="q12.result1">
+ i | trans_prov 
+---+------------
+ 2 | 11011
+ 2 | 11101
+ 4 | 11011
+</entry>
+
+
+<entry key="q13.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r WHERE r.i != 2 INTERSECT SELECT * FROM t) AS sub;
+</entry>
+<entry key="q13.result">
+ i | trans_prov 
+---+------------
+</entry>
+
+
+<entry key="q14.query">
+SELECT TRANSPROV * FROM (SELECT * FROM r UNION SELECT * FROM s UNION SELECT * FROM t UNION SELECT c FROM v) AS sub;
+</entry>
+<entry key="q14.result">
+ i | trans_prov 
+---+------------
+ 1 | 11111000
+ 2 | 11111111
+ 3 | 11110000
+ 4 | 11101111
+ 5 | 10000011
+ 6 | 11000100
+</entry>
+<entry key="q14.result1">
+ i | trans_prov 
+---+------------
+ 1 | 11101000
+ 1 | 11110000
+ 2 | 10000011
+ 2 | 11000100
+ 2 | 11101000
+ 2 | 11110000
+ 3 | 11110000
+ 4 | 10000011
+ 4 | 11000100
+ 4 | 11101000
+ 5 | 10000011
+ 6 | 11000100
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+</properties>
