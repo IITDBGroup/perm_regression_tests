@@ -95,7 +95,8 @@
 	</target>
 	
 	<target name="compile" depends="cleanTests">
-		<javac srcdir="${sourcedir}" destdir="${binarydir}" classpathref="libraries" debug="on">
+		<javac srcdir="${sourcedir}" destdir="${binarydir}" classpathref="libraries" 
+			debug="on" excludes="**/.svn*">
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 	</target>
@@ -115,7 +116,8 @@
 	</target>
 	
 	<target name="compileTests" depends="genTests">
-		<javac srcdir="${testsourcedir}" destdir="${binarydir}" classpathref="libraries" debug="on">
+		<javac srcdir="${testsourcedir}" destdir="${binarydir}" classpathref="libraries" 
+			debug="on" excludes="**/.svn*">
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 	</target>
