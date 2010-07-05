@@ -8,13 +8,13 @@ DESCRIPTION
 
 PermTester is a Java JUnit (DBUnit) TestSuite that fulfills the purpose of the
  PostgreSQL regression tests for the Perm extensions. It's basically a generator for
- Perm Testcases. Testcases are defined in Java XML Property files
+ Perm test cases. Test cases are defined in Java XML Property files
  and stored under resource/sql. PermTester reads these files and
  automatically generates JUnits tests from these files and organizes
  them into Suites according to the names of the XML files. Each XML file
  contains Properties if the form "qNUMBER.query" that contains an SQL 
  query with an associated "qNUMBER.result" that contains the expected 
- query result as outputted by psql. Each such combination of query + result
+ query result as outputed by psql. Each such combination of query + result
  is turned into a single test case which executes the query against 
  an test database and compares the actual result against the expected one). 
  PermTester comes with a SQL-script in resource/testdb/testdb.sql that
@@ -189,7 +189,7 @@ specialFeatures.xml		PostgreSQL specific stuff like Arrays
 sublink.*				Queries involving nested subqueries (called sublinks).
 						The last part of the sublink query file names is used to
 						indicate in which clause the sublinks are used in.
-sublink.both.*			Correlated and uncorrelated sublinks in combination
+sublink.both.*			Combination of correlated and uncorrelated sublinks
 sublink.corr.*			Correlated sublinks
 sublink.uncorr.*		Uncorrelated sublinks
 sublink.*.nest.*		Nested sublinks. I.e., sublinks that contain sublinks

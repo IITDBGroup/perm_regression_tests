@@ -575,14 +575,14 @@ CREATE TABLE region (
 	PRIMARY KEY (r_regionkey)
 );
 
-COPY part FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/part.cpy' WITH CSV DELIMITER '|';       
-COPY supplier FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/supplier.cpy' WITH CSV DELIMITER '|';       
-COPY partsupp FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/partsupp.cpy' WITH CSV DELIMITER '|';      
-COPY customer FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/customer.cpy' WITH CSV DELIMITER '|';       
-COPY orders FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/orders.cpy' WITH CSV DELIMITER '|';       
-COPY lineitem FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/lineitem.cpy' WITH CSV DELIMITER '|';       
-COPY nation FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/nation.cpy' WITH CSV DELIMITER '|';
-COPY region FROM '/Users/lord_pretzel/Documents/workspace/PermTester/resource/testdb/region.cpy' WITH CSV DELIMITER '|';
+COPY part FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/part.cpy' WITH CSV DELIMITER '|';       
+COPY supplier FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/supplier.cpy' WITH CSV DELIMITER '|';       
+COPY partsupp FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/partsupp.cpy' WITH CSV DELIMITER '|';      
+COPY customer FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/customer.cpy' WITH CSV DELIMITER '|';       
+COPY orders FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/orders.cpy' WITH CSV DELIMITER '|';       
+COPY lineitem FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/lineitem.cpy' WITH CSV DELIMITER '|';       
+COPY nation FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/nation.cpy' WITH CSV DELIMITER '|';
+COPY region FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/region.cpy' WITH CSV DELIMITER '|';
 
 --ALTER TABLE supplier ADD FOREIGN KEY (s_nationkey) REFERENCES nation (n_nationkey);
 

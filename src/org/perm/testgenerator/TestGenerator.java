@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 import org.perm.testgenerator.dataset.DataAndQueryGenerator;
 

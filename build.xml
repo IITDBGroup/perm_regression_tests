@@ -109,7 +109,9 @@
 	</target>
 	
 	<target name="genTests" depends="jarGenerator">
-		<java classname="org.perm.testgenerator.TestGenerator" classpathref="libraries" />
+		<java classname="org.perm.testgenerator.TestGenerator" classpathref="libraries">
+			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
+		</java>
 	</target>
 	
 	<target name="compileTests" depends="genTests">
@@ -182,6 +184,7 @@
 		<junit printsummary="on" haltonfailure="false">
 			<classpath refid="runTestsClasspath"/>
 			<test name="org.perm.autotests.${TestName}" haltonfailure="false" />
+			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
 		</junit>
 	</target>
 		
