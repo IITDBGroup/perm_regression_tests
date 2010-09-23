@@ -48,11 +48,103 @@ SELECT bitoragg (a) FROM testbitset;
  111
 </entry>
 
+<entry key="q5.query">
+SELECT bitset_nonzero_repeat('B1'::bit varying, 1);
+</entry>
+<entry key="q5.result">
+ bitset_nonzero_repeat 
+-----------------------
+ t
+</entry>
+
+<entry key="q6.query">
+SELECT bitset_nonzero_repeat('B0'::bit varying, 1);
+</entry>
+<entry key="q6.result">
+ bitset_nonzero_repeat 
+-----------------------
+ f
+</entry>
+
+<entry key="q7.query">
+SELECT bitset_nonzero_repeat('B0101'::bit varying, 2);
+</entry>
+<entry key="q7.result">
+ bitset_nonzero_repeat 
+-----------------------
+ t
+</entry>
+
+<entry key="q8.query">
+SELECT bitset_nonzero_repeat('B011011'::bit varying, 2);
+</entry>
+<entry key="q8.result">
+ bitset_nonzero_repeat 
+-----------------------
+ t
+</entry>
+
+<entry key="q9.query">
+SELECT bitset_nonzero_repeat('B011000'::bit varying, 2);
+</entry>
+<entry key="q9.result">
+ bitset_nonzero_repeat 
+-----------------------
+ f
+</entry>
+
+<entry key="q10.query">
+SELECT bitset_nonzero_repeat('B0000100010000000'::bit varying, 8);
+</entry>
+<entry key="q10.result">
+ bitset_nonzero_repeat 
+-----------------------
+ t
+</entry>
+
+<entry key="q11.query">
+SELECT bitset_nonzero_repeat('B0000000110000000'::bit varying, 8);
+</entry>
+<entry key="q11.result">
+ bitset_nonzero_repeat 
+-----------------------
+ t
+</entry>
+
+<entry key="q11.query">
+SELECT bitset_nonzero_repeat('B0000000010000000'::bit varying, 8);
+</entry>
+<entry key="q11.result">
+ bitset_nonzero_repeat 
+-----------------------
+ f
+</entry>
+
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">
 </entry>
 
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
 
 
 </properties>

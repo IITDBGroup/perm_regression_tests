@@ -43,6 +43,13 @@ SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) 
 ---+-----------------+-----------------
  2 |               2 |               2
 </entry>
+<entry key="q4.result1">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 2 |               2 |                
+ 2 |                 |               2
+</entry>
+
 
 <entry key="q5.query">
 SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) AS u) AS p WHERE p.i = 3 OR p.i = 1;
@@ -52,6 +59,13 @@ SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) 
 ---+-----------------+-----------------
  1 |               1 |               1
  3 |               3 |                
+</entry>
+<entry key="q5.result1">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |               1 |                
+ 3 |               3 |                
+ 1 |                 |               1
 </entry>
 
 <entry key="q6.query">
@@ -148,6 +162,11 @@ SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r EXCEPT SELECT * FROM s)
  3 |               3 |               2
  3 |               3 |               4
 </entry>
+<entry key="q14.result1">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 3 |               3 |                
+</entry>
 
 <entry key="q15.query">
 SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r EXCEPT ALL SELECT * FROM s) AS sub) AS p WHERE p.i = 3;
@@ -159,6 +178,12 @@ SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r EXCEPT ALL SELECT * FRO
  3 |               3 |               2
  3 |               3 |               4
 </entry>
+<entry key="q15.result1">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 3 |               3 |                
+</entry>
+
 
 <entry key="q16.query">
 SELECT * FROM (SELECT PROVENANCE r.i AS ri, s.i AS si FROM r,s WHERE r.i = s.i) AS p WHERE ri = 2;

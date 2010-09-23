@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i) FROM r;
+</entry>
+<entry key="q1.result">
+ sum | prov_public_r_i 
+-----+-------------------
+   6 |                       
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i) FROM r GROUP BY r.i;
+</entry>
+<entry key="q2.result">
+ sum | prov_public_r_i 
+-----+-------------------
+   2 |                 
+   3 |                 
+   1 |         
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i), r.i FROM r GROUP BY r.i;
+</entry>
+<entry key="q3.result">
+ sum | i | prov_public_r_i 
+-----+---+-----------------
+   2 | 2 |               2
+   3 | 3 |               3
+   1 | 1 |               1
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i) FROM r, s;
+</entry>
+<entry key="q4.result">
+ sum | prov_public_r_i | prov_public_s_i 
+-----+-----------------+-----------------
+  18 |                 |                
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i) FROM r, s GROUP BY s.i;
+</entry>
+<entry key="q5.result">
+ sum | prov_public_r_i | prov_public_s_i 
+-----+-----------------+-----------------
+   6 |                 |                
+   6 |                 |                
+   6 |                 |                
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i), s.i FROM r, s WHERE r.i &lt; s.i GROUP BY s.i;
+</entry>
+<entry key="q6.result">
+ sum | i | prov_public_r_i | prov_public_s_i 
+-----+---+-----------------+-----------------
+   6 | 4 |                 |               4
+   6 | 4 |                 |               4
+   6 | 4 |                 |               4
+   1 | 2 |                 |               2
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(sub.one), sub.grp 
+FROM (SELECT count(*) AS one, s.i AS grp FROM r, s WHERE r.i = s.i GROUP BY s.i) AS sub
+GROUP BY sub.grp;
+</entry>
+<entry key="q7.result">
+ sum | grp | prov_public_r_i | prov_public_s_i 
+-----+-----+-----------------+-----------------
+   1 |   1 |                 |               1
+   1 |   2 |                 |               2
+</entry>
+
+<entry key="q8.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) suma, grpa FROM (SELECT sum(r.i) AS suma, r.i AS grpa FROM r GROUP BY r.i) AS sub;
+</entry>
+<entry key="q8.result">
+ suma | grpa | prov_public_r_i 
+------+------+-----------------
+    2 |    2 |               2
+    3 |    3 |               3
+    1 |    1 |               1
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

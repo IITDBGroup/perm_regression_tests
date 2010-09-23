@@ -64,7 +64,14 @@ SELECT PROVENANCE * FROM (SELECT arr[1] FROM arraytest UNION SELECT arr[2] FROM 
    2 |                        2 | {2,4,5,6}                 |                          1 | {1,2,3}
    4 |                          |                           |                          2 | {2,4,5,6}
 </entry>
-
+<entry key="q6.result1">
+ arr | prov_public_arraytest_id | prov_public_arraytest_arr | prov_public_arraytest_1_id | prov_public_arraytest_1_arr 
+-----+--------------------------+---------------------------+----------------------------+-----------------------------
+   1 |                        1 | {1,2,3}                   |                            | 
+   2 |                        2 | {2,4,5,6}                 |                            | 
+   2 |                          |                           |                          1 | {1,2,3}
+   4 |                          |                           |                          2 | {2,4,5,6}
+</entry>
 
 <entry key="q7.query">
 SELECT PROVENANCE one, (two).one FROM structtest WHERE (two).one &gt; 0;
@@ -125,7 +132,16 @@ SELECT PROVENANCE * FROM (SELECT (two).one FROM structtest UNION SELECT (two).th
    2 |                          2 | (2,hello,1)                |                            3 | (3,hello,2)
    3 |                          3 | (3,hello,2)                |                              | 
 </entry>
-
+<entry key="q11.result1"> 
+ one | prov_public_structtest_one | prov_public_structtest_two | prov_public_structtest_1_one | prov_public_structtest_1_two 
+-----+----------------------------+----------------------------+------------------------------+------------------------------
+   1 |                          1 | (1,hello,1)                |                              | 
+   2 |                          2 | (2,hello,1)                |                              | 
+   3 |                          3 | (3,hello,2)                |                              | 
+   1 |                            |                            |                            1 | (1,hello,1)
+   1 |                            |                            |                            2 | (2,hello,1)
+   2 |                            |                            |                            3 | (3,hello,2)
+</entry>
 
 <entry key="q12.query">
 SELECT PROVENANCE * FROM muchcols ORDER BY one;
@@ -163,6 +179,16 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff3) A
   1 |                       1 |                       1
   1 |                       1 |                       1
   1 |                       1 |                       1
+  2 |                         |                       2
+  3 |                         |                       3
+</entry>
+<entry key="q14.result1">
+  id | prov_public_bagdiff1_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+  1 |                       1 |                        
+  1 |                         |                       1
+  1 |                         |                       1
   2 |                         |                       2
   3 |                         |                       3
 </entry>
@@ -263,7 +289,18 @@ SELECT PROVENANCE * FROM (SELECT char_length(two) FROM muchcols UNION SELECT cha
            6 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
            6 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
 </entry>
-
+<entry key="q21.result1">
+ char_length | prov_public_muchcols_one | prov_public_muchcols_two | prov_public_muchcols_three | prov_public_muchcols_four | prov_public_muchcols_five | prov_public_muchcols_1_one | prov_public_muchcols_1_two | prov_public_muchcols_1_three | prov_public_muchcols_1_four | prov_public_muchcols_1_five 
+-------------+--------------------------+--------------------------+----------------------------+---------------------------+---------------------------+----------------------------+----------------------------+------------------------------+-----------------------------+-----------------------------
+           5 |                        1 | first                    | 2007-01-01                 |             4321212123545 | hello world               |                            |                            |                              |                             | 
+           6 |                        2 | second                   | 2007-01-01                 |                   9898989 | hello                     |                            |                            |                              |                             | 
+           5 |                        2 | third                    | 2007-01-01                 |                 212123545 | world                     |                            |                            |                              |                             | 
+           6 |                        3 | fourth                   | 2007-01-01                 |                        12 | hhhhhhhh                  |                            |                            |                              |                             | 
+           5 |                          |                          |                            |                           |                           |                          1 | first                      | 2007-01-01                   |               4321212123545 | hello world
+           6 |                          |                          |                            |                           |                           |                          2 | second                     | 2007-01-01                   |                     9898989 | hello
+           5 |                          |                          |                            |                           |                           |                          2 | third                      | 2007-01-01                   |                   212123545 | world
+           6 |                          |                          |                            |                           |                           |                          3 | fourth                     | 2007-01-01                   |                          12 | hhhhhhhh
+</entry>
 
 <entry key="q22.query">
 SELECT PROVENANCE 1;

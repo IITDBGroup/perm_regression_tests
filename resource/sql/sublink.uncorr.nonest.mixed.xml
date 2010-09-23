@@ -4,7 +4,8 @@
 <comment>Test cases for Perm-PMS</comment>
 
 <entry key="q1.query">
-ERROR SELECT PROVENANCE sum(i + (SELECT sum(i) FROM s WHERE s.i = 1)) * (SELECT * FROM t WHERE t.i = 2) AS sumi, r.i IN (SELECT * FROM bagdiff3)
+ERROR identical subqueries not identifiable
+SELECT PROVENANCE sum(i + (SELECT sum(i) FROM s WHERE s.i = 1)) * (SELECT * FROM t WHERE t.i = 2) AS sumi, r.i IN (SELECT * FROM bagdiff3)
 	FROM r
 	WHERE r.i IN (SELECT * FROM bagdiff2)
 	GROUP BY r.i IN (SELECT * FROM bagdiff3)

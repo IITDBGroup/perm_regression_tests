@@ -346,6 +346,14 @@ SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT s.i FROM s UNION SELECT * FROM t
  1 |               1 |                 |               1
  2 |               2 |               2 |               2
 </entry>
+<entry key="q27.result1">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 1 |               1 |                 |               1
+ 2 |               2 |                 |               2
+ 2 |                 |               2 |               2
+</entry>
+
 
 <entry key="q28.query">
 SELECT PROVENANCE * FROM bagdiffview a WHERE a.id &lt; 5 AND a.id IN (SELECT * FROM bagdiff1);

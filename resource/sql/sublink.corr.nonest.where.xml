@@ -84,6 +84,13 @@ SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION S
  1 |               1 |                 |               1
  2 |               2 |               2 |               2
 </entry>
+<entry key="q7.result1">
+ i | prov_public_s_i | prov_public_t_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 1 |               1 |                 |               1
+ 2 |                 |               2 |               2
+ 2 |               2 |                 |               2
+</entry>
 
 <entry key="q8.query">
 SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION SELECT * FROM t WHERE t.i = r.i UNION SELECT * FROM bagdiff3 WHERE id = r.i);
@@ -96,6 +103,19 @@ SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION S
  2 |               2 |               2 |                       2 |               2
  3 |                 |                 |                       3 |               3
 </entry>
+<entry key="q8.result1">
+ i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff3_id | prov_public_r_i 
+---+-----------------+-----------------+-------------------------+-----------------
+ 1 |                 |                 |                       1 |               1
+ 1 |                 |                 |                       1 |               1
+ 1 |               1 |                 |                         |               1
+ 2 |                 |                 |                       2 |               2
+ 2 |                 |               2 |                         |               2
+ 2 |               2 |                 |                         |               2
+ 3 |                 |                 |                       3 |               3
+</entry>
+
+
 
 <entry key="q9.query">
 SELECT PROVENANCE * FROM r WHERE r.i = (SELECT sum(ssub.i) FROM (SELECT * FROM s WHERE s.i = r.i) ssub, (SELECT * FROM t WHERE r.i = t.i) tsub WHERE ssub.i = tsub.i);
@@ -115,6 +135,13 @@ SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT * FROM s WHERE s.i = r.i UNION (
  1 |               1 |                 |                         |               1
  2 |               2 |               2 |                       2 |               2
 </entry>
+<entry key="q10.result1">
+i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff3_id | prov_public_r_i 
+---+-----------------+-----------------+-------------------------+-----------------
+ 1 |               1 |                 |                         |               1
+ 2 |                 |               2 |                       2 |               2
+ 2 |               2 |                 |                         |               2
+</entry>
 
 <entry key="q11.query">
 SELECT PROVENANCE * FROM r WHERE r.i IN ((SELECT * FROM s WHERE s.i = r.i UNION SELECT * FROM t WHERE t.i = r.i) INTERSECT SELECT * FROM bagdiff3 WHERE id = r.i);
@@ -126,6 +153,15 @@ SELECT PROVENANCE * FROM r WHERE r.i IN ((SELECT * FROM s WHERE s.i = r.i UNION 
  1 |               1 |                 |                       1 |               1
  2 |               2 |               2 |                       2 |               2
 </entry>
+<entry key="q11.result1">
+ i | prov_public_s_i | prov_public_t_i | prov_public_bagdiff3_id | prov_public_r_i 
+---+-----------------+-----------------+-------------------------+-----------------
+ 1 |               1 |                 |                       1 |               1
+ 1 |               1 |                 |                       1 |               1
+ 2 |                 |               2 |                       2 |               2
+ 2 |               2 |                 |                       2 |               2
+</entry>
+
 
 <entry key="q12.query">
 SELECT PROVENANCE * FROM r WHERE r.i IN (SELECT sum(s.i) FROM s WHERE s.i = r.i);

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT * FROM r UNION SELECT * FROM s) AS sub;
+</entry>
+<entry key="q1.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-------------------
+ 1 |               1 |                 1
+ 2 |               2 |                 2
+ 3 |               3 |                  
+ 4 |                 |                 4
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT * FROM r INTERSECT SELECT * FROM s) AS sub;
+</entry>
+<entry key="q2.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-------------------
+ 1 |               1 |                 1
+ 2 |               2 |                 2
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT * FROM r EXCEPT SELECT * FROM s) AS sub;
+</entry>
+<entry key="q3.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-------------------
+ 3 |               3 |                 
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM ((SELECT * FROM r UNION SELECT * FROM s) EXCEPT SELECT * FROM t) AS sub; 
+</entry>
+<entry key="q4.result">
+ i | prov_public_r_i | prov_public_s_i   | prov_public_t_i
+---+-----------------+-------------------+---------------
+ 1 |               1 |                 1 | 
+ 3 |               3 |                   | 
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) r.i FROM (SELECT * FROM r UNION SELECT * FROM s) AS sub, r;
+</entry>
+<entry key="q5.result">
+ i | prov_public_r_i | prov_public_s_i | prov_public_r_1_i 
+---+-----------------+-----------------+-------------------
+ 1 |                 |                 |                 1
+ 2 |                 |                 |                 2
+ 3 |                 |                 |                 3
+ 1 |                 |                 |                 1
+ 2 |                 |                 |                 2
+ 3 |                 |                 |                 3
+ 1 |                 |                 |                 1
+ 2 |                 |                 |                 2
+ 3 |                 |                 |                 3
+ 1 |                 |                 |                 1
+ 2 |                 |                 |                 2
+ 3 |                 |                 |                 3
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM ((SELECT * FROM set1 UNION SELECT * FROM set2) INTERSECT SELECT * FROM set3) AS sub;
+</entry>
+<entry key="q6.result">
+ a | prov_public_set1_a | prov_public_set2_b | prov_public_set3_c 
+---+--------------------+--------------------+--------------------
+ 1 |                  1 |                  1 |                  1
+ 2 |                  2 |                    |                  2
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM ((SELECT * FROM set1 INTERSECT SELECT * FROM set2) UNION SELECT * FROM set3) AS sub;
+</entry>
+<entry key="q7.result">
+ a | prov_public_set1_a | prov_public_set2_b | prov_public_set3_c 
+---+--------------------+--------------------+--------------------
+ 1 |                  1 |                  1 |                  1
+ 2 |                    |                    |                  2
+</entry>
+
+<entry key="q8.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM ((SELECT * FROM r UNION SELECT * FROM s) INTERSECT (SELECT * FROM t UNION SELECT * FROM t)) AS sub;
+</entry>
+<entry key="q8.result">
+ i | prov_public_r_i | prov_public_s_i | prov_public_t_i | prov_public_t_1_i 
+---+-----------------+-----------------+-----------------+-------------------
+ 2 |               2 |               2 |               2 |                 2
+ 4 |                 |               4 |               4 |                 4
+</entry>
+
+<entry key="q9.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT * FROM r EXCEPT SELECT * FROM s EXCEPT SELECT * FROM t) AS sub;
+</entry>
+<entry key="q9.result">
+ i | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+---+-----------------+-----------------+-----------------
+ 3 |               3 |                 |                
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

@@ -12,6 +12,11 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 EXCEPT ALL SELECT * FROM bagdif
   1 |                       1 |                        
   1 |                       1 |                        
 </entry>
+<entry key="q1.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+</entry>
 
 <entry key="q2.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 EXCEPT SELECT * FROM bagdiff2) AS sub;
@@ -32,6 +37,14 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT ALL SELECT * FROM bagdif
   2 |                       2 |                       1
   3 |                       3 |                       1
 </entry>
+<entry key="q3.result1">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------                       
+  1 |                       1 |       
+  1 |                       1 |                        
+  2 |                       2 |                       
+  3 |                       3 |                       
+</entry>
 
 <entry key="q4.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT SELECT * FROM bagdiff2) AS sub;
@@ -42,6 +55,13 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT SELECT * FROM bagdiff2) 
   2 |                       2 |                       1
   3 |                       3 |                       1
 </entry>
+<entry key="q4.result1">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------
+  2 |                       2 |                        
+  3 |                       3 |                        
+</entry>
+
 
 <entry key="q5.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT SELECT * FROM bagdiff1) AS sub;
@@ -54,6 +74,12 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT SELECT * FROM bagdiff1) 
   3 |                       3 |                       1
   3 |                       3 |                       1
 </entry>
+<entry key="q5.result1">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff1_id 
+----+-------------------------+-------------------------
+  2 |                       2 |                      
+  3 |                       3 |                       
+</entry>
 
 <entry key="q6.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff2) AS sub;
@@ -64,6 +90,15 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff2) A
   1 |                       1 |                       1
   1 |                       1 |                       1
 </entry>
+<entry key="q6.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+  1 |                       1 |                        
+  1 |                         |                       1
+</entry>
+
+
 
 <entry key="q7.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION ALL SELECT * FROM bagdiff2) AS sub;
@@ -78,6 +113,14 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION ALL SELECT * FROM bagdiff
   1 |                       1 |                       1
   1 |                       1 |                       1
 </entry>
+<entry key="q7.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+  1 |                       1 |                        
+  1 |                         |                       1
+</entry>
+
 
 <entry key="q8.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff3) AS sub;
@@ -89,6 +132,16 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff3) A
   1 |                       1 |                       1
   1 |                       1 |                       1
   1 |                       1 |                       1
+  2 |                         |                       2
+  3 |                         |                       3
+</entry>
+<entry key="q8.result1">
+  id | prov_public_bagdiff1_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+  1 |                       1 |                        
+  1 |                         |                       1
+  1 |                         |                       1
   2 |                         |                       2
   3 |                         |                       3
 </entry>
@@ -105,6 +158,15 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff2 UNION ALL SELECT * FROM bagdiff
   1 |                       1 |                       1
   1 |                       1 |                       1
   1 |                       1 |                       1
+  2 |                         |                       2
+  3 |                         |                       3
+</entry>
+<entry key="q9.result1">
+  id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+  1 |                         |                       1
+  1 |                         |                       1
   2 |                         |                       2
   3 |                         |                       3
 </entry>
@@ -172,6 +234,17 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff2 UN
   2 |                         |                         |                       2
   3 |                         |                         |                       3
 </entry>
+<entry key="q14.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                         |                        
+  1 |                       1 |                         |                        
+  1 |                         |                       1 |                        
+  1 |                         |                         |                       1
+  1 |                         |                         |                       1
+  2 |                         |                         |                       2
+  3 |                         |                         |                       3
+</entry>
 
 <entry key="q15.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION (SELECT * FROM bagdiff2 UNION SELECT * FROM bagdiff3)) AS sub;
@@ -183,6 +256,17 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 UNION (SELECT * FROM bagdiff2 U
   1 |                       1 |                       1 |                       1
   1 |                       1 |                       1 |                       1
   1 |                       1 |                       1 |                       1
+  2 |                         |                         |                       2
+  3 |                         |                         |                       3
+</entry>
+<entry key="q15.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                         |                        
+  1 |                       1 |                         |                        
+  1 |                         |                       1 |                        
+  1 |                         |                         |                       1
+  1 |                         |                         |                       1
   2 |                         |                         |                       2
   3 |                         |                         |                       3
 </entry>
@@ -198,6 +282,12 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 EXCEPT ALL (SELECT * FROM bagdi
   1 |                       1 |                       3 |                       1
   1 |                       1 |                       3 |                       1
 </entry>
+<entry key="q16.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff3_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                         |                        
+  1 |                       1 |                         |                        
+</entry>
 
 <entry key="q17.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff2 EXCEPT ALL (SELECT * FROM bagdiff3 EXCEPT SELECT * FROM bagdiff2)) AS sub;
@@ -207,6 +297,11 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff2 EXCEPT ALL (SELECT * FROM bagdi
 ----+-------------------------+-------------------------+---------------------------
   1 |                       1 |                       2 |                         1
   1 |                       1 |                       3 |                         1
+</entry>
+<entry key="q17.result1">
+ id | prov_public_bagdiff2_id | prov_public_bagdiff3_id | prov_public_bagdiff2_1_id 
+----+-------------------------+-------------------------+---------------------------
+  1 |                       1 |                         |                          
 </entry>
 
 <entry key="q18.query">
@@ -228,6 +323,12 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT ALL (SELECT * FROM bagdi
   3 |                       3 |                       1 |                       1
   3 |                       3 |                       1 |                       1
 </entry>
+<entry key="q18.result1">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------+-------------------------
+  2 |                       2 |                         |                        
+  3 |                       3 |                         |                         
+</entry>
 
 <entry key="q19.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT ALL (SELECT * FROM bagdiff1 UNION SELECT * FROM bagdiff2)) AS sub;
@@ -241,6 +342,14 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 EXCEPT ALL (SELECT * FROM bagdi
   2 |                       2 |                       1 |                       1
   3 |                       3 |                       1 |                       1
   3 |                       3 |                       1 |                       1
+</entry>
+<entry key="q19.result1">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff1_id | prov_public_bagdiff2_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                         |                        
+  1 |                       1 |                         |                        
+  2 |                       2 |                         |                        
+  3 |                       3 |                         |   
 </entry>
 
 <entry key="q20.query">
@@ -264,6 +373,17 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff3 UNION (SELECT * FROM bagdiff3 I
   2 |                       2 |                           |                        
   3 |                       3 |                           |                        
 </entry>
+<entry key="q21.result1">
+ id | prov_public_bagdiff3_id | prov_public_bagdiff3_1_id | prov_public_bagdiff2_id 
+----+-------------------------+---------------------------+-------------------------
+  1 |                       1 |                           |                        
+  1 |                       1 |                           |                        
+  2 |                       2 |                           |                        
+  3 |                       3 |                           |                        
+  1 |                         |                         1 |                       1
+  1 |                         |                         1 |                       1                         
+</entry>
+
 
 <entry key="q22.query">
 SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 INTERSECT (SELECT * FROM bagdiff2 UNION SELECT * FROM bagdiff3)) AS sub;
@@ -275,6 +395,16 @@ SELECT PROVENANCE * FROM (SELECT * FROM bagdiff1 INTERSECT (SELECT * FROM bagdif
   1 |                       1 |                       1 |                       1
   1 |                       1 |                       1 |                       1
   1 |                       1 |                       1 |                       1
+</entry>
+<entry key="q22.result1">
+ id | prov_public_bagdiff1_id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------+-------------------------
+  1 |                       1 |                       1 |                        
+  1 |                       1 |                         |                       1
+  1 |                       1 |                         |                       1
+  1 |                       1 |                       1 |                        
+  1 |                       1 |                         |                       1
+  1 |                       1 |                         |                       1 
 </entry>
 
 <entry key="q23.query">
@@ -289,6 +419,17 @@ SELECT PROVENANCE * FROM ((SELECT * FROM bagdiff1 INTERSECT SELECT * FROM bagdif
   1 |                       1 |                       1 |                         1 |                       1
   2 |                         |                         |                           |                       2
   3 |                         |                         |                           |                       3
+</entry>
+<entry key="q23.result1">
+  id | prov_public_bagdiff1_id | prov_public_bagdiff2_id | prov_public_bagdiff2_1_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------+---------------------------+-------------------------
+  1 |                       1 |                       1 |                           |                        
+  1 |                       1 |                       1 |                           |                        
+  1 |                         |                         |                         1 |                        
+  1 |                         |                         |                           |                       1
+  1 |                         |                         |                           |                       1
+  2 |                         |                         |                           |                       2
+  3 |                         |                         |                           |                       3 
 </entry>
 
 <entry key="q24.query">
@@ -314,6 +455,14 @@ SELECT PROVENANCE DISTINCT * FROM (SELECT * FROM bagdiff2 UNION ALL SELECT * FRO
  id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
 ----+-------------------------+-------------------------
   1 |                       1 |                       1
+  2 |                         |                       2
+  3 |                         |                       3
+</entry>
+<entry key="q25.result1">
+ id | prov_public_bagdiff2_id | prov_public_bagdiff3_id 
+----+-------------------------+-------------------------
+  1 |                       1 |                        
+  1 |                         |                       1
   2 |                         |                       2
   3 |                         |                       3
 </entry>
@@ -344,6 +493,13 @@ SELECT PROVENANCE * FROM ((SELECT * FROM set1 UNION SELECT * FROM set2) INTERSEC
  1 |                  1 |                  1 |                  1
  2 |                  2 |                    |                  2
 </entry>
+<entry key="q28.result1">
+ a | prov_public_set1_a | prov_public_set2_b | prov_public_set3_c 
+---+--------------------+--------------------+--------------------
+ 1 |                  1 |                    |                  1
+ 1 |                    |                  1 |                  1
+ 2 |                  2 |                    |                  2
+</entry>
 
 <entry key="q29.query">
 SELECT PROVENANCE * FROM ((SELECT * FROM set1 INTERSECT SELECT * FROM set2) UNION SELECT * FROM set3) AS sub;
@@ -354,10 +510,24 @@ SELECT PROVENANCE * FROM ((SELECT * FROM set1 INTERSECT SELECT * FROM set2) UNIO
  1 |                  1 |                  1 |                  1
  2 |                    |                    |                  2
 </entry>
+<entry key="q29.result1">
+  a | prov_public_set1_a | prov_public_set2_b | prov_public_set3_c 
+---+--------------------+--------------------+--------------------
+ 1 |                  1 |                  1 |                   
+ 1 |                    |                    |                  1
+ 2 |                    |                    |                  2
+</entry>
+
 
 <entry key="q.query">
 </entry>
 <entry key="q.result">
 </entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
 
 </properties>

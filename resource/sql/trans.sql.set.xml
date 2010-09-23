@@ -36,11 +36,12 @@ SELECT TRANSSQL * FROM (SELECT * FROM r UNION SELECT * FROM s) AS sub;
 </entry>
 
 <entry key="q3.query">
-ERROR SELECT TRANSSQL * FROM (SELECT * FROM r EXCEPT SELECT * FROM s) AS sub;
+SELECT TRANSSQL * FROM (SELECT * FROM r EXCEPT SELECT * FROM s) AS sub;
 </entry>
 <entry key="q3.result">
-i |                                  trans_prov                                  
----+------------------------------------------------------------------------------
+ i |                                    trans_prov                                    
+---+----------------------------------------------------------------------------------
+ 3 |  SELECT sub.i FROM ( SELECT r.i FROM r EXCEPT &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
 </entry>
 
 <entry key="q4.query">
@@ -78,11 +79,12 @@ SELECT TRANSSQL * FROM (SELECT * FROM r UNION ALL SELECT * FROM s) AS sub;
 </entry>
 
 <entry key="q6.query">
-ERROR SELECT TRANSSQL * FROM (SELECT * FROM r EXCEPT ALL SELECT * FROM s) AS sub;
+SELECT TRANSSQL * FROM (SELECT * FROM r EXCEPT ALL SELECT * FROM s) AS sub;
 </entry>
 <entry key="q6.result">
- i |                                  trans_prov                                   
----+------------------------------------------------------------------------------
+ i |                                      trans_prov                                      
+---+--------------------------------------------------------------------------------------
+ 3 |  SELECT sub.i FROM ( SELECT r.i FROM r EXCEPT ALL &lt;NOT&gt; SELECT s.i FROM s&lt;/NOT&gt;) sub
 </entry>
 
 <entry key="q7.query">

@@ -69,9 +69,14 @@ SELECT PROVENANCE * FROM r WHERE NOT EXISTS (SELECT * FROM s WHERE NOT EXISTS (S
 ---+-----------------+-----------------+-----------------
 </entry>
 
-<entry key="q.query">
+<entry key="q8.query">
+SELECT PROVENANCE * FROM r WHERE NOT EXISTS (SELECT * FROM s WHERE r.i = s.i AND NOT EXISTS (SELECT * FROM t WHERE t.i = s.i));
 </entry>
-<entry key="q.result">
+<entry key="q8.result">
+ i | prov_public_t_i | prov_public_s_i | prov_public_r_i 
+---+-----------------+-----------------+-----------------
+ 2 |                 |                 |               2
+ 3 |                 |                 |               3
 </entry>
 
 <entry key="q.query">
