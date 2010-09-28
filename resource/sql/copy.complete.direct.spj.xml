@@ -355,5 +355,15 @@ SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN 2=2 TH
    4 |   
 </entry>
 
+<entry key="q31.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive)  s.i FROM r LEFT JOIN s ON (r.i = s.i);
+</entry>
+<entry key="q31.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |                 |               1
+ 2 |                 |               2
+   |                 |                
+</entry>
 
 </properties>

@@ -111,9 +111,15 @@ SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) sum(a) FROM x GR
    1 |                 |         
 </entry>
 
-<entry key="q.query">
+<entry key="q11.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) sum(r.i), s.i FROM r LEFT JOIN S ON (r.i = s.i) GROUP BY s.i;
 </entry>
-<entry key="q.result">
+<entry key="q11.result">
+ sum | i | prov_public_r_i | prov_public_s_i 
+-----+---+-----------------+-----------------
+   3 |   |                 |                
+   2 | 2 |                 |               2
+   1 | 1 |                 |               1
 </entry>
 
 <entry key="q.query">

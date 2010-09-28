@@ -89,6 +89,40 @@ SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) suma, grpa FROM (SE
     1 |    1 |               1
 </entry>
 
+<entry key="q9.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(a), b FROM x GROUP BY b;
+</entry>
+<entry key="q9.result">
+ sum | b | prov_public_x_a | prov_public_x_b 
+-----+---+-----------------+-----------------
+   2 | 2 |                 |                
+   3 | 3 |                 |                
+   1 | 1 |                 |          
+</entry>
+
+<entry key="q10.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(a) FROM x GROUP BY b; 
+</entry>
+<entry key="q10.result">
+ sum | prov_public_x_a | prov_public_x_b 
+-----+-----------------+-----------------
+   2 |                 |                
+   3 |                 |                
+   1 |                 |         
+</entry>
+
+
+<entry key="q11.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) sum(r.i), s.i FROM r LEFT JOIN S ON (r.i = s.i) GROUP BY s.i;
+</entry>
+<entry key="q11.result">
+ sum | i | prov_public_r_i | prov_public_s_i 
+-----+---+-----------------+-----------------
+   3 |   |                 |                
+   2 | 2 |               2 |               2
+   1 | 1 |               1 |               1
+</entry>
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">
