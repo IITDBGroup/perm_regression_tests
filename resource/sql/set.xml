@@ -518,10 +518,26 @@ SELECT PROVENANCE * FROM ((SELECT * FROM set1 INTERSECT SELECT * FROM set2) UNIO
  2 |                    |                    |                  2
 </entry>
 
-
-<entry key="q.query">
+<entry key="q30.query">
+SELECT PROVENANCE a FROM (SELECT * FROM x UNION (SELECT r.i AS ri, s.i AS si FROM r LEFT JOIN s ON r.i = s.i)) AS sub;
 </entry>
-<entry key="q.result">
+<entry key="q30.result">
+ a | prov_public_x_a | prov_public_x_b | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------+-----------------+-----------------
+ 1 |               1 |               1 |               1 |               1
+ 2 |               2 |               2 |               2 |               2
+ 3 |               3 |               3 |                 |                
+ 3 |                 |                 |               3 |      
+</entry>
+<entry key="q30.result1">
+ a | prov_public_x_a | prov_public_x_b | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------+-----------------+-----------------
+ 1 |               1 |               1 |                 |                
+ 2 |               2 |               2 |                 |                
+ 3 |               3 |               3 |                 |                
+ 1 |                 |                 |               1 |               1
+ 2 |                 |                 |               2 |               2
+ 3 |                 |                 |               3 |                 
 </entry>
 
 <entry key="q.query">

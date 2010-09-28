@@ -103,14 +103,78 @@ SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT *
  3 |               3 |                 |                
 </entry>
 
-<entry key="q.query">
+<entry key="q10.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT * FROM r UNION (SELECT * FROM s UNION SELECT * FROM t)) AS sub;
 </entry>
-<entry key="q.result">
+<entry key="q10.result">
+ i | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+---+-----------------+-----------------+-----------------
+ 1 |               1 |               1 |                
+ 2 |               2 |               2 |               2
+ 3 |               3 |                 |                
+ 4 |                 |               4 |               4
+ 6 |                 |                 |               6
+</entry>
+
+<entry key="q11.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) * FROM (SELECT r.i FROM r LEFT JOIN S ON r.i = s.i UNION SELECT * FROM t) AS sub;
+</entry>
+<entry key="q11.result">
+ i | prov_public_r_i | prov_public_s_i | prov_public_t_i 
+---+-----------------+-----------------+-----------------
+ 1 |               1 |                 |                
+ 2 |               2 |                 |               2
+ 3 |               3 |                 |                
+ 4 |                 |                 |               4
+ 6 |                 |                 |               6
+</entry>
+
+<entry key="q12.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) a FROM (SELECT * FROM x UNION SELECT * FROM w) AS sub;
+</entry>
+<entry key="q12.result">
+ a | prov_public_x_a | prov_public_x_b | prov_public_w_e | prov_public_w_f 
+---+-----------------+-----------------+-----------------+-----------------
+ 1 |                 |                 |                 |                
+ 2 |                 |                 |                 |                
+ 3 |                 |                 |                 |                
+ 4 |                 |                 |                 |  
+</entry>
+
+<entry key="q13.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) a FROM (SELECT * FROM x UNION (SELECT r.i AS ri, s.i AS si FROM r LEFT JOIN s ON r.i = s.i)) AS sub;
+</entry>
+<entry key="q13.result">
+ a | prov_public_x_a | prov_public_x_b | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------+-----------------+-----------------
+ 1 |                 |                 |               1 |                
+ 2 |                 |                 |               2 |                
+ 3 |                 |                 |                 |                
+ 3 |                 |                 |               3 |  
 </entry>
 
 <entry key="q.query">
+
 </entry>
 <entry key="q.result">
+
 </entry>
+
+
+<entry key="q.query">
+
+</entry>
+<entry key="q.result">
+
+</entry>
+
+
+<entry key="q.query">
+
+</entry>
+<entry key="q.result">
+
+</entry>
+
 
 </properties>

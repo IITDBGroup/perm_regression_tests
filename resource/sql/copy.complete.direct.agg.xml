@@ -89,14 +89,26 @@ SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) suma, grpa FROM 
     1 |    1 |               1
 </entry>
 
-<entry key="q.query">
+<entry key="q9.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) sum(a), b FROM x GROUP BY b;
 </entry>
-<entry key="q.result">
+<entry key="q9.result">
+ sum | b | prov_public_x_a | prov_public_x_b 
+-----+---+-----------------+-----------------
+   2 | 2 |                 |                
+   3 | 3 |                 |                
+   1 | 1 |                 |          
 </entry>
 
-<entry key="q.query">
+<entry key="q10.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) sum(a) FROM x GROUP BY b; 
 </entry>
-<entry key="q.result">
+<entry key="q10.result">
+ sum | prov_public_x_a | prov_public_x_b 
+-----+-----------------+-----------------
+   2 |                 |                
+   3 |                 |                
+   1 |                 |         
 </entry>
 
 <entry key="q.query">

@@ -277,10 +277,82 @@ SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) a,f FROM x,w WHE
  2 | 2 |                 |                 |                 |       
 </entry>
 
-
-<entry key="q.query">
+<entry key="q24.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN a=2 THEN a ELSE -1 END AS g FROM x;
 </entry>
-<entry key="q.result">
+<entry key="q24.result">
+ g  | prov_public_x_a | prov_public_x_b 
+----+-----------------+-----------------
+ -1 |                 |                
+  2 |                 |                
+ -1 |                 |   
+</entry>
+
+<entry key="q25.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN a=2 THEN a ELSE b END AS g FROM x;
+</entry>
+<entry key="q25.result">
+ g | prov_public_x_a | prov_public_x_b 
+---+-----------------+-----------------
+ 1 |                 |                
+ 2 |                 |                
+ 3 |                 |  
+</entry>
+
+<entry key="q26.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN a=2 THEN a ELSE b END AS g, b FROM x;
+</entry>
+<entry key="q26.result">
+ g | b | prov_public_x_a | prov_public_x_b 
+---+---+-----------------+-----------------
+ 1 | 1 |                 |                
+ 2 | 2 |       2         |      2          
+ 3 | 3 |                 |     
+</entry>
+
+
+<entry key="q27.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN i=2 THEN i ELSE NULL END AS out FROM r;
+</entry>
+<entry key="q27.result">
+ out | prov_public_r_i 
+-----+-----------------
+     |                
+   2 | 			     2               
+     | 
+</entry>
+
+<entry key="q28.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN 2=2 THEN i ELSE NULL END AS out FROM r;
+</entry>
+<entry key="q28.result">
+ out | prov_public_r_i 
+-----+-----------------
+   1 |               1
+   2 |               2
+   3 |               3
+</entry>
+
+<entry key="q29.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN 2!=2 THEN i ELSE NULL END AS out FROM r;
+</entry>
+<entry key="q29.result">
+ out | prov_public_r_i 
+-----+-----------------
+     |                
+     | 			                    
+     | 
+</entry>
+
+<entry key="q30.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete nottransitive) CASE WHEN 2=2 THEN i ELSE NULL END + 1 AS out FROM r;
+</entry>
+<entry key="q30.result">
+ out | prov_public_r_i 
+-----+-----------------
+   2 |                
+   3 |                
+   4 |   
 </entry>
 
 

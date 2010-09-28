@@ -74,8 +74,8 @@ GROUP BY sub.grp;
 <entry key="q7.result">
  sum | grp | prov_public_r_i | prov_public_s_i 
 -----+-----+-----------------+-----------------
-   1 |   1 |                 |               1
-   1 |   2 |                 |               2
+   1 |   1 |               1 |               1
+   1 |   2 |               2 |               2
 </entry>
 
 <entry key="q8.query">
