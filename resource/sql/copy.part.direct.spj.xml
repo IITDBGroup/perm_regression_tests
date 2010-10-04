@@ -367,6 +367,17 @@ SELECT PROVENANCE ON CONTRIBUTION (copy partial nottransitive)  s.i FROM r LEFT 
    |                 |                
 </entry>
 
+<entry key="q32.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy partial nottransitive) DISTINCT r.i FROM r, s;
+</entry>
+<entry key="q32.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |               1 |                
+ 2 |               2 |                
+ 3 |               3 |                 
+</entry>
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">
