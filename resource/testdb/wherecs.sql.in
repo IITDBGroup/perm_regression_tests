@@ -1,0 +1,45 @@
+/******************************************************************************
+*******************************************************************************
+*******************************************************************************
+******* 	Table Defs     ************************************************
+*******************************************************************************
+*******************************************************************************
+******************************************************************************/
+
+DROP TABLE IF EXISTS r CASCADE;
+DROP TABLE IF EXISTS s CASCADE;
+DROP TABLE IF EXISTS t CASCADE;
+DROP TABLE IF EXISTS u CASCADE;
+
+CREATE TABLE r (
+	a int
+) WITH OIDS;
+
+INSERT INTO r VALUES (1);
+INSERT INTO r VALUES (1);
+INSERT INTO r VALUES (2);
+
+CREATE TABLE s (
+	b int
+) WITH OIDS;
+
+INSERT INTO s VALUES (2);
+INSERT INTO s VALUES (2);
+INSERT INTO s VALUES (3);
+INSERT INTO s VALUES (3);
+
+CREATE TABLE t (
+	c int
+) WITH OIDS;
+
+INSERT INTO t VALUES (2);
+INSERT INTO t VALUES (3);
+INSERT INTO t VALUES (4);
+
+CREATE TABLE u (
+	d text,
+	e text
+) WITH OIDS;
+
+INSERT INTO u VALUES ('2','2');
+INSERT INTO u VALUES ('abd','def');
