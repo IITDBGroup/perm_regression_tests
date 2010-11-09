@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.postgresql.util.PSQLException;
 
 public class ConnectionManager {
@@ -49,8 +47,6 @@ public class ConnectionManager {
 	}
 	
 	private void createConnection () throws Exception {
-		DatabaseConfig config;
-		
 		Class.forName("org.postgresql.Driver");
 		
 		try {

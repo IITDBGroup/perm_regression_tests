@@ -28,7 +28,6 @@ public class TestGenerator {
 	private String OptionsTestCase;
 	private File testDir;
 	private String packageName;
-	private File outDir;
 	private PermSuite allTests;
 	
 	public TestGenerator (File testDir, String packageName) throws IOException {
@@ -54,8 +53,13 @@ public class TestGenerator {
 		gen.generateTests();
 		gen.generateOptionsSuites();
 		
-		dir = new File ("resource/tpchValidation");
+		dir = new File ("resource/tpchValidation/");
 		gen = new TestGenerator (dir, "org.perm.autotests.tpch");
+		gen.generateTests();
+		gen.generateOptionsSuites();
+		
+		dir = new File ("resource/wherecs/");
+		gen = new TestGenerator (dir, "org.perm.autotests.wherecs");
 		gen.generateTests();
 		gen.generateOptionsSuites();
 	}
@@ -105,7 +109,6 @@ public class TestGenerator {
 		
 		for (int i = 0; i < OptionsManager.getInstance().getNumSettings(); i++) {
 			generateSetOption (i + 1);
-			//optionSuite.addChild(new PermSuite("SetOptions_" + (i + 1)));
 			optionSuite.addChildWithDupes(new PermSuite("AllTests_" + (i + 1)));
 		}
 		
@@ -168,7 +171,7 @@ public class TestGenerator {
 		output = output.replace("NAME", suite.getClassName());
 		output = output.replace("FILE", suite.getFileName());
 		output = output.replace("SETTING", "" + settingNum);
-		
+		output = output.replace("PATH", this.getTestDir().toString() + "/");
 		for (int i = 1; i <= generator.getNumTest(); i++) {
 			if (!generator.isInExcludes(settingNum, i))
 				tests.append(testMethodString.replace("NAME", "Query_" + i).replace("NUM", i + ""));
@@ -236,7 +239,6 @@ public class TestGenerator {
 	private void writeFile (String name, String content) throws IOException {
 		File outFile;
 		FileWriter writer;
-		PermSuite suite;
 		
 		outFile = new File ("src/" + packageDir + "/" + name + ".java");
 		outFile.createNewFile();

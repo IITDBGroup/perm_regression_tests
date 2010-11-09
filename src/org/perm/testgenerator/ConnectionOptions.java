@@ -3,6 +3,7 @@
  */
 package org.perm.testgenerator;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,6 +54,13 @@ public class ConnectionOptions {
 	}
 	
 	public void setPath (String path) {
+		File filePath = new File (path);
+		
 		props.setProperty("Path", path);
+		try {
+			props.load(new FileInputStream(new File(filePath, "options.txt")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

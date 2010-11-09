@@ -1,0 +1,5 @@
+DBName=wherecs
+User=postgres
+Password=
+Schema=public
+Path=resource/wherecs

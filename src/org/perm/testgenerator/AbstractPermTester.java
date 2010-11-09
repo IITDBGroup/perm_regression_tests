@@ -41,17 +41,6 @@ public class AbstractPermTester extends DBTestCase {
 	
     protected void tearDown() throws Exception {
     	super.tearDown();
-//    	
-//    	if (markedAsError.size() > 0) {
-//	    	System.out.println("\n\n************** MARKED ERRORS ***************\n");
-//	    	for (int i = 0; i < markedAsError.size(); i++) {
-//	    		System.out.println(markedAsError.get(i));
-//	    	}
-//	    	System.out.println("\n********************************************\n");
-//    	}
-//    	else {
-//    		System.out.println("\n********************************************\n");
-//    	}
     }
 	
 	/* (non-Javadoc)
@@ -112,7 +101,6 @@ public class AbstractPermTester extends DBTestCase {
     }
     
     protected void testSingleQuery (int num) throws Exception {
-    	ITable expected;
     	ITable[] expecteds;
     	ITable actualResult = null;
     	String queryString;
@@ -121,7 +109,6 @@ public class AbstractPermTester extends DBTestCase {
     	
     	generator = TestInfoHolder.getInstance().getCurrentGenerator();
     	
-    	expected = generator.getExpectedResult("q" + num);
     	expecteds = generator.getExpectedResults("q" + num);
 		queryString = generator.getQuery("q" + num);
 		markedError = generator.isError("q" + num); 
