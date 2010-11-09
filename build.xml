@@ -1,5 +1,11 @@
 <project name="PermTester" default="compileTests" basedir=".">
 
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+	  <classpath>
+	    <pathelement location="${basedir}/lib/ant-contrib.jar"/>
+	  </classpath>
+	</taskdef>
+	
 	<property name="sourcedir" value="${basedir}/src" />
 	<property name="binarydir" value="${basedir}/bin" />
 	<property name="dbUnitDir" value="${basedir}/../DBUnit/bin/" />
@@ -9,7 +15,6 @@
 	<property name="resourcedir" value="${basedir}/resource"/>
 	<property name="builddir" value="${basedir}/build"/>
 	<property name="permserver.options" value="--debug_print_rewritten=off --log_error_verbosity=terse --log_min_messages=error --client_min_messages=error --log_directory=${basedir}"/>
-	<property name="testdbscript" value="${resourcedir}/testdb/testDB.sql" />
 	<property name="TestName" value="AllTestsOptions" />
 	
 	<path id="libraries">
@@ -65,8 +70,18 @@
 		<property name="perm.AdminURL" value="jdbc:postgresql://127.0.0.1:5432/${Options.AdminDBName}" />
 	</target>
 	
+	<target name="adaptDDLScripts">
+		<var name="testdbscript" value="${resourcedir}/testdb/tpch.sql" />
+		<antcall target="adaptTestDDLScript" />
+		<var name="testdbscript" value="${resourcedir}/testdb/wherecs.sql" />
+		<antcall target="adaptTestDDLScript" />	
+		<var name="testdbscript" value="${resourcedir}/testdb/testDB.sql" />
+		<antcall target="adaptTestDDLScript" />
+	</target>
+		
+	
 	<target name="adaptTestDDLScript">
-		<copy file="${testdbscript}.in" tofile="${testdbscript}" overwrite="true">
+		<copy file="${testdbscript}.in" tofile="${testdbscript}" overwrite="false">
 			<filterchain>
 				<replacetokens>
 					<token key="PERMTESTERDIR" value="${basedir}"/>
@@ -75,7 +90,7 @@
 		</copy>
 	</target>
 	
-	<target name="clean" depends="adaptTestDDLScript">
+	<target name="clean" depends="adaptDDLScripts">
 		<delete includeemptydirs="true">
 			<fileset dir="${binarydir}" includes="**/*"/>
 		 </delete>
@@ -92,6 +107,7 @@
 		 </delete>
 		<mkdir dir="${testsourcedir}" />
 		<mkdir dir="${testsourcedir}/tpch" />
+		<mkdir dir="${testsourcedir}/wherecs" />
 	</target>
 	
 	<target name="compile" depends="cleanTests">
