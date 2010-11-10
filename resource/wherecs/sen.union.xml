@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM (SELECT * FROM r UNION SELECT * FROM s) sub;
+</entry>
+<entry key="q1.result">
+ a |                       annot_a                        
+---+------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615}
+ 3 | {public.s#b#25616,public.s#b#25617}
+ 1 | {public.r#a#25608,public.r#a#25609}
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE ON CONTRIBUTION (WHERE) * 
+FROM (SELECT * FROM r UNION SELECT * FROM s UNION SELECT * FROM t) sub;
+</entry>
+<entry key="q2.result">
+ a |                                annot_a                                
+---+-----------------------------------------------------------------------
+ 4 | {public.t#c#25623}
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621}
+ 3 | {public.s#b#25616,public.s#b#25617,public.t#c#25622}
+ 1 | {public.r#a#25608,public.r#a#25609}
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM (SELECT a::text FROM r UNION SELECT d FROM u) sub;
+</entry>
+<entry key="q3.result">
+  a  |               annot_a               
+-----+-------------------------------------
+ 2   | {public.r#a#25610,public.u#d#25630}
+ abd | {public.u#d#25631}
+ 1   | {public.r#a#25608,public.r#a#25609}
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE ON CONTRIBUTION (WHERE) * 
+FROM (SELECT a::text FROM r UNION SELECT d FROM u WHERE e = '2') sub;
+</entry>
+<entry key="q4.result">
+ a |               annot_a               
+---+-------------------------------------
+ 2 | {public.r#a#25610,public.u#d#25630}
+ 1 | {public.r#a#25608,public.r#a#25609}
+</entry>
+
+</properties>

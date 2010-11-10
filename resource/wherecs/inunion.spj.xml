@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) * FROM r;
+</entry>
+<entry key="q1.result">
+ a |                                                 annot_a                                                 
+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621,public.u#d#25630,public.u#e#25630}
+ 1 | {public.r#a#25608,public.r#a#25609}
+</entry>
+
+<entry key="q2.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) * FROM s;
+</entry>
+<entry key="q2.result">
+ b |                                                 annot_b                                                 
+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.s#b#25614,public.s#b#25615,public.r#a#25610,public.t#c#25621,public.u#d#25630,public.u#e#25630}
+ 3 | {public.s#b#25616,public.s#b#25617,public.t#c#25622}
+</entry>
+
+<entry key="q3.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) * FROM r,s;
+</entry>
+<entry key="q3.result">
+ a |                                                 annot_a                                                 | b |                                                 annot_b                                                 
+---+---------------------------------------------------------------------------------------------------------+---+---------------------------------------------------------------------------------------------------------
+ 1 | {public.r#a#25608,public.r#a#25609}                                                                     | 2 | {public.s#b#25614,public.s#b#25615,public.r#a#25610,public.u#e#25630,public.u#d#25630,public.t#c#25621}
+ 1 | {public.r#a#25608,public.r#a#25609}                                                                     | 3 | {public.s#b#25616,public.s#b#25617,public.t#c#25622}
+ 2 | {public.s#b#25615,public.r#a#25610,public.t#c#25621,public.u#e#25630,public.s#b#25614,public.u#d#25630} | 2 | {public.s#b#25614,public.t#c#25621,public.u#e#25630,public.s#b#25615,public.u#d#25630,public.r#a#25610}
+ 2 | {public.s#b#25615,public.t#c#25621,public.s#b#25614,public.r#a#25610,public.u#e#25630,public.u#d#25630} | 3 | {public.s#b#25616,public.s#b#25617,public.t#c#25622}
+</entry>
+
+<entry key="q4.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) * FROM r JOIN s ON (r.a = s.b);
+</entry>
+<entry key="q4.result">
+ a |                                                 annot_a                                                 | b |                                                 annot_b                                                 
+---+---------------------------------------------------------------------------------------------------------+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621,public.u#d#25630,public.u#e#25630} | 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621,public.u#d#25630,public.u#e#25630}
+</entry>
+
+<entry key="q5.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) * FROM (SELECT * FROM r) r JOIN (SELECT * FROM s) s ON (r.a = s.b);
+</entry>
+<entry key="q5.result">
+ a |                                                 annot_a                                                 | b |                                                 annot_b                                                 
+---+---------------------------------------------------------------------------------------------------------+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621,public.u#d#25630,public.u#e#25630} | 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621,public.u#d#25630,public.u#e#25630}
+</entry>
+
+<entry key="q6.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) a FROM (SELECT * FROM r) r JOIN s ON (r.a = s.b);
+</entry>
+<entry key="q6.result">
+ a |                                                 annot_a                                                 
+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615,public.t#c#25621,public.u#d#25630,public.u#e#25630}
+</entry>
+
+<entry key="q7.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) b,a FROM (SELECT * FROM r) r JOIN s ON (r.a = s.b);
+</entry>
+<entry key="q7.result">
+ b |                                                 annot_b                                                 | a |                                                 annot_a                                                 
+---+---------------------------------------------------------------------------------------------------------+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.s#b#25614,public.s#b#25615,public.r#a#25610,public.t#c#25621,public.u#d#25630,public.u#e#25630} | 2 | {public.s#b#25614,public.s#b#25615,public.r#a#25610,public.t#c#25621,public.u#d#25630,public.u#e#25630}
+</entry>
+
+<entry key="q8.query">
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE WITH UNION) c FROM t JOIN ((SELECT * FROM r) r JOIN s ON (r.a = s.b)) ON (s.b = t.c);
+</entry>
+<entry key="q8.result">
+ c |                                                 annot_c                                                 
+---+---------------------------------------------------------------------------------------------------------
+ 2 | {public.t#c#25621,public.s#b#25614,public.s#b#25615,public.r#a#25610,public.u#d#25630,public.u#e#25630}
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>
+

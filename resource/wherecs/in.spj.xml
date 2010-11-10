@@ -4,7 +4,7 @@
 <comment>Test cases for Perm-PMS</comment>
 
 <entry key="q1.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM r;
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) * FROM r;
 </entry>
 <entry key="q1.result">
  a |               annot_a               
@@ -14,7 +14,7 @@ SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM r;
 </entry>
 
 <entry key="q2.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM s;
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) * FROM s;
 </entry>
 <entry key="q2.result">
  b |               annot_b               
@@ -24,60 +24,60 @@ SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM s;
 </entry>
 
 <entry key="q3.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM r,s;
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) * FROM r,s;
 </entry>
 <entry key="q3.result">
  a |               annot_a               | b |               annot_b               
 ---+-------------------------------------+---+-------------------------------------
  1 | {public.r#a#25609,public.r#a#25608} | 2 | {public.s#b#25614,public.s#b#25615}
  1 | {public.r#a#25609,public.r#a#25608} | 3 | {public.s#b#25616,public.s#b#25617}
- 2 | {public.r#a#25610}                  | 2 | {public.s#b#25614,public.s#b#25615}
+ 2 | {public.r#a#25610}                  | 2 | {public.s#b#25615,public.s#b#25614}
  2 | {public.r#a#25610}                  | 3 | {public.s#b#25616,public.s#b#25617}
 </entry>
 
 <entry key="q4.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM r JOIN s ON (r.a = s.b);
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) * FROM r JOIN s ON (r.a = s.b);
 </entry>
 <entry key="q4.result">
- a |      annot_a       | b |               annot_b               
----+--------------------+---+-------------------------------------
- 2 | {public.r#a#25610} | 2 | {public.s#b#25614,public.s#b#25615}
+ a |                       annot_a                        | b |                       annot_b                        
+---+------------------------------------------------------+---+------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615} | 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615}
 </entry>
 
 <entry key="q5.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) * FROM (SELECT * FROM r) r JOIN (SELECT * FROM s) s ON (r.a = s.b);
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) * FROM (SELECT * FROM r) r JOIN (SELECT * FROM s) s ON (r.a = s.b);
 </entry>
 <entry key="q5.result">
- a |      annot_a       | b |               annot_b               
----+--------------------+---+-------------------------------------
- 2 | {public.r#a#25610} | 2 | {public.s#b#25614,public.s#b#25615}
+ a |                       annot_a                        | b |                       annot_b                        
+---+------------------------------------------------------+---+------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615} | 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615}
 </entry>
 
 <entry key="q6.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) a FROM (SELECT * FROM r) r JOIN s ON (r.a = s.b);
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) a FROM (SELECT * FROM r) r JOIN s ON (r.a = s.b);
 </entry>
 <entry key="q6.result">
- a |      annot_a       
----+--------------------
- 2 | {public.r#a#25610}
+ a |                       annot_a                                                
+---+-------------------------------------------------------
+ 2 | {public.r#a#25610,public.s#b#25614,public.s#b#25615} 
 </entry>
 
 <entry key="q7.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) b,a FROM (SELECT * FROM r) r JOIN s ON (r.a = s.b);
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) b,a FROM (SELECT * FROM r) r JOIN s ON (r.a = s.b);
 </entry>
 <entry key="q7.result">
- b |               annot_b               | a |      annot_a       
----+-------------------------------------+---+--------------------
- 2 | {public.s#b#25614,public.s#b#25615} | 2 | {public.r#a#25610}
+ b |                       annot_b                        | a |                       annot_a                        
+---+------------------------------------------------------+---+------------------------------------------------------
+ 2 | {public.s#b#25614,public.s#b#25615,public.r#a#25610} | 2 | {public.s#b#25614,public.s#b#25615,public.r#a#25610}
 </entry>
 
 <entry key="q8.query">
-SELECT PROVENANCE ON CONTRIBUTION (WHERE) c FROM t JOIN ((SELECT * FROM r) r JOIN s ON (r.a = s.b)) ON (s.b = t.c);
+SELECT PROVENANCE ON CONTRIBUTION (INWHERE) c FROM t JOIN ((SELECT * FROM r) r JOIN s ON (r.a = s.b)) ON (s.b = t.c);
 </entry>
 <entry key="q8.result">
- c |      annot_c       
----+--------------------
- 2 | {public.t#c#25621}
+ c |                                annot_c                                
+---+-----------------------------------------------------------------------
+ 2 | {public.t#c#25621,public.s#b#25614,public.s#b#25615,public.r#a#25610}
 </entry>
 
 <entry key="q.query">
