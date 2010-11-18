@@ -35,8 +35,6 @@ EXPLAIN GRAPH SELECT * FROM r;
  top0 -> rel0;
  EMPTYSTRING
  }
- EMPTYSTRING
- Seq Scan on r  (cost=0.00..34.00 rows=2400 width=4)
 </entry>
 
 <entry key="q2.query">
@@ -73,11 +71,6 @@ EXPLAIN GRAPH SELECT * FROM r,s;
  top0 -> rel1;
  EMPTYSTRING
  }
- EMPTYSTRING
- Nested Loop  (cost=36.40..115270.40 rows=5760000 width=8)
-   ->  Seq Scan on r  (cost=0.00..34.00 rows=2400 width=4)
-   ->  Materialize  (cost=36.40..60.40 rows=2400 width=4)
-         ->  Seq Scan on s  (cost=0.00..34.00 rows=2400 width=4)
 </entry>
 
 <entry key="q.query">

@@ -7,9 +7,9 @@
 EXPLAIN GRAPH SELECT * FROM r;
 </entry>
 <entry key="q1.result">
-                      QUERY PLAN                       
--------------------------------------------------------
  digraph G {
+ node [fontsize=24];
+ 
  subgraph cluster0 {
  label = "TopQueryNode"
  node [style=filled];
@@ -22,7 +22,12 @@ EXPLAIN GRAPH SELECT * FROM r;
  
  {
  rank=same;
+ oderdir=LR;
  rel0 [label="r",shape=box,color=yellow,style=filled];
+ 
+ 
+ edge [style=invis,constraint=true];
+ rel0;
  }
  
  top0 -> rel0;
@@ -34,9 +39,11 @@ EXPLAIN GRAPH SELECT * FROM r;
 EXPLAIN GRAPH SELECT * FROM r,s;
 </entry>
 <entry key="q2.result">
-                         QUERY PLAN                          
--------------------------------------------------------------
+                      QUERY PLAN                       
+-------------------------------------------------------
  digraph G {
+ node [fontsize=24];
+ 
  subgraph cluster0 {
  label = "TopQueryNode"
  node [style=filled];
@@ -49,8 +56,13 @@ EXPLAIN GRAPH SELECT * FROM r,s;
  
  {
  rank=same;
+ oderdir=LR;
  rel0 [label="r",shape=box,color=yellow,style=filled];
  rel1 [label="s",shape=box,color=yellow,style=filled];
+ 
+ 
+ edge [style=invis,constraint=true];
+ rel0->rel1;
  }
  
  top0 -> rel0;

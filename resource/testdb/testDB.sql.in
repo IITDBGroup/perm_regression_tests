@@ -303,6 +303,8 @@ DROP TABLE IF EXISTS x;
 DROP TABLE IF EXISTS tr;
 DROP TABLE IF EXISTS ts;
 DROP TABLE IF EXISTS nulltab;
+DROP VIEW IF EXISTS viewsub;
+DROP VIEW IF EXISTS viewsub2;
 
 CREATE TABLE empty (
 	id int);
@@ -370,6 +372,15 @@ CREATE TABLE nulltab (c int);
 
 INSERT INTO nulltab VALUES (NULL);
 
+CREATE VIEW viewsub AS (SELECT x.a, x.b
+   FROM x
+  WHERE EXISTS ( SELECT v.c, v.d
+           FROM v
+          WHERE v.c = x.b));
+
+CREATE VIEW viewsub2 AS 
+	(SELECT * FROM x x1 WHERE 
+		EXISTS (SELECT * FROM x x2 WHERE x2.b + 2 > x1.a));
 
 /******************************************************************************
 ******* 	unusual SQL features		   ****************************

@@ -427,14 +427,38 @@ SELECT PROVENANCE * FROM ts WHERE EXISTS (SELECT * FROM (SELECT sum(a) FROM tr W
  4 |                  |                  |                4
 </entry>
 
-<entry key="q.query">
+<entry key="q33.query">
+SELECT PROVENANCE * FROM viewsub;
 </entry>
-<entry key="q.result">
+<entry key="q33.result">
+ a | b | prov_public_v_c | prov_public_v_d | prov_public_x_a | prov_public_x_b 
+---+---+-----------------+-----------------+-----------------+-----------------
+ 2 | 2 |               2 |               1 |               2 |               2
 </entry>
 
-<entry key="q.query">
+<entry key="q34.query">
+SELECT PROVENANCE * FROM viewsub;
 </entry>
-<entry key="q.result">
+<entry key="q34.result">
+ a | b | prov_public_v_c | prov_public_v_d | prov_public_x_a | prov_public_x_b 
+---+---+-----------------+-----------------+-----------------+-----------------
+ 2 | 2 |               2 |               1 |               2 |               2
+</entry>
+
+<entry key="q35.query">
+SELECT PROVENANCE * FROM viewsub2;
+</entry>
+<entry key="q35.result">
+  a | b | prov_public_x_a | prov_public_x_b | prov_public_x_1_a | prov_public_x_1_b 
+---+---+-----------------+-----------------+-------------------+-------------------
+ 1 | 1 |               1 |               1 |                 1 |                 1
+ 1 | 1 |               2 |               2 |                 1 |                 1
+ 1 | 1 |               3 |               3 |                 1 |                 1
+ 2 | 2 |               1 |               1 |                 2 |                 2
+ 2 | 2 |               2 |               2 |                 2 |                 2
+ 2 | 2 |               3 |               3 |                 2 |                 2
+ 3 | 3 |               2 |               2 |                 3 |                 3
+ 3 | 3 |               3 |               3 |                 3 |                 3
 </entry>
 
 
