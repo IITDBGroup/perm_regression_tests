@@ -5,6 +5,7 @@
 	<classpathentry kind="lib" path="lib/postgresql-8.0-317.jdbc3.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/ant-contrib.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/DBUnit"/>
 	<classpathentry kind="output" path="bin"/>

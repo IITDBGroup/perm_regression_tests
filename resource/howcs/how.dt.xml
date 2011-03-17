@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT replace('+ 1 1 |'::howprov::text, '|','X') AS a;
+</entry>
+<entry key="q1.result">
+    a    
+---------
+ + 1 1 X
+</entry>
+
+<entry key="q2.query">
+SELECT replace('+ * 1 2 | 3 * 4 5 6 | |'::howprov::text, '|', 'X') AS a;
+</entry>
+<entry key="q2.result">
+            a            
+-------------------------
+ + * 1 2 X 3 * 4 5 6 X X
+</entry>
+
+<entry key="q3.query">
+SELECT how_to_human('+ * 1 2 | 3 * 4 5 6 | |'::howprov) AS a;
+</entry>
+<entry key="q3.result">
+             a             
+---------------------------
+ (1 * 2) + 3 + (4 * 5 * 6)
+</entry>
+
+<entry key="q4.query">
+SELECT how_to_human('+ * 1 2 | 3 * + 4 5 | 6  7 | |'::howprov) AS a;
+</entry>
+<entry key="q4.result">
+                a                
+---------------------------------
+ (1 * 2) + 3 + ((4 + 5) * 6 * 7)
+</entry>
+
+<entry key="q5.query">
+SELECT replace(how_pl('* 1 2 |'::howprov, '* 3 4 |') ::text, '|', 'X') AS a;
+</entry>
+<entry key="q5.result">
+          a          
+---------------------
+ + * 1 2 X * 3 4 X X
+</entry>
+
+<entry key="q6.query">
+SELECT replace(how_mul('* 1 2 |'::howprov, '* 3 4 |')::text, '|','X') AS a;
+</entry>
+<entry key="q6.result">
+          a          
+---------------------
+ * * 1 2 X * 3 4 X X
+</entry>
+
+<entry key="q7.query">
+SELECT replace(how_sum(b)::text, '|', 'X') AS a FROM (SELECT * FROM howdt ORDER BY a) as sub;
+</entry>
+<entry key="q7.result">
+                          a                          
+-----------------------------------------------------
+ + + 1 + * + 5 6 X 7 X 8 9 + 10 11 X X X + 2 3 4 X X
+</entry>
+
+<entry key="q8.query">
+SELECT how_to_human(how_sum(b)) FROM (SELECT * FROM howdt ORDER BY a) as sub;
+</entry>
+<entry key="q8.result">
+                      how_to_human                       
+---------------------------------------------------------
+ (1 + (((5 + 6) * 7) + 8 + 9 + (10 + 11))) + (2 + 3 + 4)
+</entry>
+
+<entry key="q9.query">
+SELECT oid_to_howprov(1::oid) AS a;
+</entry>
+<entry key="q9.result">
+ a 
+---
+ 1
+</entry>
+
+<entry key="q10.query">
+SELECT 1::oid::howprov AS a;
+</entry>
+<entry key="q10.result">
+a 
+---
+ 1
+</entry>
+
+<entry key="q11.query">
+SELECT replace(how_mul('* 1 2 |'::howprov, NULL)::text, '|','X') AS a;
+</entry>
+<entry key="q11.result">
+a 
+---
+* 1 2 X
+</entry>
+
+<entry key="q12.query">
+SELECT replace(how_mul(NULL, '* 1 2 |'::howprov)::text, '|','X') AS a;
+</entry>
+<entry key="q12.result">
+a 
+---
+* 1 2 X
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+
+
+</properties>

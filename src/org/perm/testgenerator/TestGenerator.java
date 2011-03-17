@@ -62,6 +62,11 @@ public class TestGenerator {
 		gen = new TestGenerator (dir, "org.perm.autotests.wherecs");
 		gen.generateTests();
 		gen.generateOptionsSuites();
+		
+		dir = new File ("resource/howcs/");
+		gen = new TestGenerator (dir, "org.perm.autotests.howcs");
+		gen.generateTests();
+		gen.generateOptionsSuites();
 	}
 	
 	public void generateTests () throws InvalidPropertiesFormatException, FileNotFoundException, IOException {

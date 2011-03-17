@@ -30,7 +30,7 @@ SELECT PROVENANCE ON CONTRIBUTION (INWHERE) * FROM r,s;
  a |               annot_a               | b |               annot_b               
 ---+-------------------------------------+---+-------------------------------------
  1 | {public.r#a#25609,public.r#a#25608} | 2 | {public.s#b#25614,public.s#b#25615}
- 1 | {public.r#a#25609,public.r#a#25608} | 3 | {public.s#b#25616,public.s#b#25617}
+ 1 | {public.r#a#25608,public.r#a#25609} | 3 | {public.s#b#25616,public.s#b#25617}
  2 | {public.r#a#25610}                  | 2 | {public.s#b#25615,public.s#b#25614}
  2 | {public.r#a#25610}                  | 3 | {public.s#b#25616,public.s#b#25617}
 </entry>

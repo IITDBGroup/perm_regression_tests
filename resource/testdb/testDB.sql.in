@@ -296,13 +296,13 @@ INSERT INTO aggr VALUES (32);
 DROP TABLE IF EXISTS empty CASCADE;
 DROP TABLE IF EXISTS r CASCADE;
 DROP TABLE IF EXISTS s CASCADE;
-DROP TABLE IF EXISTS t;
-DROP TABLE IF EXISTS v;
-DROP TABLE IF EXISTS w;
-DROP TABLE IF EXISTS x;
-DROP TABLE IF EXISTS tr;
-DROP TABLE IF EXISTS ts;
-DROP TABLE IF EXISTS nulltab;
+DROP TABLE IF EXISTS t CASCADE;
+DROP TABLE IF EXISTS v CASCADE;
+DROP TABLE IF EXISTS w CASCADE;
+DROP TABLE IF EXISTS x CASCADE;
+DROP TABLE IF EXISTS tr CASCADE;
+DROP TABLE IF EXISTS ts CASCADE;
+DROP TABLE IF EXISTS nulltab CASCADE;
 DROP VIEW IF EXISTS viewsub;
 DROP VIEW IF EXISTS viewsub2;
 
@@ -432,7 +432,9 @@ INSERT INTO specialnames VALUES (2,1);
 DROP VIEW IF EXISTS bagdiffivew;
 DROP VIEW IF EXISTS complexview;
 DROP VIEW IF EXISTS provview1;
-
+DROP VIEW IF EXISTS provview2;
+DROP VIEW IF EXISTS subprovview;
+DROP VIEW IF EXISTS joinview;
 
 CREATE VIEW bagdiffview AS SELECT * FROM bagdiff1;
 
@@ -450,6 +452,8 @@ CREATE VIEW provview2 AS
 		
 -- view with provenance subselect
 CREATE VIEW subprovview AS SELECT * FROM (SELECT PROVENANCE * FROM bagdiff1) AS prov WHERE prov_public_bagdiff1_id > 1; --check
+
+CREATE VIEW joinview AS (SELECT x.a, v.d FROM x LEFT JOIN v ON (x.a = v.d));
 
 /******************************************************************************
 ******* 	test support functions				   ****************************
@@ -857,5 +861,14 @@ CREATE OR REPLACE VIEW target.publication AS (
 		WHERE a.auth_id = rel.auth_id AND pub.article_id = rel.article_id)
 );
 
+/******************************************************************************
+******* 	How-CS tables								   ********************
+******************************************************************************/
 
+DROP TABLE IF EXISTS howdt;
 
+CREATE TABLE howdt (a int, b howprov);
+
+INSERT INTO howdt VALUES (1, '1'::howprov);
+INSERT INTO howdt VALUES (2, '+ * + 5 6 | 7 | 8 9 + 10 11 | |'::howprov);
+INSERT INTO howdt VALUES (3, '+ 2 3 4 |'::howprov);
