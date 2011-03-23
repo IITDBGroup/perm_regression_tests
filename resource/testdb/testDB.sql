@@ -477,8 +477,6 @@ INSERT INTO testbitset VALUES (NULL);
 DROP VIEW IF EXISTS annotview1;
 DROP VIEW IF EXISTS annotview2;
 DROP VIEW IF EXISTS annotview3;
-DROP VIEW IF EXISTS annotview4;
-DROP VIEW IF EXISTS annotview5;
 
 CREATE VIEW annotview1 AS 
 	SELECT ANNOT('M1') * FROM r;
@@ -488,12 +486,6 @@ CREATE VIEW annotview2 AS
 
 CREATE VIEW annotview3 AS
 	SELECT ANNOT('M1','M2') r.i FROM (SELECT ANNOT('M1') * FROM r) AS r LEFT JOIN (SELECT ANNOT('M2') * FROM s) AS s ON (r.i = s.i);
-
-CREATE VIEW annotview4 AS
-       SELECT r.i FROM r ANNOT('M1','M2') LEFT JOIN s ANNOT('M2') ON (r.i = s.i);
-
-CREATE VIEW annotview5 AS
-       (SELECT r.i FROM r ANNOT('M1') UNION SELECT s.i FROM s ANNOT('M2'));
 
 /******************************************************************************
 ******* 	TPCH schema				   ********************
@@ -601,14 +593,14 @@ CREATE TABLE region (
 	PRIMARY KEY (r_regionkey)
 );
 
-COPY part FROM '@PERMTESTERDIR@/resource/testdb/part.cpy' WITH CSV DELIMITER '|';       
-COPY supplier FROM '@PERMTESTERDIR@/resource/testdb/supplier.cpy' WITH CSV DELIMITER '|';       
-COPY partsupp FROM '@PERMTESTERDIR@/resource/testdb/partsupp.cpy' WITH CSV DELIMITER '|';      
-COPY customer FROM '@PERMTESTERDIR@/resource/testdb/customer.cpy' WITH CSV DELIMITER '|';       
-COPY orders FROM '@PERMTESTERDIR@/resource/testdb/orders.cpy' WITH CSV DELIMITER '|';       
-COPY lineitem FROM '@PERMTESTERDIR@/resource/testdb/lineitem.cpy' WITH CSV DELIMITER '|';       
-COPY nation FROM '@PERMTESTERDIR@/resource/testdb/nation.cpy' WITH CSV DELIMITER '|';
-COPY region FROM '@PERMTESTERDIR@/resource/testdb/region.cpy' WITH CSV DELIMITER '|';
+COPY part FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/part.cpy' WITH CSV DELIMITER '|';       
+COPY supplier FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/supplier.cpy' WITH CSV DELIMITER '|';       
+COPY partsupp FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/partsupp.cpy' WITH CSV DELIMITER '|';      
+COPY customer FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/customer.cpy' WITH CSV DELIMITER '|';       
+COPY orders FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/orders.cpy' WITH CSV DELIMITER '|';       
+COPY lineitem FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/lineitem.cpy' WITH CSV DELIMITER '|';       
+COPY nation FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/nation.cpy' WITH CSV DELIMITER '|';
+COPY region FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/region.cpy' WITH CSV DELIMITER '|';
 
 --ALTER TABLE supplier ADD FOREIGN KEY (s_nationkey) REFERENCES nation (n_nationkey);
 

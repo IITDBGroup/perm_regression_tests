@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q2.query">
+SELECT MAPPROV * FROM annotview5;
+</entry>
+<entry key="q2.result">
+ i | trans_prov 
+---+------------
+ 1 | M2
+ 1 | M1
+ 2 | M2
+ 2 | M1
+ 3 | M1
+ 4 | M2
+</entry>
+
+</properties>

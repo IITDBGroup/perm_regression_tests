@@ -127,16 +127,24 @@ SELECT TRANSPROV * FROM (SELECT * FROM r) AS r;
 SELECT TRANSPROV * FROM target.author;
 </entry>
 <entry key="q12.result">
+   auth_id            | first_name |   last_name    | affiliation | trans_prov 
+------------------------------+------------+----------------+-------------+------------
+ SK1Boris GlavicUni Zuerich   |            | Boris Glavic   | Uni Zuerich | 1111
+ SK1Gustavo AlonsoETH Zuerich |            | Gustavo Alonso | ETH Zuerich | 1111
 </entry>
 
 <entry key="q13.query">
-SELECT TRANSPROV * FROM target.dates;
+SELECT TRANSPROV * FROM target.publication;
 </entry>
 <entry key="q13.result">
+                                title                                 |           auth_id            |    date_id     | pages  |        class_id         | issue_id  |   trans_prov    
+----------------------------------------------------------------------+------------------------------+----------------+--------+-------------------------+-----------+-----------------
+ Perm and Perm again and again                                        | SK1Boris GlavicUni Zuerich   | SK32011January | -1-100 | SK4Provenance what ever | SK5       | 111111110000000
+ Perm and Perm again and again                                        | SK1Gustavo AlonsoETH Zuerich | SK32011January | -1-100 | SK4Provenance what ever | SK5       | 111111110000000
+ Perm and Perm again and again striking back as a journal publication | SK1Boris GlavicUni Zuerich   | SK32012January | 44-170 | SK4Provenance what ever | SK6TOPs13 | 100000001111111
 </entry>
 
 <entry key="q14.query">
-SELECT TRANSPROV * FROM target.publications;
 </entry>
 <entry key="q14.result">
 </entry>

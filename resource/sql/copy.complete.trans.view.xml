@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy complete transitive) * FROM joinview;
+</entry>
+<entry key="q1.result">
+ a | d | prov_public_x_a | prov_public_x_b | prov_public_v_c | prov_public_v_d 
+---+---+-----------------+-----------------+-----------------+-----------------
+ 1 | 1 |                 |                 |                 |                
+ 1 | 1 |                 |                 |                 |                
+ 1 | 1 |                 |                 |                 |                
+ 2 |   |                 |                 |                 |                
+ 3 |   |                 |                 |                 |              
+</entry>
+
+</properties>

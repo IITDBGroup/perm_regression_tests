@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT MAPPROV * FROM annotview4;
+</entry>
+<entry key="q1.result">
+ i | trans_prov 
+---+------------
+ 1 | M2
+ 2 | M2
+ 3 | M1
+</entry>
+
+
+
+
+<entry key="q12.query">
+SELECT MAPPROV * FROM target.author;
+</entry>
+<entry key="q12.result">
+</entry>
+
+<entry key="q13.query">
+SELECT MAPPROV * FROM target.dates;
+</entry>
+<entry key="q13.result">
+</entry>
+
+<entry key="q14.query">
+SELECT MAPPROV * FROM target.publications;
+</entry>
+<entry key="q14.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+</properties>

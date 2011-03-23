@@ -108,6 +108,7 @@
 		<mkdir dir="${testsourcedir}" />
 		<mkdir dir="${testsourcedir}/tpch" />
 		<mkdir dir="${testsourcedir}/wherecs" />
+		<mkdir dir="${testsourcedir}/howcs" />
 	</target>
 	
 	<target name="compile" depends="cleanTests">
@@ -127,7 +128,8 @@
 	
 	<target name="genTests" depends="jarGenerator">
 		<java classname="org.perm.testgenerator.TestGenerator" classpathref="libraries">
-			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
+			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" 
+				value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
 		</java>
 	</target>
 	

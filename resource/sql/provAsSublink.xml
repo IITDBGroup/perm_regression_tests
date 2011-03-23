@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+SELECT * FROM r norm, r potprov 
+WHERE EXISTS (SELECT * 
+			FROM 
+				(SELECT PROVENANCE * FROM r WHERE r.i = 2) p 
+			WHERE p.i = norm.i AND p.prov_public_r_i = potprov.i);
+</entry>
+<entry key="q1.result">
+ i | i 
+---+---
+ 2 | 2
+</entry>
+
+<entry key="q2.query">
+SELECT * FROM r WHERE r.i IN (SELECT prov_public_s_i FROM (SELECT PROVENANCE * FROM s) p)
+</entry>
+<entry key="q2.result">
+ i 
+---
+ 1
+ 2
+</entry>
+
+<entry key="q3.query">
+SELECT * 
+FROM 
+	(SELECT PROVENANCE r.i + 10 AS big FROM r WHERE r.i = 2) prov 
+WHERE 
+	EXISTS (SELECT * FROM r WHERE r.i = prov_public_r_i);
+</entry>
+<entry key="q3.result">
+ big | prov_public_r_i 
+-----+-----------------
+  12 |               2
+</entry>
+
+<entry key="q4.query">
+SELECT * 
+FROM 
+	(SELECT PROVENANCE * FROM r) prov 
+WHERE NOT EXISTS (SELECT * 
+				FROM (SELECT PROVENANCE * FROM r) subp 
+				WHERE subp.i = prov.i AND subp.prov_public_r_i != prov.prov_public_r_i );
+</entry>
+<entry key="q4.result">
+ i | prov_public_r_i 
+---+-----------------
+ 1 |               1
+ 2 |               2
+ 3 |               3
+</entry>
+
+<entry key="q5.query">
+SELECT p.i FROM (SELECT PROVENANCE * FROM r) p WHERE EXISTS (SELECT PROVENANCE * FROM r);
+</entry>
+<entry key="q5.result">
+ i 
+---
+ 1
+ 2
+ 3
+</entry>
+
+<entry key="q6.query">
+SELECT p.i FROM (SELECT PROVENANCE * FROM r) p 
+WHERE EXISTS (SELECT * FROM (SELECT PROVENANCE * FROM r) AS sub);
+</entry>
+<entry key="q6.result">
+ i 
+---
+ 1
+ 2
+ 3
+</entry>
+
+
+<entry key="q7.query">
+SELECT p.i FROM (SELECT PROVENANCE * FROM r) p 
+WHERE EXISTS (SELECT * FROM (SELECT PROVENANCE * FROM s) AS sub WHERE sub.i = p.i);
+</entry>
+<entry key="q7.result">
+ i 
+---
+ 1
+ 2
+</entry>
+
+
+<entry key="q8.query">
+SELECT p.i, p.prov_public_r_i FROM (SELECT PROVENANCE * FROM r) p                                                                                                                             
+WHERE EXISTS (SELECT * FROM (SELECT PROVENANCE * FROM s) AS sub 
+			WHERE sub.i = p.i);
+</entry>
+<entry key="q8.result">
+ i | prov_public_r_i 
+---+-----------------
+ 1 |               1
+ 2 |               2
+</entry>
+
+
+<entry key="q9.query">
+SELECT p.i, p.prov_public_r_i FROM (SELECT PROVENANCE * FROM r) p                                                                                                                             
+WHERE EXISTS (SELECT * FROM (SELECT PROVENANCE * FROM s) AS sub 
+			WHERE sub.i = p.i AND sub.prov_public_s_i = p.prov_public_r_i);
+</entry>
+<entry key="q9.result">
+ i | prov_public_r_i 
+---+-----------------
+ 1 |               1
+ 2 |               2
+</entry>
+
+<entry key="q10.query">
+SELECT prov.a, prov.d FROM (SELECT PROVENANCE * FROM joinview) prov 
+WHERE EXISTS (SELECT * FROM (SELECT PROVENANCE * FROM joinview) AS sub 
+			WHERE prov.prov_public_x_a = sub.prov_public_x_a AND prov.a = sub.d);
+</entry>
+<entry key="q10.result">
+ a | d 
+---+---
+ 1 | 1
+ 1 | 1
+ 1 | 1
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
+
+</properties>
