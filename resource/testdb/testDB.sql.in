@@ -303,6 +303,8 @@ DROP TABLE IF EXISTS x CASCADE;
 DROP TABLE IF EXISTS tr CASCADE;
 DROP TABLE IF EXISTS ts CASCADE;
 DROP TABLE IF EXISTS nulltab CASCADE;
+DROP TABLE IF EXISTS woid CASCADE;
+
 DROP VIEW IF EXISTS viewsub;
 DROP VIEW IF EXISTS viewsub2;
 
@@ -372,6 +374,10 @@ CREATE TABLE nulltab (c int);
 
 INSERT INTO nulltab VALUES (NULL);
 
+CREATE TABLE woid (a int) WITH OIDS;
+
+COPY woid FROM '@PERMTESTERDIR@/resource/testdb/woid.cpy' WITH OIDS CSV DELIMITER '|';
+
 CREATE VIEW viewsub AS (SELECT x.a, x.b
    FROM x
   WHERE EXISTS ( SELECT v.c, v.d
@@ -435,6 +441,8 @@ DROP VIEW IF EXISTS provview1;
 DROP VIEW IF EXISTS provview2;
 DROP VIEW IF EXISTS subprovview;
 DROP VIEW IF EXISTS joinview;
+DROP VIEW IF EXISTS uview;
+DROP VIEW IF EXISTS provjoinview;
 
 CREATE VIEW bagdiffview AS SELECT * FROM bagdiff1;
 
@@ -454,6 +462,10 @@ CREATE VIEW provview2 AS
 CREATE VIEW subprovview AS SELECT * FROM (SELECT PROVENANCE * FROM bagdiff1) AS prov WHERE prov_public_bagdiff1_id > 1; --check
 
 CREATE VIEW joinview AS (SELECT x.a, v.d FROM x LEFT JOIN v ON (x.a = v.d));
+
+CREATE VIEW uview AS (SELECT * FROM r UNION SELECT * FROM s);
+
+CREATE VIEW provjoin AS (SELECT PROVENANCE * FROM joinview);
 
 /******************************************************************************
 ******* 	test support functions				   ****************************

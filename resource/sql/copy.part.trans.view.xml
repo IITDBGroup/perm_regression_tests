@@ -16,4 +16,37 @@ SELECT PROVENANCE ON CONTRIBUTION (copy partial transitive) * FROM joinview;
  3 |   |               3 |               3 |                 |                   
 </entry>
 
+<entry key="q2.query">
+SELECT PROVENANCE ON CONTRIBUTION (copy partial transitive) * FROM uview;
+</entry>
+<entry key="q2.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+ 3 |               3 |                
+ 4 |                 |               4
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+
 </properties>

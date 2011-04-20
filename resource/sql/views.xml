@@ -98,6 +98,26 @@ SELECT * FROM subprovview;
 ----+-------------------------
 </entry>
 
+
+<entry key="q9.query">
+SELECT * FROM provjoin;
+</entry>
+<entry key="q9.result">
+ a | d | prov_public_x_a | prov_public_x_b | prov_public_v_c | prov_public_v_d 
+---+---+-----------------+-----------------+-----------------+-----------------
+ 1 | 1 |               1 |               1 |               2 |               1
+ 1 | 1 |               1 |               1 |               4 |               1
+ 1 | 1 |               1 |               1 |               5 |               1
+ 2 |   |               2 |               2 |                 |                
+ 3 |   |               3 |               3 |                 |  
+</entry>
+
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
 </properties>
 
 

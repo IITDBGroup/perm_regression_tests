@@ -303,6 +303,8 @@ DROP TABLE IF EXISTS x CASCADE;
 DROP TABLE IF EXISTS tr CASCADE;
 DROP TABLE IF EXISTS ts CASCADE;
 DROP TABLE IF EXISTS nulltab CASCADE;
+DROP TABLE IF EXISTS woid CASCADE;
+
 DROP VIEW IF EXISTS viewsub;
 DROP VIEW IF EXISTS viewsub2;
 
@@ -372,6 +374,10 @@ CREATE TABLE nulltab (c int);
 
 INSERT INTO nulltab VALUES (NULL);
 
+CREATE TABLE woid (a int) WITH OIDS;
+
+COPY woid FROM '/Users/lord_pretzel/Documents/workspace/SF_PermTester/resource/testdb/woid.cpy' WITH OIDS CSV DELIMITER '|';
+
 CREATE VIEW viewsub AS (SELECT x.a, x.b
    FROM x
   WHERE EXISTS ( SELECT v.c, v.d
@@ -435,6 +441,8 @@ DROP VIEW IF EXISTS provview1;
 DROP VIEW IF EXISTS provview2;
 DROP VIEW IF EXISTS subprovview;
 DROP VIEW IF EXISTS joinview;
+DROP VIEW IF EXISTS uview;
+DROP VIEW IF EXISTS provjoinview;
 
 CREATE VIEW bagdiffview AS SELECT * FROM bagdiff1;
 
@@ -454,6 +462,10 @@ CREATE VIEW provview2 AS
 CREATE VIEW subprovview AS SELECT * FROM (SELECT PROVENANCE * FROM bagdiff1) AS prov WHERE prov_public_bagdiff1_id > 1; --check
 
 CREATE VIEW joinview AS (SELECT x.a, v.d FROM x LEFT JOIN v ON (x.a = v.d));
+
+CREATE VIEW uview AS (SELECT * FROM r UNION SELECT * FROM s);
+
+CREATE VIEW provjoin AS (SELECT PROVENANCE * FROM joinview);
 
 /******************************************************************************
 ******* 	test support functions				   ****************************
@@ -477,6 +489,8 @@ INSERT INTO testbitset VALUES (NULL);
 DROP VIEW IF EXISTS annotview1;
 DROP VIEW IF EXISTS annotview2;
 DROP VIEW IF EXISTS annotview3;
+DROP VIEW IF EXISTS annotview4;
+DROP VIEW IF EXISTS annotview5;
 
 CREATE VIEW annotview1 AS 
 	SELECT ANNOT('M1') * FROM r;
@@ -486,6 +500,12 @@ CREATE VIEW annotview2 AS
 
 CREATE VIEW annotview3 AS
 	SELECT ANNOT('M1','M2') r.i FROM (SELECT ANNOT('M1') * FROM r) AS r LEFT JOIN (SELECT ANNOT('M2') * FROM s) AS s ON (r.i = s.i);
+
+CREATE VIEW annotview4 AS
+       SELECT r.i FROM r ANNOT('M1','M2') LEFT JOIN s ANNOT('M2') ON (r.i = s.i);
+
+CREATE VIEW annotview5 AS
+       (SELECT r.i FROM r ANNOT('M1') UNION SELECT s.i FROM s ANNOT('M2'));
 
 /******************************************************************************
 ******* 	TPCH schema				   ********************

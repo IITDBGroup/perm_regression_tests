@@ -322,6 +322,25 @@ SELECT * FROM (SELECT PROVENANCE * FROM (SELECT * FROM r UNION SELECT * FROM s) 
  3 |               3 |                
 </entry>
 
+<entry key="q29.query">
+SELECT PROVENANCE * FROM woid PROVENANCE (oid);
+</entry>
+<entry key="q29.result">
+ a | prov_oid 
+---+----------
+ 1 |   200000
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">

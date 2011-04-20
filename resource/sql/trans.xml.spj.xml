@@ -168,6 +168,8 @@ SELECT TRANSXML * FROM joinview;
 SELECT TRANSXML * FROM joinview WHERE a = 3;
 </entry>
 <entry key="q15.result">
+ a | d |                                                                                                                                                                                                                                         trans_prov                                                                                                                                                                                                                                          
+---+---+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 3 |   | &lt;Query&gt;&lt;Select&gt;&lt;Attr name=&quot;a&quot;&gt;&lt;Var&gt;joinview.a&lt;/Var&gt;&lt;/Attr&gt;&lt;Attr name=&quot;d&quot;&gt;&lt;Var&gt;joinview.d&lt;/Var&gt;&lt;/Attr&gt;&lt;/Select&gt;&lt;From&gt;&lt;Query alias=&quot;joinview&quot;&gt;&lt;Select&gt;&lt;Attr name=&quot;a&quot;&gt;&lt;Var&gt;x.a&lt;/Var&gt;&lt;/Attr&gt;&lt;Attr name=&quot;d&quot;&gt;&lt;Var&gt;v.d&lt;/Var&gt;&lt;/Attr&gt;&lt;/Select&gt;&lt;From&gt;&lt;LeftJoin&gt;&lt;Relation&gt;x&lt;/Relation&gt;&lt;NOT&gt;&lt;Relation&gt;v&lt;/Relation&gt;&lt;/NOT&gt;&lt;On&gt;&lt;Equal&gt;&lt;Var&gt;x.a&lt;/Var&gt;&lt;Var&gt;v.d&lt;/Var&gt;&lt;/Equal&gt;&lt;/On&gt;&lt;/LeftJoin&gt;&lt;/From&gt;&lt;/Query&gt;&lt;/From&gt;&lt;Where&gt;&lt;Equal&gt;&lt;Var&gt;joinview.a&lt;/Var&gt;&lt;Const type=&quot;integer&quot;&gt;3&lt;/Const&gt;&lt;/Equal&gt;&lt;/Where&gt;&lt;/Query&gt;
 </entry>
-
 </properties>

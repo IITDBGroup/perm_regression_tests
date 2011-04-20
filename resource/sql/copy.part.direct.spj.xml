@@ -378,6 +378,79 @@ SELECT PROVENANCE ON CONTRIBUTION (copy partial nottransitive) DISTINCT r.i FROM
  3 |               3 |                 
 </entry>
 
+<entry key="q33.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) * FROM (SELECT a FROM x) BASERELATION x;
+</entry>
+<entry key="q33.result">
+ a | prov_x_a 
+---+----------
+ 1 |        1
+ 2 |        2
+ 3 |        3
+</entry>
+
+<entry key="q34.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a FROM (SELECT a FROM x) BASERELATION x, (SELECT c FROM v) BASERELATION v WHERE x.a = v.c;
+</entry>
+<entry key="q34.result">
+ a | prov_x_a | prov_v_c 
+---+----------+----------
+ 2 |        2 |    
+</entry>
+
+<entry key="q35.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a FROM (SELECT count(*) AS a FROM x) BASERELATION x;
+</entry>
+<entry key="q35.result">
+ a | prov_x_a 
+---+----------
+ 3 |        3
+</entry>
+
+<entry key="q36.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a FROM x PROVENANCE (b);
+</entry>
+<entry key="q36.result">
+ a | prov_b 
+---+--------
+ 1 |      1
+ 2 |      2
+ 3 |      3            
+</entry>
+
+<entry key="q37.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a,b FROM x PROVENANCE (b);
+</entry>
+<entry key="q37.result">
+ a | b | prov_b 
+---+---+--------
+ 1 | 1 |      1
+ 2 | 2 |      2
+ 3 | 3 |      3
+</entry>
+
+<entry key="q38.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a FROM (SELECT * FROM x) PROVENANCE (b) y;
+</entry>
+<entry key="q38.result"> 
+ a | prov_b 
+---+--------
+ 1 |      1
+ 2 |      2
+ 3 |      3 
+</entry>
+
+<entry key="q39.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a FROM (SELECT a,b, a AS c FROM x) PROVENANCE(b) y;
+</entry>
+<entry key="q39.result">
+ a | prov_b 
+---+--------
+ 1 |      1
+ 2 |      2
+ 3 |      3 
+</entry>
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">

@@ -378,9 +378,87 @@ SELECT PROVENANCE ON CONTRIBUTION (copy partial transitive) DISTINCT r.i FROM r,
  3 |               3 |                 
 </entry>
 
-<entry key="q.query">
+<entry key="q33.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL TRANSITIVE) * FROM r NATURAL JOIN s;
 </entry>
-<entry key="q.result">
+<entry key="q33.result">
+ i | prov_public_r_i | prov_public_s_i 
+---+-----------------+-----------------
+ 1 |               1 |               1
+ 2 |               2 |               2
+</entry>
+
+<entry key="q34.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) * FROM (SELECT a FROM x) BASERELATION x;
+</entry>
+<entry key="q34.result">
+ a | prov_x_a 
+---+----------
+ 1 |        1
+ 2 |        2
+ 3 |        3
+</entry>
+
+<entry key="q35.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) a FROM (SELECT a FROM x) BASERELATION x, (SELECT c FROM v) BASERELATION v WHERE x.a = v.c;
+</entry>
+<entry key="q35.result">
+ a | prov_x_a | prov_v_c 
+---+----------+----------
+ 2 |        2 |        2  
+</entry>
+
+<entry key="q36.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) a FROM (SELECT count(*) AS a FROM x) BASERELATION x;
+</entry>
+<entry key="q36.result">
+ a | prov_x_a 
+---+----------
+ 3 |        3
+</entry>
+
+<entry key="q37.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) a FROM x PROVENANCE (b);
+</entry>
+<entry key="q37.result">
+ a | prov_b 
+---+--------
+ 1 |      1
+ 2 |      2
+ 3 |      3            
+</entry>
+
+<entry key="q38.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) a,b FROM x PROVENANCE (b);
+</entry>
+<entry key="q38.result">
+ a | b | prov_b 
+---+---+--------
+ 1 | 1 |      1
+ 2 | 2 |      2
+ 3 | 3 |      3
+</entry>
+
+<entry key="q39.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) a FROM (SELECT * FROM x) PROVENANCE (b) y;
+</entry>
+<entry key="q39.result"> 
+ a | prov_b 
+---+--------
+ 1 |      1
+ 2 |      2
+ 3 |      3 
+</entry>
+
+<entry key="q40.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL transitive) a FROM (SELECT a,b, a AS c FROM x) PROVENANCE(b) y;
+</entry>
+<entry key="q40.result">
+ a | prov_b 
+---+--------
+ 1 |      1
+ 2 |      2
+ 3 |      3
 </entry>
 
 </properties>
