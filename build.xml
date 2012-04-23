@@ -176,7 +176,7 @@
 		<antcall target="killPermServer"/>
 	</target>
 	
-	<target name="loadDBScript" depends="loadProperties,adaptTestDDLScript">
+	<target name="loadDBScript" depends="loadProperties,adaptDDLScripts">
 		<property name="perm.psql.adminargs" value="-U ${Options.User} -d ${Options.AdminDBName} -h 127.0.0.1 -p 5432" />
 		<property name="perm.psql.testargs" value="-U ${Options.User} -d ${Options.DBName} -h 127.0.0.1 -p 5432" />
 		<property name="xmlfuncscript" value="${Options.PermSource}/contrib/xml2/pgxml.sql" />
