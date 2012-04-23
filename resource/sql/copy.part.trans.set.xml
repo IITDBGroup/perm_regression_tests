@@ -103,9 +103,36 @@ SELECT PROVENANCE ON CONTRIBUTION (copy) * FROM (SELECT * FROM r EXCEPT SELECT *
  3 |               3 |                 |                
 </entry>
 
-<entry key="q.query">
+<entry key="q10.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL TRANSITIVE) * FROM (SELECT 'x' AS rel, * FROM x UNION ALL SELECT 'v' AS rel, * FROM v) AS i;
 </entry>
-<entry key="q.result">
+<entry key="q10.result">
+ rel | a | b | prov_public_x_a | prov_public_x_b | prov_public_v_c | prov_public_v_d 
+-----+---+---+-----------------+-----------------+-----------------+-----------------
+ x   | 1 | 1 |               1 |               1 |                 |                
+ x   | 2 | 2 |               2 |               2 |                 |                
+ x   | 3 | 3 |               3 |               3 |                 |                
+ v   | 2 | 1 |                 |                 |               2 |               1
+ v   | 4 | 1 |                 |                 |               4 |               1
+ v   | 5 | 1 |                 |                 |               5 |               1
+</entry>
+
+<entry key="q11.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) * FROM (SELECT CASE WHEN ri = 1 THEN ri ELSE si END AS res 
+FROM (SELECT i AS ri FROM r) r, (SELECT i AS si FROM s) AS s WHERE ri <= si UNION ALL SELECT * FROM s) AS un;
+</entry>
+<entry key="q11.result">
+  res | prov_public_r_i | prov_public_s_i | prov_public_s_1_i 
+-----+-----------------+-----------------+-------------------
+   1 |               1 |                 |
+   1 |               1 |                 |
+   1 |               1 |                 |
+   2 |                 |               2 |
+   4 |                 |               4 |
+   4 |                 |               4 |
+   1 |                 |                 |                 1
+   2 |                 |                 |                 2
+   4 |                 |                 |                 4
 </entry>
 
 <entry key="q.query">

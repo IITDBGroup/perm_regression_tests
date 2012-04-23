@@ -451,6 +451,22 @@ SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) a FROM (SELECT a,
  3 |      3 
 </entry>
 
+<entry key="q40.query">
+SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) CASE WHEN ri = 1 THEN ri ELSE si END AS res 
+FROM (SELECT i AS ri FROM r) r, (SELECT i AS si FROM s) AS s WHERE ri &lt;= si;
+</entry>
+<entry key="q40.result">
+ res | prov_public_r_i | prov_public_s_i 
+-----+-----------------+-----------------
+   1 |               1 |                
+   1 |               1 |                
+   1 |               1 |                
+   2 |                 |               2
+   4 |                 |               4
+   4 |                 |               4
+</entry>
+
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">
