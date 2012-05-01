@@ -38,6 +38,7 @@ public class ConnectionOptions {
 	}
 	
 	public String getUser () {
+		System.out.println(props.get("User"));
 		return props.getProperty("User");
 	}
 	
@@ -55,10 +56,13 @@ public class ConnectionOptions {
 	
 	public void setPath (String path) {
 		File filePath = new File (path);
+		Properties newProp = new Properties();
 		
 		props.setProperty("Path", path);
 		try {
-			props.load(new FileInputStream(new File(filePath, "options.txt")));
+			newProp.load(new FileInputStream(new File(filePath, "options.txt")));
+			props.setProperty("DBName", newProp.getProperty("DBName"));
+			props.setProperty("Password", newProp.getProperty("Password"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
