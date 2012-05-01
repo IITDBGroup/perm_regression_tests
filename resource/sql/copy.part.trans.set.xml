@@ -119,7 +119,7 @@ SELECT PROVENANCE ON CONTRIBUTION (COPY PARTIAL TRANSITIVE) * FROM (SELECT 'x' A
 
 <entry key="q11.query">
 SELECT PROVENANCE ON CONTRIBUTION (COPY partial nottransitive) * FROM (SELECT CASE WHEN ri = 1 THEN ri ELSE si END AS res 
-FROM (SELECT i AS ri FROM r) r, (SELECT i AS si FROM s) AS s WHERE ri <= si UNION ALL SELECT * FROM s) AS un;
+FROM (SELECT i AS ri FROM r) r, (SELECT i AS si FROM s) AS s WHERE ri &lt;= si UNION ALL SELECT * FROM s) AS un;
 </entry>
 <entry key="q11.result">
   res | prov_public_r_i | prov_public_s_i | prov_public_s_1_i 

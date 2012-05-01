@@ -43,7 +43,7 @@ SELECT PROVENANCE ON CONTRIBUTION (copy partial transitive) a.i, a.i + 1 AS one,
 </entry>
 
 <entry key="q4.query">
-SELECT PROVENANCE ON CONTRIBUTION (copy partial transitive) r.i, si FROM r, (SELECT s.i AS si, t.i AS ti FROM s, t WHERE s.i = t.i) AS sub WHERE sub.si > r.i;
+SELECT PROVENANCE ON CONTRIBUTION (copy partial transitive) r.i, si FROM r, (SELECT s.i AS si, t.i AS ti FROM s, t WHERE s.i = t.i) AS sub WHERE sub.si &gt; r.i;
 </entry>
 <entry key="q4.result">
  i | si | prov_public_r_i | prov_public_s_i | prov_public_t_i 
