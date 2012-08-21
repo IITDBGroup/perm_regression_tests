@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Test cases for Perm-PMS</comment>
+
+<entry key="q1.query">
+select a, sum(b) from t1 group by a aggproject c;
+</entry>
+<entry key="q1.result">
+ a | sum | c 
+---+-----+---
+ 1 |   5 | 3
+ 1 |   5 | 4
+ 2 |   6 | 3
+ 2 |   6 | 7
+ 3 |   9 | 8
+ 3 |   9 | 9
+</entry>
+<entry key="q2.query">
+select a, sum(b) from t1 group by a having a &lt; 3 aggproject c;
+</entry>
+<entry key="q2.result">
+ a | sum | c 
+---+-----+---
+ 1 |   5 | 3
+ 1 |   5 | 4
+ 2 |   6 | 3
+ 2 |   6 | 7
+</entry>
+<entry key="q3.query">
+select count(n_nationkey), n_regionkey from nation group by n_regionkey aggproject n_name;
+</entry>
+<entry key="q3.result">
+ count | n_regionkey |     n_name     
+-------+-------------+----------------
+     5 |           0 | ETHIOPIA
+     5 |           0 | MOZAMBIQUE
+     5 |           0 | MOROCCO
+     5 |           0 | KENYA
+     5 |           0 | ALGERIA
+     5 |           1 | UNITED STATES
+     5 |           1 | ARGENTINA
+     5 |           1 | BRAZIL
+     5 |           1 | CANADA
+     5 |           1 | PERU
+     5 |           2 | VIETNAM
+     5 |           2 | INDONESIA
+     5 |           2 | JAPAN
+     5 |           2 | CHINA
+     5 |           2 | INDIA
+     5 |           3 | ROMANIA
+     5 |           3 | RUSSIA
+     5 |           3 | UNITED KINGDOM
+     5 |           3 | GERMANY
+     5 |           3 | FRANCE
+     5 |           4 | EGYPT
+     5 |           4 | IRAQ
+     5 |           4 | JORDAN
+     5 |           4 | IRAN
+     5 |           4 | SAUDI ARABIA
+</entry>
+</properties>
