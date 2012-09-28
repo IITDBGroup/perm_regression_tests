@@ -1,6 +1,6 @@
 DBName=testdb
 AdminDBName=template1
-User=postgres
+User=lord_pretzel
 Password=
 Schema=public
 Path=resource/sql/
