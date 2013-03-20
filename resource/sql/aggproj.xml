@@ -174,6 +174,225 @@ select a, sum(b) from (SELECT * FROM t1) AS t1 group by a aggproject c;
  3 |   9 | 9
 </entry>
 
+<entry key="q12.query">
+SELECT a, sum(b) AS sum FROM t1 GROUP BY a AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1
+</entry>
+<entry key="q12.result">
+ a | sum | a1 | b1 | c1 | x1 
+---+-----+----+----+----+----
+ 1 |   5 |  1 |  2 |  3 | f
+ 1 |   5 |  1 |  3 |  4 | t
+ 2 |   6 |  2 |  5 |  3 | f
+ 2 |   6 |  2 |  1 |  7 | t
+ 3 |   9 |  3 |  4 |  8 | f
+ 3 |   9 |  3 |  5 |  9 | t
+</entry>
+
+<entry key="q13.query">
+SELECT * FROM (SELECT a, sum(b) AS sum FROM t1 GROUP BY a AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1) AS sub
+</entry>
+<entry key="q13.result">
+a | sum | a1 | b1 | c1 | x1 
+---+-----+----+----+----+----
+ 1 |   5 |  1 |  2 |  3 | f
+ 1 |   5 |  1 |  3 |  4 | t
+ 2 |   6 |  2 |  5 |  3 | f
+ 2 |   6 |  2 |  1 |  7 | t
+ 3 |   9 |  3 |  4 |  8 | f
+ 3 |   9 |  3 |  5 |  9 | t
+</entry>
+
+<entry key="q14.query">
+SELECT * 
+FROM 
+	(SELECT a, sum(b) AS sum FROM t1 GROUP BY a AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1) AS s1, 
+	(SELECT a, sum(b) AS sum FROM t1 GROUP BY a AGGPROJECT a AS a2, b AS b2, c AS c2 GENISPROVROW x2) AS s2 
+WHERE s1.a = s2.a
+</entry>
+<entry key="q14.result">
+ a | sum | a1 | b1 | c1 | x1 | a | sum | a2 | b2 | c2 | x2 
+---+-----+----+----+----+----+---+-----+----+----+----+----
+ 1 |   5 |  1 |  2 |  3 | f  | 1 |   5 |  1 |  2 |  3 | f
+ 1 |   5 |  1 |  2 |  3 | f  | 1 |   5 |  1 |  3 |  4 | t
+ 1 |   5 |  1 |  3 |  4 | t  | 1 |   5 |  1 |  2 |  3 | f
+ 1 |   5 |  1 |  3 |  4 | t  | 1 |   5 |  1 |  3 |  4 | t
+ 2 |   6 |  2 |  5 |  3 | f  | 2 |   6 |  2 |  5 |  3 | f
+ 2 |   6 |  2 |  5 |  3 | f  | 2 |   6 |  2 |  1 |  7 | t
+ 2 |   6 |  2 |  1 |  7 | t  | 2 |   6 |  2 |  5 |  3 | f
+ 2 |   6 |  2 |  1 |  7 | t  | 2 |   6 |  2 |  1 |  7 | t
+ 3 |   9 |  3 |  4 |  8 | f  | 3 |   9 |  3 |  4 |  8 | f
+ 3 |   9 |  3 |  4 |  8 | f  | 3 |   9 |  3 |  5 |  9 | t
+ 3 |   9 |  3 |  5 |  9 | t  | 3 |   9 |  3 |  4 |  8 | f
+ 3 |   9 |  3 |  5 |  9 | t  | 3 |   9 |  3 |  5 |  9 | t
+</entry>
+
+<entry key="q15.query">
+SELECT sum(s1.sum) 
+FROM 
+	(SELECT a, sum(b) AS sum FROM t1 GROUP BY a AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1) AS s1, 
+	(SELECT a, sum(b) AS sum FROM t1 GROUP BY a AGGPROJECT a AS a2, b AS b2, c AS c2 GENISPROVROW x2) AS s2 
+WHERE s1.a = s2.a
+GROUP BY s2.sum
+AGGPROJECT a1, b1, c1, a2, b2, c2, x1, x2 ISPROVROWATTRS x1,x2 GENISPROVROW x3
+</entry>
+<entry key="q15.result">
+ sum | a1 | b1 | c1 | a2 | b2 | c2 | x1 | x2 | x3 
+-----+----+----+----+----+----+----+----+----+----
+  5 |  1 |  2 |  3 |  1 |  2 |  3 | f  | f  | f
+  5 |  1 |  2 |  3 |  1 |  3 |  4 | f  | t  | f
+  5 |  1 |  3 |  4 |  1 |  2 |  3 | t  | f  | f
+  5 |  1 |  3 |  4 |  1 |  3 |  4 | t  | t  | t
+  6 |  2 |  5 |  3 |  2 |  5 |  3 | f  | f  | f
+  6 |  2 |  5 |  3 |  2 |  1 |  7 | f  | t  | f
+  6 |  2 |  1 |  7 |  2 |  5 |  3 | t  | f  | f
+  6 |  2 |  1 |  7 |  2 |  1 |  7 | t  | t  | t
+  9 |  3 |  4 |  8 |  3 |  4 |  8 | f  | f  | f
+  9 |  3 |  4 |  8 |  3 |  5 |  9 | f  | t  | f
+  9 |  3 |  5 |  9 |  3 |  4 |  8 | t  | f  | f
+  9 |  3 |  5 |  9 |  3 |  5 |  9 | t  | t  | t
+</entry>
+
+<entry key="q16.query">
+SELECT sum(s1.sum) 
+FROM 
+	(SELECT * FROM (SELECT a, sum(b) AS sum 
+					FROM t1 
+					GROUP BY a 
+					AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1) AS s1
+	) AS s1, 
+	(SELECT * FROM (SELECT a, sum(b) AS sum 
+					FROM t1 
+					GROUP BY a 
+					AGGPROJECT a AS a2, b AS b2, c AS c2 GENISPROVROW x2) AS s2
+	) AS s2 
+WHERE s1.a = s2.a
+GROUP BY s2.sum
+AGGPROJECT a1, b1, c1, a2, b2, c2, x1, x2 ISPROVROWATTRS x1,x2 GENISPROVROW x3
+</entry>
+<entry key="q16.result">
+ sum | a1 | b1 | c1 | a2 | b2 | c2 | x1 | x2 | x3 
+-----+----+----+----+----+----+----+----+----+----
+  5 |  1 |  2 |  3 |  1 |  2 |  3 | f  | f  | f
+  5 |  1 |  2 |  3 |  1 |  3 |  4 | f  | t  | f
+  5 |  1 |  3 |  4 |  1 |  2 |  3 | t  | f  | f
+  5 |  1 |  3 |  4 |  1 |  3 |  4 | t  | t  | t
+  6 |  2 |  5 |  3 |  2 |  5 |  3 | f  | f  | f
+  6 |  2 |  5 |  3 |  2 |  1 |  7 | f  | t  | f
+  6 |  2 |  1 |  7 |  2 |  5 |  3 | t  | f  | f
+  6 |  2 |  1 |  7 |  2 |  1 |  7 | t  | t  | t
+  9 |  3 |  4 |  8 |  3 |  4 |  8 | f  | f  | f
+  9 |  3 |  4 |  8 |  3 |  5 |  9 | f  | t  | f
+  9 |  3 |  5 |  9 |  3 |  4 |  8 | t  | f  | f
+  9 |  3 |  5 |  9 |  3 |  5 |  9 | t  | t  | t
+</entry>
+
+<entry key="q17.query">
+SELECT *
+FROM (
+    SELECT sum(s1.sum) 
+	FROM 
+		(SELECT * FROM (SELECT a, sum(b) AS sum 
+						FROM t1 
+						GROUP BY a 
+						AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1) AS s1
+		) AS s1, 
+		(SELECT * FROM (SELECT a, sum(b) AS sum 
+						FROM t1 
+						GROUP BY a 
+						AGGPROJECT a AS a2, b AS b2, c AS c2 GENISPROVROW x2) AS s2
+		) AS s2 
+	WHERE s1.a = s2.a
+	GROUP BY s2.sum
+	AGGPROJECT a1, b1, c1, a2, b2, c2, x1, x2 ISPROVROWATTRS x1,x2 GENISPROVROW x3) AS x
+</entry>
+<entry key="q17.result">
+ sum | a1 | b1 | c1 | a2 | b2 | c2 | x1 | x2 | x3 
+-----+----+----+----+----+----+----+----+----+----
+  5 |  1 |  2 |  3 |  1 |  2 |  3 | f  | f  | f
+  5 |  1 |  2 |  3 |  1 |  3 |  4 | f  | t  | f
+  5 |  1 |  3 |  4 |  1 |  2 |  3 | t  | f  | f
+  5 |  1 |  3 |  4 |  1 |  3 |  4 | t  | t  | t
+  6 |  2 |  5 |  3 |  2 |  5 |  3 | f  | f  | f
+  6 |  2 |  5 |  3 |  2 |  1 |  7 | f  | t  | f
+  6 |  2 |  1 |  7 |  2 |  5 |  3 | t  | f  | f
+  6 |  2 |  1 |  7 |  2 |  1 |  7 | t  | t  | t
+  9 |  3 |  4 |  8 |  3 |  4 |  8 | f  | f  | f
+  9 |  3 |  4 |  8 |  3 |  5 |  9 | f  | t  | f
+  9 |  3 |  5 |  9 |  3 |  4 |  8 | t  | f  | f
+  9 |  3 |  5 |  9 |  3 |  5 |  9 | t  | t  | t
+</entry>
+
+<entry key="q18.query">
+SELECT *
+FROM (
+    SELECT sum(s1.sum) 
+	FROM 
+		(SELECT * FROM (SELECT a, sum(b) AS sum 
+						FROM (SELECT * FROM t1) AS t1 
+						GROUP BY a 
+						AGGPROJECT a AS a1, b AS b1, c AS c1 GENISPROVROW x1) AS s1
+		) AS s1, 
+		(SELECT * FROM (SELECT a, sum(b) AS sum 
+						FROM (SELECT * FROM t1) AS t1 
+						GROUP BY a 
+						AGGPROJECT a AS a2, b AS b2, c AS c2 GENISPROVROW x2) AS s2
+		) AS s2 
+	WHERE s1.a = s2.a
+	GROUP BY s2.sum
+	AGGPROJECT a1, b1, c1, a2, b2, c2, x1, x2 ISPROVROWATTRS x1,x2 GENISPROVROW x3) AS x
+</entry>
+<entry key="q18.result">
+ sum | a1 | b1 | c1 | a2 | b2 | c2 | x1 | x2 | x3 
+-----+----+----+----+----+----+----+----+----+----
+  5 |  1 |  2 |  3 |  1 |  2 |  3 | f  | f  | f
+  5 |  1 |  2 |  3 |  1 |  3 |  4 | f  | t  | f
+  5 |  1 |  3 |  4 |  1 |  2 |  3 | t  | f  | f
+  5 |  1 |  3 |  4 |  1 |  3 |  4 | t  | t  | t
+  6 |  2 |  5 |  3 |  2 |  5 |  3 | f  | f  | f
+  6 |  2 |  5 |  3 |  2 |  1 |  7 | f  | t  | f
+  6 |  2 |  1 |  7 |  2 |  5 |  3 | t  | f  | f
+  6 |  2 |  1 |  7 |  2 |  1 |  7 | t  | t  | t
+  9 |  3 |  4 |  8 |  3 |  4 |  8 | f  | f  | f
+  9 |  3 |  4 |  8 |  3 |  5 |  9 | f  | t  | f
+  9 |  3 |  5 |  9 |  3 |  4 |  8 | t  | f  | f
+  9 |  3 |  5 |  9 |  3 |  5 |  9 | t  | t  | t
+</entry>
+
+<entry key="q19.query">
+SELECT a, sum(b) AS b
+FROM 
+	(SELECT a, sum(b) AS b
+	FROM 
+		(SELECT a, sum(b) AS b 
+		FROM (SELECT * FROM t1) AS t1 
+		GROUP BY a 
+		AGGPROJECT c AS c1 GENISPROVROW x1) AS s1
+	GROUP BY a
+	AGGPROJECT c1 ISPROVROWATTRS x1 GENISPROVROW x2) AS m1
+GROUP BY a
+AGGPROJECT c1 ISPROVROWATTRS x2 GENISPROVROW x3
+</entry>
+<entry key="q19.result">
+ a | b | c1 | x3 
+---+---+----+----
+ 1 | 5 |  3 | f
+ 1 | 5 |  4 | t
+ 2 | 6 |  3 | f
+ 2 | 6 |  7 | t
+ 3 | 9 |  8 | f
+ 3 | 9 |  9 | t
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
+<entry key="q.query">
+</entry>
+<entry key="q.result">
+</entry>
+
 <entry key="q.query">
 </entry>
 <entry key="q.result">
