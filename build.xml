@@ -91,7 +91,7 @@
 	</target>
 	
 	<target name="clean" depends="adaptDDLScripts">
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" quiet="true">
 			<fileset dir="${binarydir}" includes="**/*"/>
 		 </delete>
 		<mkdir dir="${binarydir}" />
