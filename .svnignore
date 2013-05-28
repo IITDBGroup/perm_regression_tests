@@ -1,0 +1,5 @@
+bin
+src/org/perm/autotests
+lib/permgenerator.jar
+testDB.sql
+wherecs.sql
