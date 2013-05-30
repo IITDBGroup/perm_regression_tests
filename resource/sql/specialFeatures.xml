@@ -412,4 +412,26 @@ SELECT PROVENANCE * FROM specialnames sp, r PROVENANCE (i), (SELECT * FROM s) BA
                2 |                     1 | 2 | 2 |                                        2 |                                              1 | 2 |        2
 </entry>
 
+<entry key="q32.query">
+SELECT PROVENANCE * FROM (SELECT 1) AS t(a);
+</entry>
+<entry key="q32.result">
+ a 
+---
+ 1
+</entry>
+
+<entry key="q33.query">
+SELECT PROVENANCE * FROM (SELECT 1) as t(a) JOIN (SELECT 1) AS s(b) ON (a=b);
+</entry>
+<entry key="q32.result">
+ a | b 
+---+---
+ 1 | 1
+</entry>
+
+
+
+
+
 </properties>
