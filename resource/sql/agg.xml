@@ -669,4 +669,36 @@ SELECT PROVENANCE sum(i) AS sumi FROM r GROUP BY i ORDER BY sumi;
     3 |               3
 </entry>
 
+<entry key="q34.query">
+SELECT PROVENANCE COUNT(*), r.i FROM r JOIN s ON r.i = s.i GROUP BY r.i;
+</entry>
+<entry key="q34.result">
+ count | i | prov_public_r_i | prov_public_s_i 
+-------+---+-----------------+-----------------
+     1 | 1 |               1 |               1
+     1 | 2 |               2 |               2
+</entry>
+
+<entry key="q35.query">
+SELECT PROVENANCE * FROM (SELECT COUNT(*), r.i FROM r JOIN s ON r.i = s.i GROUP BY r.i) AS sub;
+</entry>
+<entry key="q35.result">
+ count | i | prov_public_r_i | prov_public_s_i 
+-------+---+-----------------+-----------------
+     1 | 1 |               1 |               1
+     1 | 2 |               2 |               2
+</entry>
+
+<entry key="q36.query">
+SELECT PROVENANCE r.i FROM r GROUP BY r.i;
+</entry>
+<entry key="q36.result">
+ i | prov_public_r_i 
+---+-----------------
+ 2 |               2
+ 3 |               3
+ 1 |               1
+</entry>
+
+
 </properties>

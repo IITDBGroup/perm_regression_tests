@@ -401,14 +401,30 @@ AGGPROJECT t1.c AS c1, t2.c As c2 GENISPROVROW x;
    5 |  9 |  6 | t
 </entry>
 
-<entry key="q.query">
+<entry key="q21.query">
+SELECT count(*) FROM (r JOIN s ON (r.i = s.i)) t(a,b) GROUP BY t.b AGGPROJECT t.b;
 </entry>
-<entry key="q.result">
+<entry key="q21.result">
+ count | b 
+-------+---
+     1 | 1
+     1 | 2
+</entry>
+
+<entry key="q22.query">
+SELECT count(*) FROM (r JOIN s ON (r.i = s.i)) t(a,b) GROUP BY t.b AGGPROJECT t.a;
+</entry>
+<entry key="q22.result">
+ count | a 
+-------+---
+     1 | 1
+     1 | 2
 </entry>
 
 <entry key="q.query">
 </entry>
 <entry key="q.result">
 </entry>
+
 
 </properties>

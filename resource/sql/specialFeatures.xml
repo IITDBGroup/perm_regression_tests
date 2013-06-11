@@ -424,7 +424,7 @@ SELECT PROVENANCE * FROM (SELECT 1) AS t(a);
 <entry key="q33.query">
 SELECT PROVENANCE * FROM (SELECT 1) as t(a) JOIN (SELECT 1) AS s(b) ON (a=b);
 </entry>
-<entry key="q32.result">
+<entry key="q33.result">
  a | b 
 ---+---
  1 | 1
