@@ -12,7 +12,7 @@
 <entry key="option.7">prov_use_selection_pushdown</entry>
 <entry key="option.8">prov_xml_whitespace</entry>
 <entry key="option.9">prov_use_wl_union_semantics</entry>
-
+<entry key="option.10">prov_use_aggproject</entry>
 
 <!-- Default Values -->
 <entry key="default.1">false</entry>
@@ -24,7 +24,7 @@
 <entry key="default.7">false</entry>
 <entry key="default.8">false</entry>
 <entry key="default.9">false</entry>
-
+<entry key="default.10">true</entry>
 
 <!-- Gen strategy -->
 <entry key="setting.1.name">Gen</entry>
@@ -37,6 +37,7 @@
 <entry key="setting.1.7">false</entry>
 <entry key="setting.1.8">false</entry>
 <entry key="setting.1.9">false</entry>
+<entry key="setting.1.10">true</entry>
 
 <!-- Left strategy -->
 <entry key="setting.2.name">Left</entry>
@@ -49,6 +50,7 @@
 <entry key="setting.2.7">false</entry>
 <entry key="setting.2.8">false</entry>
 <entry key="setting.2.9">false</entry>
+<entry key="setting.2.10">true</entry>
 
 <!-- Move strategy -->
 <entry key="setting.3.name">Move</entry>
@@ -61,6 +63,7 @@
 <entry key="setting.3.7">false</entry>
 <entry key="setting.3.8">false</entry>
 <entry key="setting.3.9">false</entry>
+<entry key="setting.3.10">true</entry>
 
 <!-- Unn strategy -->
 <entry key="setting.4.name">Unn</entry>
@@ -73,6 +76,7 @@
 <entry key="setting.4.7">false</entry>
 <entry key="setting.4.8">false</entry>
 <entry key="setting.4.9">false</entry>
+<entry key="setting.4.10">true</entry>
 
 <!-- UnnDecor strategy -->
 <entry key="setting.5.name">UnnDec</entry>
@@ -85,6 +89,7 @@
 <entry key="setting.5.7">false</entry>
 <entry key="setting.5.8">false</entry>
 <entry key="setting.5.9">false</entry>
+<entry key="setting.5.10">true</entry>
 
 <!-- UnnDecor strategy (without move)-->
 <entry key="setting.6.name">UnnDecor</entry>
@@ -97,6 +102,7 @@
 <entry key="setting.6.7">false</entry>
 <entry key="setting.6.8">false</entry>
 <entry key="setting.6.9">false</entry>
+<entry key="setting.6.10">true</entry>
 
 <!-- Unn strategy (without move and unn)-->
 <entry key="setting.7.name">UnnWOmove</entry>
@@ -109,6 +115,7 @@
 <entry key="setting.7.7">false</entry>
 <entry key="setting.7.8">false</entry>
 <entry key="setting.7.9">false</entry>
+<entry key="setting.7.10">true</entry>
 
 <!-- Choose cheapest method using the optimizer-->
 <entry key="setting.8.name">Optimizer</entry>
@@ -121,6 +128,7 @@
 <entry key="setting.8.7">false</entry>
 <entry key="setting.8.8">false</entry>
 <entry key="setting.8.9">false</entry>
+<entry key="setting.8.10">true</entry>
 
 <!-- UnnDecor with selection pushdown -->
 <entry key="setting.9.name">Selection Pushdown</entry>
@@ -133,6 +141,7 @@
 <entry key="setting.9.7">true</entry>
 <entry key="setting.9.8">false</entry>
 <entry key="setting.9.9">false</entry>
+<entry key="setting.9.10">true</entry>
 
 <!-- new union semantics -->
 <entry key="setting.10.name">Wl union sem</entry>
@@ -145,5 +154,6 @@
 <entry key="setting.10.7">false</entry>
 <entry key="setting.10.8">false</entry>
 <entry key="setting.10.9">true</entry>
+<entry key="setting.10.10">true</entry>
 
 </properties>
