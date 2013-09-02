@@ -700,5 +700,19 @@ SELECT PROVENANCE r.i FROM r GROUP BY r.i;
  1 |               1
 </entry>
 
+<entry key="q37query">
+SELECT PROVENANCE sum(su) FROM (SELECT sum(b) AS su FROM t1 GROUP BY a) AS sub;
+</entry>
+<entry key="q37.result">
+ sum | prov_public_t1_a | prov_public_t1_b | prov_public_t1_c 
+-----+------------------+------------------+------------------
+  20 |                2 |                5 |                3
+  20 |                2 |                1 |                7
+  20 |                3 |                4 |                8
+  20 |                3 |                5 |                9
+  20 |                1 |                2 |                3
+  20 |                1 |                3 |                4
+</entry>
+ 
 
 </properties>

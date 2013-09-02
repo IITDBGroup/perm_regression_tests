@@ -13,6 +13,8 @@
 <entry key="option.8">prov_xml_whitespace</entry>
 <entry key="option.9">prov_use_wl_union_semantics</entry>
 <entry key="option.10">prov_use_aggproject</entry>
+<entry key="option.11">prov_show_is_prov_attr</entry>
+<entry key="option.12">enable_hashagg</entry>
 
 <!-- Default Values -->
 <entry key="default.1">false</entry>
@@ -25,6 +27,8 @@
 <entry key="default.8">false</entry>
 <entry key="default.9">false</entry>
 <entry key="default.10">true</entry>
+<entry key="default.11">false</entry>
+<entry key="default.12">false</entry>
 
 <!-- Gen strategy -->
 <entry key="setting.1.name">Gen</entry>
@@ -38,6 +42,8 @@
 <entry key="setting.1.8">false</entry>
 <entry key="setting.1.9">false</entry>
 <entry key="setting.1.10">true</entry>
+<entry key="setting.1.11">false</entry>
+<entry key="setting.1.12">false</entry>
 
 <!-- Left strategy -->
 <entry key="setting.2.name">Left</entry>
@@ -51,6 +57,8 @@
 <entry key="setting.2.8">false</entry>
 <entry key="setting.2.9">false</entry>
 <entry key="setting.2.10">true</entry>
+<entry key="setting.2.11">false</entry>
+<entry key="setting.2.12">false</entry>
 
 <!-- Move strategy -->
 <entry key="setting.3.name">Move</entry>
@@ -64,6 +72,8 @@
 <entry key="setting.3.8">false</entry>
 <entry key="setting.3.9">false</entry>
 <entry key="setting.3.10">true</entry>
+<entry key="setting.3.11">false</entry>
+<entry key="setting.3.12">false</entry>
 
 <!-- Unn strategy -->
 <entry key="setting.4.name">Unn</entry>
@@ -77,6 +87,8 @@
 <entry key="setting.4.8">false</entry>
 <entry key="setting.4.9">false</entry>
 <entry key="setting.4.10">true</entry>
+<entry key="setting.4.11">false</entry>
+<entry key="setting.4.12">false</entry>
 
 <!-- UnnDecor strategy -->
 <entry key="setting.5.name">UnnDec</entry>
@@ -90,6 +102,8 @@
 <entry key="setting.5.8">false</entry>
 <entry key="setting.5.9">false</entry>
 <entry key="setting.5.10">true</entry>
+<entry key="setting.5.11">false</entry>
+<entry key="setting.5.12">false</entry>
 
 <!-- UnnDecor strategy (without move)-->
 <entry key="setting.6.name">UnnDecor</entry>
@@ -103,6 +117,8 @@
 <entry key="setting.6.8">false</entry>
 <entry key="setting.6.9">false</entry>
 <entry key="setting.6.10">true</entry>
+<entry key="setting.6.11">false</entry>
+<entry key="setting.6.12">false</entry>
 
 <!-- Unn strategy (without move and unn)-->
 <entry key="setting.7.name">UnnWOmove</entry>
@@ -116,6 +132,8 @@
 <entry key="setting.7.8">false</entry>
 <entry key="setting.7.9">false</entry>
 <entry key="setting.7.10">true</entry>
+<entry key="setting.7.11">false</entry>
+<entry key="setting.7.12">false</entry>
 
 <!-- Choose cheapest method using the optimizer-->
 <entry key="setting.8.name">Optimizer</entry>
@@ -129,6 +147,8 @@
 <entry key="setting.8.8">false</entry>
 <entry key="setting.8.9">false</entry>
 <entry key="setting.8.10">true</entry>
+<entry key="setting.8.11">false</entry>
+<entry key="setting.8.12">false</entry>
 
 <!-- UnnDecor with selection pushdown -->
 <entry key="setting.9.name">Selection Pushdown</entry>
@@ -142,6 +162,8 @@
 <entry key="setting.9.8">false</entry>
 <entry key="setting.9.9">false</entry>
 <entry key="setting.9.10">true</entry>
+<entry key="setting.9.11">false</entry>
+<entry key="setting.9.12">false</entry>
 
 <!-- new union semantics -->
 <entry key="setting.10.name">Wl union sem</entry>
@@ -155,5 +177,37 @@
 <entry key="setting.10.8">false</entry>
 <entry key="setting.10.9">true</entry>
 <entry key="setting.10.10">true</entry>
+<entry key="setting.10.11">false</entry>
+<entry key="setting.10.12">false</entry>
+
+<!-- new union semantics -->
+<entry key="setting.10.name">Wl union sem + hash aggproject</entry>
+<entry key="setting.10.1">true</entry>
+<entry key="setting.10.2">true</entry>
+<entry key="setting.10.3">false</entry>
+<entry key="setting.10.4">true</entry>
+<entry key="setting.10.5">true</entry>
+<entry key="setting.10.6">false</entry>
+<entry key="setting.10.7">false</entry>
+<entry key="setting.10.8">false</entry>
+<entry key="setting.10.9">true</entry>
+<entry key="setting.10.10">true</entry>
+<entry key="setting.10.11">false</entry>
+<entry key="setting.10.12">true</entry>
+
+<!-- hash aggproject -->
+<entry key="setting.11.name">Wl union sem + hash aggproject</entry>
+<entry key="setting.11.1">true</entry>
+<entry key="setting.11.2">true</entry>
+<entry key="setting.11.3">false</entry>
+<entry key="setting.11.4">true</entry>
+<entry key="setting.11.5">true</entry>
+<entry key="setting.11.6">false</entry>
+<entry key="setting.11.7">false</entry>
+<entry key="setting.11.8">false</entry>
+<entry key="setting.11.9">true</entry>
+<entry key="setting.11.10">true</entry>
+<entry key="setting.11.11">false</entry>
+<entry key="setting.11.12">true</entry>
 
 </properties>
