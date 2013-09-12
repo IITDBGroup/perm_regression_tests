@@ -180,21 +180,6 @@
 <entry key="setting.10.11">false</entry>
 <entry key="setting.10.12">false</entry>
 
-<!-- new union semantics -->
-<entry key="setting.10.name">Wl union sem + hash aggproject</entry>
-<entry key="setting.10.1">true</entry>
-<entry key="setting.10.2">true</entry>
-<entry key="setting.10.3">false</entry>
-<entry key="setting.10.4">true</entry>
-<entry key="setting.10.5">true</entry>
-<entry key="setting.10.6">false</entry>
-<entry key="setting.10.7">false</entry>
-<entry key="setting.10.8">false</entry>
-<entry key="setting.10.9">true</entry>
-<entry key="setting.10.10">true</entry>
-<entry key="setting.10.11">false</entry>
-<entry key="setting.10.12">true</entry>
-
 <!-- hash aggproject -->
 <entry key="setting.11.name">Wl union sem + hash aggproject</entry>
 <entry key="setting.11.1">true</entry>

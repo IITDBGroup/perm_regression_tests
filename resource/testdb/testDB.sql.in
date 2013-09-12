@@ -622,21 +622,21 @@ COPY lineitem FROM '@PERMTESTERDIR@/resource/testdb/lineitem.cpy' WITH CSV DELIM
 COPY nation FROM '@PERMTESTERDIR@/resource/testdb/nation.cpy' WITH CSV DELIMITER '|';
 COPY region FROM '@PERMTESTERDIR@/resource/testdb/region.cpy' WITH CSV DELIMITER '|';
 
---ALTER TABLE supplier ADD FOREIGN KEY (s_nationkey) REFERENCES nation (n_nationkey);
+ALTER TABLE supplier ADD FOREIGN KEY (s_nationkey) REFERENCES nation (n_nationkey);
 
---ALTER TABLE partsupp ADD FOREIGN KEY (ps_partkey) REFERENCES part (p_partkey);
---ALTER TABLE partsupp ADD FOREIGN KEY (ps_suppkey) REFERENCES supplier (s_suppkey);
+ALTER TABLE partsupp ADD FOREIGN KEY (ps_partkey) REFERENCES part (p_partkey);
+ALTER TABLE partsupp ADD FOREIGN KEY (ps_suppkey) REFERENCES supplier (s_suppkey);
 
---ALTER TABLE customer ADD FOREIGN KEY (c_nationkey) REFERENCES nation (n_nationkey);
+ALTER TABLE customer ADD FOREIGN KEY (c_nationkey) REFERENCES nation (n_nationkey);
 
---ALTER TABLE orders ADD FOREIGN KEY (o_custkey) REFERENCES customer (c_custkey);
+ALTER TABLE orders ADD FOREIGN KEY (o_custkey) REFERENCES customer (c_custkey);
 
---ALTER TABLE lineitem ADD FOREIGN KEY (l_partkey, l_suppkey) REFERENCES partsupp (ps_partkey, ps_suppkey);
---ALTER TABLE lineitem ADD FOREIGN KEY (l_partkey) REFERENCES part (p_partkey);
---ALTER TABLE lineitem ADD FOREIGN KEY (l_suppkey) REFERENCES supplier (s_suppkey);
---ALTER TABLE lineitem ADD FOREIGN KEY (l_orderkey) REFERENCES orders (o_orderkey);
+ALTER TABLE lineitem ADD FOREIGN KEY (l_partkey, l_suppkey) REFERENCES partsupp (ps_partkey, ps_suppkey);
+ALTER TABLE lineitem ADD FOREIGN KEY (l_partkey) REFERENCES part (p_partkey);
+ALTER TABLE lineitem ADD FOREIGN KEY (l_suppkey) REFERENCES supplier (s_suppkey);
+ALTER TABLE lineitem ADD FOREIGN KEY (l_orderkey) REFERENCES orders (o_orderkey);
 
---ALTER TABLE nation ADD FOREIGN KEY (n_regionkey) REFERENCES region (r_regionkey);
+ALTER TABLE nation ADD FOREIGN KEY (n_regionkey) REFERENCES region (r_regionkey);
 
 CREATE OR REPLACE VIEW  revenue0 (supplier_no, total_revenue) as
 	select
@@ -896,9 +896,9 @@ INSERT INTO howdt VALUES (3, '+ 2 3 4 |'::howprov);
 /******************************************************************************
 ******* 	AGG PROJECT tables			   ********************
 ******************************************************************************/
-DROP TABLE IF EXISTS t1;
-DROP TABLE IF EXISTS t2;
-DROP TABLE IF EXISTS t3;
+DROP TABLE IF EXISTS t1 CASCADE;
+DROP TABLE IF EXISTS t2 CASCADE;
+DROP TABLE IF EXISTS t3 CASCADE;
 
 CREATE TABLE t1 (a int, b int, c int);
 CREATE TABLE t2 (a int, b int, c int);
