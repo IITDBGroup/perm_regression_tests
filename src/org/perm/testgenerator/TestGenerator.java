@@ -172,17 +172,17 @@ public class TestGenerator {
 		suite = suites.get(runName);
 		
 		output = TestCase;
-		output = output.replace("PACKAGE", packageName);
-		output = output.replace("NAME", suite.getClassName());
-		output = output.replace("FILE", suite.getFileName());
-		output = output.replace("SETTING", "" + settingNum);
-		output = output.replace("PATH", this.getTestDir().toString() + "/");
+		output = output.replace("$PACKAGE", packageName);
+		output = output.replace("$NAME", suite.getClassName());
+		output = output.replace("$FILE", suite.getFileName());
+		output = output.replace("$SETTING", "" + settingNum);
+		output = output.replace("$PATH", this.getTestDir().toString() + "/");
 		for (int i = 1; i <= generator.getNumTest(); i++) {
 			if (!generator.isInExcludes(settingNum, i))
 				tests.append(testMethodString.replace("NAME", "Query_" + i).replace("NUM", i + ""));
 		}
 		
-		output = output.replace("TESTS", tests.toString());
+		output = output.replace("$TESTS", tests.toString());
 		
 		writeFile(suite.getClassName(), output);
 	}

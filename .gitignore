@@ -1,0 +1,4 @@
+/bin/
+resource/testdb/testDB.sql
+resource/testdb/wherecs.sql
+src/org/perm/autotests/

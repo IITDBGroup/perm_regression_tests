@@ -127,7 +127,12 @@
 	</target>
 	
 	<target name="genTests" depends="jarGenerator">
-		<java classname="org.perm.testgenerator.TestGenerator" classpathref="libraries">
+		<java 
+			classname="org.perm.testgenerator.TestGenerator" 
+			classpathref="libraries"
+			fork="true" 
+			dir="${basedir}"
+			>
 			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" 
 				value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
 		</java>
